@@ -84,15 +84,31 @@ app.controller('MainCtrl', [
                     console.info('Soundcloud Token:', token);
                     if (!refresh && localStorage.getItem('souncloud.playlists') !== null)
                         return JSON.parse(localStorage.getItem('souncloud.playlists'));
-                    return SC.get('/me/playlists').then(function (playlists) {
-                        console.info('Loaded playlists from SoundCloud');
-                        localStorage.setItem('souncloud.playlists', JSON.stringify(playlists));
-                        return playlists;
-                    });
+                    return SC.get('/me/playlists')
+                        .then(function (playlists) {
+                            console.info('Loaded playlists from SoundCloud');
+                            return playlists;
+                        })
+                        .then(function (playlists) {
+                            // The track arrays returned by /me/playlists are ordered by track creation date.
+                            // We retrieve the chronological order by fetching each playlist individually.
+                            // We then reverse that order.
+                            let promises = [];
+                            for (let i = 0; i < playlists.length; i++)
+                                promises.push(SC.get('/playlists/' + playlists[i].id).then(function (playlist) {
+                                    console.info('Loaded playlist ' + playlists[i].id + ' details from SoundCloud (' + playlists[i].title + ')');
+                                    playlists[i].tracks = playlist.tracks.reverse();
+                                }));
+                            return Promise.all(promises).then(function () {
+                                return playlists;
+                            });
+                        })
+                        .then(function (playlists) {
+                            localStorage.setItem('souncloud.playlists', JSON.stringify(playlists));
+                            return playlists;
+                        });
                 })
                 .then(function (playlists) {
-                    for (let i = 0; i < playlists.length; i++)
-                        playlists[i].tracks = playlists[i].tracks.reverse();
                     $scope.playlists = playlists;
                     if (!refresh && localStorage.getItem('souncloud.favorites') !== null)
                         return JSON.parse(localStorage.getItem('souncloud.favorites'));
