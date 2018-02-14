@@ -104,9 +104,14 @@ $dotenv->load();
                        md-vertical aria-label="lines"></md-slider>
         </md-slider-container>
         <md-slider-container ng-show="settings.fftShow" >
-            <span>Intensify</span>
-            <md-slider ng-model="settings.intensify" min="0" max="100" step="1" round="0"
-                       md-vertical aria-label="intensify"></md-slider>
+            <span>Smooth</span>
+            <md-slider ng-model="settings.smoothing" min="0" max="99" step="1" round="0"
+                       md-vertical aria-label="smoothing"></md-slider>
+        </md-slider-container>
+        <md-slider-container ng-show="settings.fftShow" >
+            <span>Accent</span>
+            <md-slider ng-model="settings.accent" min="0" max="100" step="1" round="0"
+                       md-vertical aria-label="accent"></md-slider>
         </md-slider-container>
     </div>
     <div style="text-align: right;padding-top:10px;">

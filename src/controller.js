@@ -56,6 +56,9 @@ app.controller('MainCtrl', [
         $scope.$watch('settings.volume', function (volume) {
             engine.gainNode.gain.value = volume / 100;
         });
+        $scope.$watch('settings.smoothing', function (smoothing) {
+            engine.analyser.smoothingTimeConstant = smoothing / 100;
+        });
         $scope.$watch('settings.nbBarsMax', function () {
             $scope.resizeFFT();
         });
@@ -141,6 +144,7 @@ app.controller('MainCtrl', [
         if (localStorage.getItem('souncloud.token') !== null)
             $scope.init();
 
+        const logScaleOneToHundred = Math.log(100) / 99;
         function renderFrame() {
             if (!settings.fftShow)
                 return;
@@ -156,11 +160,11 @@ app.controller('MainCtrl', [
                 frenquencyDataGrouped[i] = Math.max.apply(null, subArray);
                 // frenquencyDataGrouped[i] = subArray.reduce((a, b) => a + b, 0) / subArray.length;
             }
-            if (settings.intensify > 0 && engine.frequencyDataCopy !== null)
+            if (settings.accent > 0 && engine.frequencyDataCopy !== null)
                 for (let i = 0; i < view.nbBars; i++) {
                     const slope = frenquencyDataGrouped[i] - engine.frequencyDataCopy[i];
                     if (slope > 0) {
-                        frenquencyDataGrouped[i] += slope * settings.intensify;
+                        frenquencyDataGrouped[i] += slope * (Math.exp((settings.accent - 1) * logScaleOneToHundred) - 1);
                         frenquencyDataGrouped[i] = Math.min(frenquencyDataGrouped[i], 255);
                     }
                 }

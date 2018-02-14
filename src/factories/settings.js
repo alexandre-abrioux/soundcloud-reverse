@@ -6,7 +6,8 @@ app.factory('settings', [function () {
         fftShow:true,
         fftEnlarge: false,
         fftBehind: false,
-        intensify: 0,
+        smoothing: 50,
+        accent: 0,
         selectedPlaylistID: null
     };
     if (localStorage.getItem('settings') !== null) {
