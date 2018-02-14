@@ -135,42 +135,91 @@ body.fftShow.fftBehind #fft {
     z-index: 0 !important;
 }
 
-#controls,
+#controls-content,
 #controls-playback {
-    z-index: 3;
-    position: fixed;
-    top: 2vh;
-    right: 1vw;
-    background: rgba(0, 0, 0, 0.2);
     padding: 2vh 1vw;
+    background: rgba(0, 0, 0, 0.2);
     color: #7f88a2;
     border-radius: 2px;
 }
 
 #controls {
+    z-index: 3;
+    position: fixed;
+    top: 2vh;
+    right: 1vw;
     user-select: none;
     -moz-user-select: none;
     -webkit-user-select: none;
 }
 
-#controls-playback {
+#controls-icon,
+#controls-content-wrapper {
+    transition-property: opacity, top, right;
+    transition-duration: 0.3s;
+}
+
+#controls-icon {
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+
+#controls-content-wrapper {
+    position: absolute;
     opacity: 0;
-    top: auto;
+    top: 2vh;
+    right: 2vw;
+}
+
+#controls:hover #controls-icon {
+    opacity:0;
+    top: 2vh;
+    right: 2vw;
+}
+
+#controls:hover #controls-content-wrapper {
+    opacity:1;
+    top: 0;
+    right: 0;
+    padding-left:2vw;
+    padding-bottom:2vh;
+}
+
+#controls-playback {
+    z-index: 3;
+    position: fixed;
     bottom: 2vh;
-    transition-property: opacity, bottom;
-    transition-delay: 0s, 0.5s;
+    right: 1vw;
+    display: flex;
+    opacity: 0;
+    transition-property: bottom;
+    transition-delay: 0.5s;
     transition-duration: 0.5s;
     min-width: 20vw;
     max-width: 50vw;
 }
 
+
+@keyframes controlsPlaybackIn {
+    0% {
+        opacity: 0;
+        transform: translateX(2vw);
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
 body.playing #controls-playback {
     opacity: 1;
+    animation: 0.5s controlsPlaybackIn ease;
 }
 
 body.fftShow #controls-playback {
     bottom: 12vh;
 }
+
 body.fftShow.fftEnlarge #controls-playback {
     bottom: 2vh;
 }
@@ -181,9 +230,14 @@ body.fftShow.fftEnlarge #controls-playback {
     font-size: small;
 }
 
-#controls-playback img {
-    float: left;
-    margin-right: 20px;
+#controls-playback-img-placeholder {
+    width: 100px;
+    height: 100px;
+    margin-right: 1vw;
+}
+
+#controls-playback-content {
+    flex: 1;
 }
 
 #controls-playback-artist {
@@ -191,12 +245,12 @@ body.fftShow.fftEnlarge #controls-playback {
     font-weight: bold;
 }
 
-body.fftShow.fftEnlarge #controls,
+body.fftShow.fftEnlarge #controls-content,
 body.fftShow.fftEnlarge #controls-playback {
     background: rgba(0, 0, 0, 0.5);
 }
 
-body.fftShow.fftEnlarge.fftBehind #controls,
+body.fftShow.fftEnlarge.fftBehind #controls-content,
 body.fftShow.fftEnlarge.fftBehind #controls-playback {
     background: rgba(0, 0, 0, 0.8);
 }

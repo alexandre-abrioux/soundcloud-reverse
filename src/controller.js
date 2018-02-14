@@ -33,25 +33,22 @@ app.controller('MainCtrl', [
             if (typeof engine.player === 'object'
                 && engine.player !== null)
                 engine.player.dispose();
-            $timeout(function () {
-                $scope.currentPlayingPlaylist = playlist;
-                $scope.currentPlayingTrack = track;
-                console.info('Track [', track.id, '] > queued', track);
-                SC.stream('/tracks/' + track.id).then(function (player) {
-                    engine.player = player;
-                    engine.player.off();
-                    engine.player.on('state-change', playerEventListener);
-                    engine.player.play();
-                });
+            $scope.currentPlayingPlaylist = playlist;
+            $scope.currentPlayingTrack = track;
+            console.info('Track [', track.id, '] > queued', track);
+            SC.stream('/tracks/' + track.id).then(function (player) {
+                engine.player = player;
+                engine.player.off();
+                engine.player.on('state-change', playerEventListener);
+                engine.player.play();
             });
         };
         $scope.playNext = function () {
             // in case playlists have been refreshed and this playlist doesn't exist anymore
             if (typeof $scope.currentPlayingPlaylist === 'undefined') {
-                $timeout(function () {
-                    $scope.currentPlayingPlaylist = null;
-                    $scope.currentPlayingTrack = null;
-                });
+                $scope.currentPlayingPlaylist = null;
+                $scope.currentPlayingTrack = null;
+                $scope.$apply();
                 return false;
             }
             const trackIndex = $scope.currentPlayingPlaylist.tracks.findIndex(helper.findByID($scope.currentPlayingTrack.id));
@@ -60,7 +57,9 @@ app.controller('MainCtrl', [
                 nextTrack = $scope.currentPlayingPlaylist.tracks[trackIndex + 1];
             else
                 nextTrack = $scope.currentPlayingPlaylist.tracks[0];
-            $scope.play($scope.currentPlayingPlaylist, nextTrack);
+            $timeout(function () {
+                $scope.play($scope.currentPlayingPlaylist, nextTrack);
+            });
         };
         $scope.$watch('settings', function (settings) {
             localStorage.setItem('settings', JSON.stringify(settings));
@@ -137,13 +136,12 @@ app.controller('MainCtrl', [
                         title: 'Likes',
                         tracks: favorites
                     });
-                    $timeout(function () {
-                        if (settings.selectedPlaylistID === null
-                            || typeof $scope.playlists.find(helper.findByID(settings.selectedPlaylistID)) === 'undefined')
-                            settings.selectedPlaylistID = $scope.playlists[0].id;
-                        $scope.ready = true;
-                        $scope.refreshing = false;
-                    });
+                    if (settings.selectedPlaylistID === null
+                        || typeof $scope.playlists.find(helper.findByID(settings.selectedPlaylistID)) === 'undefined')
+                        settings.selectedPlaylistID = $scope.playlists[0].id;
+                    $scope.ready = true;
+                    $scope.refreshing = false;
+                    $scope.$apply();
                 })
                 .catch(function (error) {
                     console.error('Error', error);
@@ -206,6 +204,7 @@ app.controller('MainCtrl', [
                 case 'loading':
                     if (engine.player.controller)
                         engine.player.controller._html5Audio.crossOrigin = "anonymous";
+                    $scope.$apply();
                     break;
                 case 'playing':
                     if (typeof engine.audioSrc === 'object' && engine.audioSrc !== null
@@ -217,8 +216,9 @@ app.controller('MainCtrl', [
                     engine.maxFrequencyInArray = engine.audioCtx.sampleRate / (2 * engine.audioCtx.destination.channelCount);
                     engine.frequencyData = new Uint8Array(engine.analyser.frequencyBinCount);
                     engine.nbValuesToKeepInArray = helper.normalize(view.maxFrequencyDisplayed, engine.maxFrequencyInArray, engine.analyser.frequencyBinCount);
-                    $scope.resizeFFT();
                     $scope.paused = false;
+                    $scope.resizeFFT();
+                    $scope.$apply();
                     renderFrame();
                     break;
                 case 'idle':
@@ -227,9 +227,9 @@ app.controller('MainCtrl', [
                     break;
                 case 'dead':
                     engine.player.dispose();
-                    $timeout(function () {
-                        $scope.currentPlayingTrack = null;
-                    });
+                    $scope.currentPlayingTrack = null;
+                    if (!$scope.$root.$$phase)
+                        $scope.$apply();
                     break;
                 case 'error':
                 case 'ended':
@@ -239,32 +239,33 @@ app.controller('MainCtrl', [
             }
         };
 
-        let resizeTimer;
         $scope.resizeFFT = function () {
+            view.width = angular.element(view.canvas).width();
+            view.height = angular.element(view.canvas).height();
+            view.canvas.width = view.width;
+            view.canvas.height = view.height;
+            helper.resizeCanvasKeepContent(view.canvasPreRender, view.canvasPreRenderCtx, view.width, Math.ceil(view.height / 2));
+            view.nbBars = Math.min(view.width / 3, engine.nbValuesToKeepInArray);
+            if (settings.nbBarsMax > 0)
+                view.nbBars = Math.min(settings.nbBarsMax, view.nbBars);
+            view.nbLines = Math.round(Math.min(settings.nbLinesMax, view.height / 2));
+            view.barWidth = Math.max(2, Math.floor(view.width / view.nbBars * 2 / 3));
+            view.nbBars = view.width / view.barWidth * 2 / 3;
+            view.nbBars = Math.floor(Math.min(view.nbBars, view.width / 3, engine.nbValuesToKeepInArray));
+            view.barHorizOffset = Math.max(1, Math.round((view.width - view.nbBars * view.barWidth * 1.5) / 2 + view.barWidth / 4));
+            view.lineHeight = Math.round(Math.max(view.height / (2 * view.nbLines), 1));
+            view.barArraySize = Math.floor(engine.nbValuesToKeepInArray / view.nbBars);
+            view.canvasPreRenderCtx.clearRect(0, 0, view.barHorizOffset, view.height / 2 + 1);
+            view.canvasPreRenderCtx.clearRect(view.width - view.barHorizOffset, 0, view.barHorizOffset, view.height / 2 + 1);
+            for (let x = 0; x < view.nbBars; x++)
+                view.canvasPreRenderCtx.clearRect(x * view.barWidth * 3 / 2 + view.barHorizOffset + view.barWidth, 0, view.barWidth / 2, view.height / 2 + 1);
+        };
+
+        let resizeTimer;
+        angular.element($window).on('resize', function () {
             if (resizeTimer)
                 $timeout.cancel(resizeTimer);
-            resizeTimer = $timeout(function () {
-                view.width = angular.element(view.canvas).width();
-                view.height = angular.element(view.canvas).height();
-                view.canvas.width = view.width;
-                view.canvas.height = view.height;
-                helper.resizeCanvasKeepContent(view.canvasPreRender, view.canvasPreRenderCtx, view.width, Math.ceil(view.height / 2));
-                view.nbBars = Math.min(view.width / 3, engine.nbValuesToKeepInArray);
-                if (settings.nbBarsMax > 0)
-                    view.nbBars = Math.min(settings.nbBarsMax, view.nbBars);
-                view.nbLines = Math.round(Math.min(settings.nbLinesMax, view.height / 2));
-                view.barWidth = Math.max(2, Math.floor(view.width / view.nbBars * 2 / 3));
-                view.nbBars = view.width / view.barWidth * 2 / 3;
-                view.nbBars = Math.floor(Math.min(view.nbBars, view.width / 3, engine.nbValuesToKeepInArray));
-                view.barHorizOffset = Math.max(1, Math.round((view.width - view.nbBars * view.barWidth * 1.5) / 2 + view.barWidth / 4));
-                view.lineHeight = Math.round(Math.max(view.height / (2 * view.nbLines), 1));
-                view.barArraySize = Math.floor(engine.nbValuesToKeepInArray / view.nbBars);
-                view.canvasPreRenderCtx.clearRect(0, 0, view.barHorizOffset, view.height / 2 + 1);
-                view.canvasPreRenderCtx.clearRect(view.width - view.barHorizOffset, 0, view.barHorizOffset, view.height / 2 + 1);
-                for (let x = 0; x < view.nbBars; x++)
-                    view.canvasPreRenderCtx.clearRect(x * view.barWidth * 3 / 2 + view.barHorizOffset + view.barWidth, 0, view.barWidth / 2, view.height / 2 + 1);
-            }, 1000);
-        };
-        angular.element($window).on('resize', $scope.resizeFFT);
+            resizeTimer = $timeout($scope.resizeFFT, 1000);
+        });
 
     }]);
