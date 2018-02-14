@@ -195,15 +195,16 @@ app.controller('MainCtrl', [
                         break;
                     case 'playing':
                         $scope.currentPlayingTrack = track;
-                        if (
-                            typeof engine.audioSrc === 'object'
-                            && engine.audioSrc !== null
-                            && typeof engine.audioSrc.disconnect === 'function'
-                        )
-                            engine.audioSrc.disconnect();
+                        [engine.audioSrc, engine.analyser, engine.gainNode].forEach(function (object) {
+                            if (typeof object === 'object'
+                                && object !== null
+                                && typeof object.disconnect === 'function')
+                                object.disconnect();
+                        });
                         engine.audioSrc = engine.audioCtx.createMediaElementSource(player.controller._html5Audio);
                         engine.audioSrc.connect(engine.analyser);
                         engine.audioSrc.connect(engine.gainNode);
+                        engine.gainNode.connect(engine.audioCtx.destination);
                         engine.maxFrequencyInArray = engine.audioCtx.sampleRate / (2 * engine.audioCtx.destination.channelCount);
                         engine.frequencyData = new Uint8Array(engine.analyser.frequencyBinCount);
                         engine.nbValuesToKeepInArray = helper.normalize(view.maxFrequencyDisplayed, engine.maxFrequencyInArray, engine.analyser.frequencyBinCount);
