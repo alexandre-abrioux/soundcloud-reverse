@@ -19,7 +19,6 @@ app.controller('MainCtrl', [
               engine) {
         $scope.$timeout = $timeout;
         $scope.playlists = [];
-        $scope.selectedPlaylistID = null;
         $scope.currentPlayingTrack = null;
         $scope.ready = false;
         $scope.refreshing = false;
@@ -123,9 +122,9 @@ app.controller('MainCtrl', [
                         title: 'Likes',
                         tracks: favorites
                     });
-                    if ($scope.selectedPlaylistID === null
-                        || typeof $scope.playlists.find(helper.findByID($scope.selectedPlaylistID)) === 'undefined')
-                        $scope.selectedPlaylistID = $scope.playlists[0].id;
+                    if (settings.selectedPlaylistID === null
+                        || typeof $scope.playlists.find(helper.findByID(settings.selectedPlaylistID)) === 'undefined')
+                        settings.selectedPlaylistID = $scope.playlists[0].id;
                     $scope.ready = true;
                     $scope.refreshing = false;
                     $scope.$apply();

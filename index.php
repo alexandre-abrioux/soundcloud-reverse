@@ -53,15 +53,15 @@ $dotenv->load();
         <i id="refresh" class="fa fa-refresh" aria-hidden="true"
            ng-class="{'active':refreshing, 'fa-spin':refreshing}"
            ng-click="init(true)"></i>
-        <md-select ng-model="selectedPlaylistID" aria-label="playlists" style="width:90%;">
+        <md-select ng-model="settings.selectedPlaylistID" aria-label="playlists" style="width:90%;">
             <md-option ng-repeat="playlist in playlists" ng-value="playlist.id">
                 {{playlist.title}}
             </md-option>
         </md-select>
-        <div ng-show="selectedPlaylistID !== null"
-             ng-repeat="track in playlists.find(helper.findByID(selectedPlaylistID)).tracks"
+        <div ng-show="settings.selectedPlaylistID !== null"
+             ng-repeat="track in playlists.find(helper.findByID(settings.selectedPlaylistID)).tracks"
              class="track-wrapper"
-             ng-click="play(selectedPlaylistID, track.id)">
+             ng-click="play(settings.selectedPlaylistID, track.id)">
             <a ng-href="{{ track.permalink_url }}" target="_blank">
                 <i class="fa fa-external-link" aria-hidden="true"></i>
             </a>
