@@ -19,6 +19,8 @@ app.controller('MainCtrl', [
               engine) {
         $scope.$timeout = $timeout;
         $scope.playlists = [];
+        $scope.paused = true;
+        $scope.currentPlayingPlaylist = null;
         $scope.currentPlayingTrack = null;
         $scope.ready = false;
         $scope.refreshing = false;
@@ -27,28 +29,38 @@ app.controller('MainCtrl', [
         $scope.engine = engine;
         $scope.view = view;
 
-        $scope.play = function (playlistID, trackID) {
-            const playlist = $scope.playlists.find(helper.findByID(playlistID));
-            const track = playlist.tracks.find(helper.findByID(trackID));
-            $scope.currentPlayingTrack = track;
-            console.debug('Track', track);
-            console.info('Track [', trackID, '] > Queued');
-            SC.stream('/tracks/' + trackID).then(function (player) {
-                playAction(player, playlistID, trackID);
+        $scope.play = function (playlist, track) {
+            if (typeof engine.player === 'object'
+                && engine.player !== null)
+                engine.player.dispose();
+            $timeout(function () {
+                $scope.currentPlayingPlaylist = playlist;
+                $scope.currentPlayingTrack = track;
+                console.info('Track [', track.id, '] > queued', track);
+                SC.stream('/tracks/' + track.id).then(function (player) {
+                    engine.player = player;
+                    engine.player.off();
+                    engine.player.on('state-change', playerEventListener);
+                    engine.player.play();
+                });
             });
         };
-        $scope.playNext = function (playlistID, trackID) {
-            const playlist = $scope.playlists.find(helper.findByID(playlistID));
+        $scope.playNext = function () {
             // in case playlists have been refreshed and this playlist doesn't exist anymore
-            if (typeof playlist === 'undefined')
+            if (typeof $scope.currentPlayingPlaylist === 'undefined') {
+                $timeout(function () {
+                    $scope.currentPlayingPlaylist = null;
+                    $scope.currentPlayingTrack = null;
+                });
                 return false;
-            const trackIndex = playlist.tracks.findIndex(helper.findByID(trackID));
+            }
+            const trackIndex = $scope.currentPlayingPlaylist.tracks.findIndex(helper.findByID($scope.currentPlayingTrack.id));
             let nextTrack;
-            if (trackIndex < playlist.tracks.length - 1)
-                nextTrack = playlist.tracks[trackIndex + 1];
+            if (trackIndex < $scope.currentPlayingPlaylist.tracks.length - 1)
+                nextTrack = $scope.currentPlayingPlaylist.tracks[trackIndex + 1];
             else
-                nextTrack = playlist.tracks[0];
-            $scope.play(playlist.id, nextTrack.id);
+                nextTrack = $scope.currentPlayingPlaylist.tracks[0];
+            $scope.play($scope.currentPlayingPlaylist, nextTrack);
         };
         $scope.$watch('settings', function (settings) {
             localStorage.setItem('settings', JSON.stringify(settings));
@@ -125,12 +137,13 @@ app.controller('MainCtrl', [
                         title: 'Likes',
                         tracks: favorites
                     });
-                    if (settings.selectedPlaylistID === null
-                        || typeof $scope.playlists.find(helper.findByID(settings.selectedPlaylistID)) === 'undefined')
-                        settings.selectedPlaylistID = $scope.playlists[0].id;
-                    $scope.ready = true;
-                    $scope.refreshing = false;
-                    $scope.$apply();
+                    $timeout(function () {
+                        if (settings.selectedPlaylistID === null
+                            || typeof $scope.playlists.find(helper.findByID(settings.selectedPlaylistID)) === 'undefined')
+                            settings.selectedPlaylistID = $scope.playlists[0].id;
+                        $scope.ready = true;
+                        $scope.refreshing = false;
+                    });
                 })
                 .catch(function (error) {
                     console.error('Error', error);
@@ -145,11 +158,15 @@ app.controller('MainCtrl', [
             $scope.init();
 
         const logScaleOneToHundred = Math.log(100) / 99;
+
         function renderFrame() {
             if (!settings.fftShow)
                 return;
-            if ($scope.currentPlayingTrack !== null)
-                requestAnimationFrame(renderFrame);
+            if ($scope.paused)
+                return;
+            if ($scope.currentPlayingTrack === null)
+                return;
+            requestAnimationFrame(renderFrame);
             engine.analyser.getByteFrequencyData(engine.frequencyData);
             const frequencyDataTruncated = engine.frequencyData.subarray(0, engine.nbValuesToKeepInArray).map(function (value) {
                 return value;
@@ -182,84 +199,71 @@ app.controller('MainCtrl', [
             view.canvasCtx.setTransform(1, 0, 0, 1, 0, 0);
         }
 
-        function playAction(player, playlistID, trackID) {
-            player.on('state-change', createPlayerEventListener(player, playlistID, trackID));
-            player.play();
-        }
-
-        function createPlayerEventListener(player, playlistID, trackID) {
-            const playlist = $scope.playlists.find(helper.findByID(playlistID));
-            const track = playlist.tracks.find(helper.findByID(trackID));
-            const playerEventListener = function (e) {
-                console.info('Track [', trackID, '] > State Change:', e);
-                switch (e) {
-                    case 'loading':
-                        const audio = player.controller._html5Audio;
-                        audio.crossOrigin = "anonymous";
-                        break;
-                    case 'playing':
-                        $scope.currentPlayingTrack = track;
-                        [engine.audioSrc, engine.analyser, engine.gainNode].forEach(function (object) {
-                            if (typeof object === 'object'
-                                && object !== null
-                                && typeof object.disconnect === 'function')
-                                object.disconnect();
-                        });
-                        engine.audioSrc = engine.audioCtx.createMediaElementSource(player.controller._html5Audio);
-                        engine.audioSrc.connect(engine.analyser);
-                        engine.audioSrc.connect(engine.gainNode);
-                        engine.gainNode.connect(engine.audioCtx.destination);
-                        engine.maxFrequencyInArray = engine.audioCtx.sampleRate / (2 * engine.audioCtx.destination.channelCount);
-                        engine.frequencyData = new Uint8Array(engine.analyser.frequencyBinCount);
-                        engine.nbValuesToKeepInArray = helper.normalize(view.maxFrequencyDisplayed, engine.maxFrequencyInArray, engine.analyser.frequencyBinCount);
-                        $scope.$apply();
-                        $scope.resizeFFT();
-                        renderFrame();
-                        break;
-                    case 'idle':
-                        break;
-                    case 'paused':
-                        break;
-                    case 'dead':
-                        player.off('state-change', playerEventListener);
-                        player.dispose();
+        const playerEventListener = function (e) {
+            console.info('Track [', engine.player.options.soundId, '] >', e);
+            $scope.paused = true;
+            switch (e) {
+                case 'loading':
+                    if (engine.player.controller)
+                        engine.player.controller._html5Audio.crossOrigin = "anonymous";
+                    break;
+                case 'playing':
+                    if (typeof engine.audioSrc === 'object' && engine.audioSrc !== null
+                        && typeof engine.audioSrc.disconnect === 'function')
+                        engine.audioSrc.disconnect();
+                    engine.audioSrc = engine.audioCtx.createMediaElementSource(engine.player.controller._html5Audio);
+                    engine.audioSrc.connect(engine.analyser);
+                    engine.audioSrc.connect(engine.gainNode);
+                    engine.maxFrequencyInArray = engine.audioCtx.sampleRate / (2 * engine.audioCtx.destination.channelCount);
+                    engine.frequencyData = new Uint8Array(engine.analyser.frequencyBinCount);
+                    engine.nbValuesToKeepInArray = helper.normalize(view.maxFrequencyDisplayed, engine.maxFrequencyInArray, engine.analyser.frequencyBinCount);
+                    $scope.resizeFFT();
+                    $scope.paused = false;
+                    renderFrame();
+                    break;
+                case 'idle':
+                    break;
+                case 'paused':
+                    break;
+                case 'dead':
+                    engine.player.dispose();
+                    $timeout(function () {
                         $scope.currentPlayingTrack = null;
-                        $scope.$apply();
-                        break;
-                    case 'error':
-                    case 'ended':
-                        player.off('state-change', playerEventListener);
-                        player.dispose();
-                        $scope.currentPlayingTrack = null;
-                        $scope.playNext(playlistID, trackID);
-                        $scope.$apply();
-                        break;
-                }
-            };
-            return playerEventListener;
-        }
+                    });
+                    break;
+                case 'error':
+                case 'ended':
+                    engine.player.dispose();
+                    $scope.playNext();
+                    break;
+            }
+        };
 
+        let resizeTimer;
         $scope.resizeFFT = function () {
-            // console.info('resizeFFT');
-            view.width = angular.element(view.canvas).width();
-            view.height = angular.element(view.canvas).height();
-            view.canvas.width = view.width;
-            view.canvas.height = view.height;
-            helper.resizeCanvasKeepContent(view.canvasPreRender, view.canvasPreRenderCtx, view.width, Math.ceil(view.height / 2));
-            view.nbBars = Math.min(view.width / 3, engine.nbValuesToKeepInArray);
-            if (settings.nbBarsMax > 0)
-                view.nbBars = Math.min(settings.nbBarsMax, view.nbBars);
-            view.nbLines = Math.round(Math.min(settings.nbLinesMax, view.height / 2));
-            view.barWidth = Math.max(2, Math.floor(view.width / view.nbBars * 2 / 3));
-            view.nbBars = view.width / view.barWidth * 2 / 3;
-            view.nbBars = Math.floor(Math.min(view.nbBars, view.width / 3, engine.nbValuesToKeepInArray));
-            view.barHorizOffset = Math.max(1, Math.round((view.width - view.nbBars * view.barWidth * 1.5) / 2 + view.barWidth / 4));
-            view.lineHeight = Math.round(Math.max(view.height / (2 * view.nbLines), 1));
-            view.barArraySize = Math.floor(engine.nbValuesToKeepInArray / view.nbBars);
-            view.canvasPreRenderCtx.clearRect(0, 0, view.barHorizOffset, view.height / 2 + 1);
-            view.canvasPreRenderCtx.clearRect(view.width - view.barHorizOffset, 0, view.barHorizOffset, view.height / 2 + 1);
-            for (let x = 0; x < view.nbBars; x++)
-                view.canvasPreRenderCtx.clearRect(x * view.barWidth * 3 / 2 + view.barHorizOffset + view.barWidth, 0, view.barWidth / 2, view.height / 2 + 1);
+            if (resizeTimer)
+                $timeout.cancel(resizeTimer);
+            resizeTimer = $timeout(function () {
+                view.width = angular.element(view.canvas).width();
+                view.height = angular.element(view.canvas).height();
+                view.canvas.width = view.width;
+                view.canvas.height = view.height;
+                helper.resizeCanvasKeepContent(view.canvasPreRender, view.canvasPreRenderCtx, view.width, Math.ceil(view.height / 2));
+                view.nbBars = Math.min(view.width / 3, engine.nbValuesToKeepInArray);
+                if (settings.nbBarsMax > 0)
+                    view.nbBars = Math.min(settings.nbBarsMax, view.nbBars);
+                view.nbLines = Math.round(Math.min(settings.nbLinesMax, view.height / 2));
+                view.barWidth = Math.max(2, Math.floor(view.width / view.nbBars * 2 / 3));
+                view.nbBars = view.width / view.barWidth * 2 / 3;
+                view.nbBars = Math.floor(Math.min(view.nbBars, view.width / 3, engine.nbValuesToKeepInArray));
+                view.barHorizOffset = Math.max(1, Math.round((view.width - view.nbBars * view.barWidth * 1.5) / 2 + view.barWidth / 4));
+                view.lineHeight = Math.round(Math.max(view.height / (2 * view.nbLines), 1));
+                view.barArraySize = Math.floor(engine.nbValuesToKeepInArray / view.nbBars);
+                view.canvasPreRenderCtx.clearRect(0, 0, view.barHorizOffset, view.height / 2 + 1);
+                view.canvasPreRenderCtx.clearRect(view.width - view.barHorizOffset, 0, view.barHorizOffset, view.height / 2 + 1);
+                for (let x = 0; x < view.nbBars; x++)
+                    view.canvasPreRenderCtx.clearRect(x * view.barWidth * 3 / 2 + view.barHorizOffset + view.barWidth, 0, view.barWidth / 2, view.height / 2 + 1);
+            }, 1000);
         };
         angular.element($window).on('resize', $scope.resizeFFT);
 

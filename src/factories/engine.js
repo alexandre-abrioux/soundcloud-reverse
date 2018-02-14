@@ -2,6 +2,7 @@ app.factory('engine', [
     'settings',
     function (settings) {
         const engine = {
+            player: null,
             audioCtx: new (window.AudioContext || window.webkitAudioContext)(),
             audioSrc: null,
             frequencyData: null,
@@ -15,5 +16,6 @@ app.factory('engine', [
         engine.analyser.maxDecibels = -10;
         engine.analyser.smoothingTimeConstant = settings.smoothing / 100;
         engine.gainNode = engine.audioCtx.createGain();
+        engine.gainNode.connect(engine.audioCtx.destination);
         return engine;
     }]);

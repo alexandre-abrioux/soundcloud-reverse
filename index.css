@@ -51,6 +51,7 @@ body.fftShow.fftBehind #container {
     display: inline-block;
     transition: padding-bottom;
     transition-duration: 0.5s;
+    max-width: 50vw;
 }
 
 body.fftShow.fftBehind #wrapper {
@@ -144,7 +145,6 @@ body.fftShow.fftBehind #fft {
     padding: 2vh 1vw;
     color: #7f88a2;
     border-radius: 2px;
-    min-width: 20vw;
 }
 
 #controls {
@@ -160,6 +160,8 @@ body.fftShow.fftBehind #fft {
     transition-property: opacity, bottom;
     transition-delay: 0s, 0.5s;
     transition-duration: 0.5s;
+    min-width: 20vw;
+    max-width: 50vw;
 }
 
 body.playing #controls-playback {

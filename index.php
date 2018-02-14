@@ -61,7 +61,7 @@ $dotenv->load();
         <div ng-show="settings.selectedPlaylistID !== null"
              ng-repeat="track in playlists.find(helper.findByID(settings.selectedPlaylistID)).tracks"
              class="track-wrapper"
-             ng-click="play(settings.selectedPlaylistID, track.id)">
+             ng-click="play(playlists.find(helper.findByID(settings.selectedPlaylistID)), track)">
             <a ng-href="{{ track.permalink_url }}" target="_blank">
                 <i class="fa fa-external-link" aria-hidden="true"></i>
             </a>
