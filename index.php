@@ -46,7 +46,9 @@ $dotenv->load();
       'fftBehind':settings.fftBehind
       }" ng-cloak>
 <div id="welcome" ng-show="!ready">
+    <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
     <md-button class="md-raised md-primary" ng-click="init()">Connect with SoundCloud</md-button>
+    <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
 </div>
 <div id="container" ng-show="ready">
     <div id="wrapper">

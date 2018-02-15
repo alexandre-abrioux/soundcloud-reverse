@@ -18,11 +18,12 @@ app.controller('MainCtrl', [
               view,
               engine) {
         $scope.$timeout = $timeout;
+        $scope.ready = false;
+        $scope.loginIn = false;
         $scope.playlists = [];
         $scope.paused = true;
         $scope.currentPlayingPlaylist = null;
         $scope.currentPlayingTrack = null;
-        $scope.ready = false;
         $scope.refreshing = false;
         $scope.helper = helper;
         $scope.settings = settings;
@@ -92,9 +93,11 @@ app.controller('MainCtrl', [
         $scope.init = function (refresh) {
             refresh = typeof refresh === 'undefined' ? false : refresh;
             $scope.refreshing = refresh;
+            $scope.loginIn = true;
             sc(scParams)
                 .then(function (token) {
                     console.info('Soundcloud Token:', token);
+                    $scope.loginIn = false;
                     if (!refresh && localStorage.getItem('souncloud.playlists') !== null)
                         return JSON.parse(localStorage.getItem('souncloud.playlists'));
                     return SC.get('/me/playlists')
