@@ -233,7 +233,6 @@ app.controller('MainCtrl', [
                     break;
                 case 'error':
                 case 'ended':
-                    engine.player.dispose();
                     $scope.playNext();
                     break;
             }

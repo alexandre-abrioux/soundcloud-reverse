@@ -4,8 +4,8 @@ app.factory('settings', [function () {
         nbBarsMax: 0,
         nbLinesMax: 12,
         fftShow:true,
-        fftEnlarge: false,
-        fftBehind: false,
+        fftEnlarge: true,
+        fftBehind: true,
         smoothing: 50,
         accent: 0,
         selectedPlaylistID: null
