@@ -3,8 +3,10 @@ app.factory('view', [function () {
         visual: true,
         canvas: document.querySelector('#fft'),
         canvasPreRender: document.createElement('canvas'),
+        canvasWave: document.querySelector('#controls-wave'),
         canvasCtx: null,
         canvasPreRenderCtx: null,
+        canvasWaveCtx: null,
         width: 0,
         height: 0,
         nbBars: 0,
@@ -23,7 +25,11 @@ app.factory('view', [function () {
         antialias: false,
         alpha: false
     });
+    view.canvasWaveCtx = view.canvasWave.getContext('2d', {
+        antialias: false
+    });
     view.canvasCtx.imageSmoothingEnabled = false;
     view.canvasPreRenderCtx.imageSmoothingEnabled = false;
+    view.canvasWaveCtx.imageSmoothingEnabled = false;
     return view;
 }]);

@@ -40,12 +40,12 @@ $dotenv->load();
 </head>
 <body ng-controller="MainCtrl"
       ng-class="{
-      'playing':currentPlayingTrack !== null && !paused,
+      'playing':currentPlayingTrack !== null,
       'fftShow':settings.fftShow,
       'fftEnlarge':settings.fftEnlarge,
       'fftBehind':settings.fftBehind
       }" ng-cloak>
-<div id="welcome" ng-show="!ready">
+<div id="welcome" ng-if="!ready">
     <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
     <md-button class="md-raised md-primary" ng-click="init()">Connect with SoundCloud</md-button>
     <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
@@ -127,14 +127,21 @@ $dotenv->load();
 </div>
 <div id="controls-playback">
     <div id="controls-playback-img-placeholder">
-        <img ng-src="{{ currentPlayingTrack.artwork_url }}" ng-if="currentPlayingTrack.artwork_url">
+        <img ng-if="currentPlayingTrack.artwork_url" ng-src="{{ currentPlayingTrack.artwork_url }}">
     </div>
     <div id="controls-playback-content">
+        <i class="fa fa-play fa-2x" ng-if="paused" ng-click="resume()"></i>
+        <i class="fa fa-pause fa-2x" ng-if="!paused" ng-click="pause()"></i>
         <a ng-href="{{ currentPlayingTrack.permalink_url }}" target="_blank">
             <i class="fa fa-external-link" aria-hidden="true"></i>
         </a>
         <div ng-bind="currentPlayingTrack.user.username" id="controls-playback-artist"></div>
         <div ng-bind="currentPlayingTrack.title"></div>
+        <div class="clear"></div>
+        <canvas id="controls-wave"
+                ng-mousemove="renderWaveCursor = $event.originalEvent.pageX"
+                ng-mouseleave="renderWaveCursor = 0"
+                ng-click="seek()"></canvas>
     </div>
 </div>
 </body>

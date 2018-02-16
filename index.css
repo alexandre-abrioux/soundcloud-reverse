@@ -174,17 +174,17 @@ body.fftShow.fftBehind #fft {
 }
 
 #controls:hover #controls-icon {
-    opacity:0;
+    opacity: 0;
     top: 2vh;
     right: 2vw;
 }
 
 #controls:hover #controls-content-wrapper {
-    opacity:1;
+    opacity: 1;
     top: 0;
     right: 0;
-    padding-left:2vw;
-    padding-bottom:2vh;
+    padding-left: 2vw;
+    padding-bottom: 2vh;
 }
 
 #controls-playback {
@@ -197,10 +197,9 @@ body.fftShow.fftBehind #fft {
     transition-property: bottom;
     transition-delay: 0.5s;
     transition-duration: 0.5s;
-    min-width: 20vw;
+    min-width: 40vw;
     max-width: 50vw;
 }
-
 
 @keyframes controlsPlaybackIn {
     0% {
@@ -241,6 +240,14 @@ body.fftShow.fftEnlarge #controls-playback {
     flex: 1;
 }
 
+#controls-playback-content > i {
+    float: left;
+    cursor: pointer;
+    margin-right: 1vw;
+    color: #d27a99;
+    margin-top: 5px;
+}
+
 #controls-playback-artist {
     color: #e188ba;
     font-weight: bold;
@@ -254,6 +261,13 @@ body.fftShow.fftEnlarge #controls-playback {
 body.fftShow.fftEnlarge.fftBehind #controls-content,
 body.fftShow.fftEnlarge.fftBehind #controls-playback {
     background: rgba(0, 0, 0, 0.8);
+}
+
+#controls-wave {
+    margin-top: 5px;
+    width: 100%;
+    height: 50px;
+    cursor: pointer;
 }
 
 md-select-menu md-content {
