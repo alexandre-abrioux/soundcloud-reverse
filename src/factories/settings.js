@@ -1,13 +1,12 @@
 app.factory('settings', [function () {
     let settings = {
         volume: 50,
-        nbBarsMax: 0,
-        nbLinesMax: 12,
+        nbBarsMax: 255,
+        nbLinesMax: 50,
         fftShow:true,
         fftEnlarge: true,
-        fftBehind: true,
-        smoothing: 50,
-        accent: 0,
+        smoothing: 40,
+        accent: 40,
         selectedPlaylistID: null
     };
     if (localStorage.getItem('settings') !== null) {

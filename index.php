@@ -43,7 +43,7 @@ $dotenv->load();
       'playing':currentPlayingTrack !== null,
       'fftShow':settings.fftShow,
       'fftEnlarge':settings.fftEnlarge,
-      'fftBehind':settings.fftBehind
+      'controlsOver':controlsOver
       }" ng-cloak>
 <div id="welcome" ng-if="!ready">
     <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
@@ -51,7 +51,7 @@ $dotenv->load();
     <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
 </div>
 <div id="container" ng-show="ready">
-    <div id="wrapper">
+    <div id="wrapper" ng-mouseenter="controlsOver = true" ng-mouseleave="controlsOver = false">
         <i id="refresh" class="fa fa-refresh" aria-hidden="true"
            ng-class="{'active':refreshing, 'fa-spin':refreshing}"
            ng-click="init(true)"></i>
@@ -76,7 +76,7 @@ $dotenv->load();
     </div>
 </div>
 <canvas id="fft" ng-show="ready && settings.fftShow"></canvas>
-<div id="controls" ng-show="ready">
+<div id="controls" ng-show="ready" ng-mouseenter="controlsOver = true" ng-mouseleave="controlsOver = false">
     <i id="controls-icon" class="fa fa-cog fa-3x"></i>
     <div id="controls-content-wrapper">
         <div id="controls-content">
@@ -86,11 +86,6 @@ $dotenv->load();
                     <md-switch ng-model="settings.fftShow" class="md-primary">Visual</md-switch>
                     <md-switch ng-show="settings.fftShow" ng-model="settings.fftEnlarge"
                                class="md-primary">Full Screen
-                    </md-switch>
-                    <md-switch ng-show="settings.fftShow"
-                               ng-model="settings.fftBehind" ng-true-value="false" ng-false-value="true"
-                               ng-class="{'md-primary':settings.fftEnlarge}"
-                               ng-disabled="!settings.fftEnlarge">Behind
                     </md-switch>
                 </div>
                 <md-slider-container>

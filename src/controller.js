@@ -31,6 +31,7 @@ app.controller('MainCtrl', [
         $scope.settings = settings;
         $scope.engine = engine;
         $scope.view = view;
+        $scope.controlsOver = false;
 
         /************************
          * PLAYER
@@ -105,8 +106,6 @@ app.controller('MainCtrl', [
                 startRendering();
         });
         $scope.$watch('settings.fftEnlarge', function (fftEnlarge) {
-            if (!fftEnlarge)
-                settings.fftBehind = false;
             $timeout(resize, 700);
         });
 
@@ -218,15 +217,19 @@ app.controller('MainCtrl', [
                     const slope = frenquencyDataGrouped[i] - engine.frequencyDataCopy[i];
                     if (slope > 0) {
                         frenquencyDataGrouped[i] += slope * logScaleOneTo100.valueToLog(settings.accent);
-                        maxAmp = Math.max(frenquencyDataGrouped[i], maxAmp);
+                        frenquencyDataGrouped[i] = Math.min(frenquencyDataGrouped[i], 255);
                     }
                 }
-            const logScaleOneTo55 = helper.logScale({maxval: maxAmp, minlval: 1, maxlval: 50});
+            const logScaleColorG = helper.logScale({maxval: maxAmp, minlval: 90, maxlval: 150});
+            const colorB = 150 + helper.normalize(maxAmp, 255, 55);
             engine.frequencyDataCopy = frenquencyDataGrouped;
             view.canvasPreRenderCtx.drawImage(view.canvasPreRender, 0, view.lineHeight);
             for (let x = 0; x < view.nbBars; x++) {
-                const color = 50 + helper.normalize(frenquencyDataGrouped[x], maxAmp, 150) + logScaleOneTo55.valueToLog(frenquencyDataGrouped[x]);
-                view.canvasPreRenderCtx.fillStyle = 'rgb(' + color + ', 90, 150)';
+                const colorR = 50 + helper.normalize(frenquencyDataGrouped[x], maxAmp, 205);
+                const colorG = logScaleColorG.valueToLog(frenquencyDataGrouped[x]);
+                // 50 90 150
+                // 255 130 160
+                view.canvasPreRenderCtx.fillStyle = 'rgb(' + colorR + ',' + colorG + ',' + colorB + ')';
                 view.canvasPreRenderCtx.fillRect(x * view.barWidth * 3 / 2 + view.barHorizOffset, 0, view.barWidth, view.lineHeight);
             }
             view.canvasCtx.drawImage(view.canvasPreRender, 0, 0);

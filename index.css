@@ -31,33 +31,23 @@ html, body {
     overflow-y: scroll;
     padding-right: 50px;
     padding-left: 1vw;
-    opacity: 1;
-    transition-property: opacity;
-    transition-duration: 0.5s;
-}
-
-body.fftShow.fftEnlarge.playing #container {
-    opacity: 0;
-    overflow-y: hidden;
-}
-
-body.fftShow.fftBehind #container {
-    opacity: 1 !important;
-    overflow-y: scroll !important;
 }
 
 #wrapper {
     padding: 2vh 1vw 12vh 1vw;
     background: rgba(0, 0, 0, 0.2);
     display: inline-block;
-    transition: padding-bottom;
-    transition-duration: 0.5s;
+    transition: opacity, padding-bottom;
+    transition-duration: 0.5s, 0.5s;
     max-width: 50vw;
 }
 
-body.fftShow.fftBehind #wrapper {
-    background: rgba(0, 0, 0, 0.8);
-    padding-bottom: 2vh;
+body.fftShow.fftEnlarge.playing #wrapper {
+    opacity: 0;
+}
+
+body.fftShow.fftEnlarge.playing #wrapper:hover {
+    opacity: 1;
 }
 
 #refresh {
@@ -127,13 +117,10 @@ body.fftShow.playing #fft {
 }
 
 body.fftShow.fftEnlarge #fft {
+    z-index: 0 !important;
     height: 100vh;
     background: rgba(0, 0, 0, 0);
     box-shadow: none;
-}
-
-body.fftShow.fftBehind #fft {
-    z-index: 0 !important;
 }
 
 #controls-content,
@@ -194,9 +181,9 @@ body.fftShow.fftBehind #fft {
     right: 1vw;
     display: flex;
     opacity: 0;
-    transition-property: bottom;
-    transition-delay: 0.5s;
-    transition-duration: 0.5s;
+    transition-property: background-color, bottom;
+    transition-delay: 0s, 0.5s;
+    transition-duration: 0.5s, 0.5s;
     min-width: 40vw;
     max-width: 50vw;
 }
@@ -253,14 +240,18 @@ body.fftShow.fftEnlarge #controls-playback {
     font-weight: bold;
 }
 
-body.fftShow.fftEnlarge #controls-content,
-body.fftShow.fftEnlarge #controls-playback {
-    background: rgba(0, 0, 0, 0.5);
+body.fftShow.fftEnlarge #wrapper,
+body.fftShow.fftEnlarge #controls-content {
+    background: rgba(0, 0, 0, 0.8);
 }
 
-body.fftShow.fftEnlarge.fftBehind #controls-content,
-body.fftShow.fftEnlarge.fftBehind #controls-playback {
-    background: rgba(0, 0, 0, 0.8);
+body.fftShow.fftEnlarge #controls-playback {
+    background-color: rgba(0, 0, 0, 0.6);
+}
+
+body.fftShow.fftEnlarge.controlsOver #controls-playback,
+body.fftShow.fftEnlarge #controls-playback:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 }
 
 #controls-wave {
