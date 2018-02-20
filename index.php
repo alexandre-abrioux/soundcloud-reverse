@@ -17,11 +17,12 @@ $dotenv->load();
           href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.3/angular-material.css">
     <link rel="stylesheet" href="index.css?v=<?= hash_file('crc32', 'index.css') ?>">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script type="text/javascript" src="https://connect.soundcloud.com/sdk/sdk-3.1.2.js"></script>
+    <script type="text/javascript" src="https://connect.soundcloud.com/sdk/sdk-3.3.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
     <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.3/angular-material.js"></script>
+    <script src="https://cdn.rawgit.com/voronianski/soundcloud-audio.js/1.2.2/dist/soundcloud-audio.min.js"></script>
     <script type="text/javascript" src="src/app.js"></script>
     <script type="text/javascript" src="src/factories/helper.js"></script>
     <script type="text/javascript" src="src/factories/settings.js"></script>
@@ -125,8 +126,8 @@ $dotenv->load();
         <img ng-if="currentPlayingTrack.artwork_url" ng-src="{{ currentPlayingTrack.artwork_url }}">
     </div>
     <div id="controls-playback-content">
-        <i class="fa fa-play fa-2x" ng-if="paused" ng-click="resume()"></i>
-        <i class="fa fa-pause fa-2x" ng-if="!paused" ng-click="pause()"></i>
+        <i class="fa fa-play fa-2x" ng-if="paused" ng-click="engine.player.play()"></i>
+        <i class="fa fa-pause fa-2x" ng-if="!paused" ng-click="engine.player.pause()"></i>
         <a ng-href="{{ currentPlayingTrack.permalink_url }}" target="_blank">
             <i class="fa fa-external-link" aria-hidden="true"></i>
         </a>

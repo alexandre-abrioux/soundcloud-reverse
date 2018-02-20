@@ -37,26 +37,12 @@ app.controller('MainCtrl', [
          * PLAYER
          ***********************/
         $scope.play = function (playlist, track) {
-            if (engine.player)
-                engine.player.dispose();
             $scope.currentPlayingPlaylist = playlist;
             $scope.currentPlayingTrack = track;
             startRenderingWave();
             console.info('Track [', track.id, '] > queued', track);
-            SC.stream('/tracks/' + track.id).then(function (player) {
-                engine.player = player;
-                engine.player.off();
-                engine.player.on('state-change', playerEventListener);
-                engine.player.play();
-            });
-        };
-        $scope.resume = function () {
-            if (engine.player)
-                engine.player.play();
-        };
-        $scope.pause = function () {
-            if (engine.player)
-                engine.player.pause();
+            engine.player._track = track;
+            engine.player.play();
         };
         $scope.playNext = function () {
             // in case playlists have been refreshed and this playlist doesn't exist anymore
@@ -77,10 +63,8 @@ app.controller('MainCtrl', [
             });
         };
         $scope.seek = function () {
-            if (!engine.player)
-                return;
-            const position = helper.normalize(cursorPositionInWave(), view.canvasWave.width, engine.player.options.duration);
-            engine.player.seek(position);
+            const position = helper.normalize(cursorPositionInWave(), view.canvasWave.width, engine.player.audio.duration);
+            engine.player.setTime(position);
         };
 
         /************************
@@ -220,6 +204,7 @@ app.controller('MainCtrl', [
                         frenquencyDataGrouped[i] = Math.min(frenquencyDataGrouped[i], 255);
                     }
                 }
+            maxAmp = Math.max(1, maxAmp);
             const logScaleColorG = helper.logScale({maxval: maxAmp, minlval: 90, maxlval: 150});
             const colorB = 150 + helper.normalize(maxAmp, 255, 55);
             engine.frequencyDataCopy = frenquencyDataGrouped;
@@ -264,7 +249,7 @@ app.controller('MainCtrl', [
             renderWaveFrame();
         };
         const renderWaveFrame = function () {
-            if (!$scope.currentPlayingTrack || !$scope.currentPlayingTrack.waveform_data || !engine.player) {
+            if (!$scope.currentPlayingTrack || !$scope.currentPlayingTrack.waveform_data) {
                 isRenderingWave = false;
                 return;
             }
@@ -276,7 +261,7 @@ app.controller('MainCtrl', [
             const nbBars = Math.floor(view.canvasWave.width / gapSize);
             const barArraySize = Math.floor(data.width / nbBars);
             const cursorX = helper.normalize(cursorPositionInWave(), view.canvasWave.width, nbBars);
-            const currentTime = helper.normalize(engine.player.currentTime(), engine.player.options.duration, nbBars);
+            const currentTime = helper.normalize(engine.player.audio.currentTime, engine.player.audio.duration, nbBars);
             view.canvasWaveCtx.clearRect(0, 0, view.canvasWave.width, view.canvasWave.height);
             for (let x = 0; x < nbBars; x++) {
                 const subArray = data.samples.slice(barArraySize * x, barArraySize * (x + 1));
@@ -296,20 +281,14 @@ app.controller('MainCtrl', [
          * PLAYER EVENTS
          ***********************/
         const playerEventListener = function (e) {
-            console.info('Track [', engine.player.options.soundId, '] >', e);
+            console.info('Track [', engine.player._track.id, '] >', e.type);
             $scope.paused = true;
-            switch (e) {
-                case 'loading':
-                    if (engine.player.controller)
-                        engine.player.controller._html5Audio.crossOrigin = "anonymous";
-                    if (!$scope.$root.$$phase)
-                        $scope.$apply();
-                    break;
+            switch (e.type) {
                 case 'playing':
                     if (typeof engine.audioSrc === 'object' && engine.audioSrc !== null
                         && typeof engine.audioSrc.disconnect === 'function')
                         engine.audioSrc.disconnect();
-                    engine.audioSrc = engine.audioCtx.createMediaElementSource(engine.player.controller._html5Audio);
+                    engine.audioSrc = engine.audioCtx.createMediaElementSource(engine.player.audio);
                     engine.audioSrc.connect(engine.analyser);
                     engine.audioSrc.connect(engine.gainNode);
                     engine.maxFrequencyInArray = engine.audioCtx.sampleRate / (2 * engine.audioCtx.destination.channelCount);
@@ -327,16 +306,8 @@ app.controller('MainCtrl', [
                     if (!$scope.$root.$$phase)
                         $scope.$apply();
                     break;
-                case 'idle':
-                    break;
-                case 'paused':
+                case 'pause':
                     $scope.paused = true;
-                    if (!$scope.$root.$$phase)
-                        $scope.$apply();
-                    break;
-                case 'dead':
-                    engine.player.dispose();
-                    $scope.currentPlayingTrack = null;
                     if (!$scope.$root.$$phase)
                         $scope.$apply();
                     break;
@@ -346,6 +317,10 @@ app.controller('MainCtrl', [
                     break;
             }
         };
+        engine.player.on('playing', playerEventListener);
+        engine.player.on('pause', playerEventListener);
+        engine.player.on('error', playerEventListener);
+        engine.player.on('ended', playerEventListener);
 
         /************************
          * PARAMETERS REFRESHING

@@ -34,12 +34,19 @@ html, body {
 }
 
 #wrapper {
-    padding: 2vh 1vw 12vh 1vw;
+    padding: 2vh 1vw 2vh 1vw;
     background: rgba(0, 0, 0, 0.2);
     display: inline-block;
     transition: opacity, padding-bottom;
     transition-duration: 0.5s, 0.5s;
     max-width: 50vw;
+}
+
+body.fftShow #wrapper {
+    padding-bottom: 12vh;
+}
+body.fftShow.fftEnlarge #wrapper {
+    padding-bottom: 2vh;
 }
 
 body.fftShow.fftEnlarge.playing #wrapper {
