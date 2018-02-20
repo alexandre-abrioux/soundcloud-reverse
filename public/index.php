@@ -1,7 +1,8 @@
 <?php
-require __DIR__ . '/vendor/autoload.php';
-$dotenv = new Dotenv\Dotenv(__DIR__);
+require __DIR__ . '/../vendor/autoload.php';
+$dotenv = new Dotenv\Dotenv(__DIR__ . '/../');
 $dotenv->load();
+$assetsHash = file_get_contents(__DIR__ . '/../.assetsHash');
 ?>
 <!DOCTYPE html>
 <html ng-app="app">
@@ -15,7 +16,7 @@ $dotenv->load();
           integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
     <link rel="stylesheet"
           href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.3/angular-material.css">
-    <link rel="stylesheet" href="index.css?v=<?= hash_file('crc32', 'index.css') ?>">
+    <link rel="stylesheet" href="index.css?v=<?= $assetsHash ?>">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://connect.soundcloud.com/sdk/sdk-3.3.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
@@ -23,13 +24,13 @@ $dotenv->load();
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
     <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.3/angular-material.js"></script>
     <script src="https://cdn.rawgit.com/voronianski/soundcloud-audio.js/1.2.2/dist/soundcloud-audio.min.js"></script>
-    <script type="text/javascript" src="src/app.js"></script>
-    <script type="text/javascript" src="src/factories/helper.js"></script>
-    <script type="text/javascript" src="src/factories/settings.js"></script>
-    <script type="text/javascript" src="src/factories/view.js"></script>
-    <script type="text/javascript" src="src/factories/engine.js"></script>
-    <script type="text/javascript" src="src/factories/soundcloud.js"></script>
-    <script type="text/javascript" src="src/controller.js"></script>
+    <script type="text/javascript" src="src/app.js?v=<?= $assetsHash ?>"></script>
+    <script type="text/javascript" src="src/factories/helper.js?v=<?= $assetsHash ?>"></script>
+    <script type="text/javascript" src="src/factories/settings.js?v=<?= $assetsHash ?>"></script>
+    <script type="text/javascript" src="src/factories/view.js?v=<?= $assetsHash ?>"></script>
+    <script type="text/javascript" src="src/factories/engine.js?v=<?= $assetsHash ?>"></script>
+    <script type="text/javascript" src="src/factories/soundcloud.js?v=<?= $assetsHash ?>"></script>
+    <script type="text/javascript" src="src/controller.js?v=<?= $assetsHash ?>"></script>
     <script type="text/javascript">
         app.factory('sc-params', [function () {
             return {

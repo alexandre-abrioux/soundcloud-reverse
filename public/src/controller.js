@@ -204,7 +204,6 @@ app.controller('MainCtrl', [
                         frenquencyDataGrouped[i] = Math.min(frenquencyDataGrouped[i], 255);
                     }
                 }
-            maxAmp = Math.max(1, maxAmp);
             const logScaleColorG = helper.logScale({maxval: maxAmp, minlval: 90, maxlval: 150});
             const colorB = 150 + helper.normalize(maxAmp, 255, 55);
             engine.frequencyDataCopy = frenquencyDataGrouped;

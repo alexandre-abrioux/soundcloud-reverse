@@ -1,5 +1,10 @@
 {
     "require": {
         "vlucas/phpdotenv": "^2.4"
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "php assetsHash.php > .assetsHash"
+        ]
     }
 }

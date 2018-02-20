@@ -1,6 +1,8 @@
 app.factory('helper', [function () {
     return {
         normalize: function (val, maxOrigin, maxDest) {
+            if (maxOrigin === 0)
+                return 0;
             return Math.round(maxDest * val / maxOrigin);
         },
         resizeCanvasKeepContent: function (_canvas, _context, w, h) {
@@ -28,7 +30,7 @@ app.factory('helper', [function () {
             };
             scale.minlval = Math.log(scale.minlval);
             scale.maxlval = Math.log(scale.maxlval);
-            scale.scale = (scale.maxlval - scale.minlval) / (scale.maxval - scale.minval);
+            scale.scale = (scale.maxval - scale.minval) === 0 ? 0 : (scale.maxlval - scale.minlval) / (scale.maxval - scale.minval);
             scale.valueToLog = function (value) {
                 return Math.exp((value - scale.minval) * scale.scale + scale.minlval);
             };
