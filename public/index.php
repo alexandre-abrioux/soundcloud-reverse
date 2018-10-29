@@ -17,13 +17,13 @@ $assetsHash = file_get_contents(__DIR__ . '/../.assetsHash');
     <link rel="stylesheet"
           href="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.3/angular-material.css">
     <link rel="stylesheet" href="index.css?v=<?= $assetsHash ?>">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script type="text/javascript" src="https://connect.soundcloud.com/sdk/sdk-3.3.0.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-animate.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular-aria.min.js"></script>
     <script src="https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.3/angular-material.js"></script>
-    <script src="https://cdn.rawgit.com/voronianski/soundcloud-audio.js/1.2.2/dist/soundcloud-audio.min.js"></script>
+    <script src="https://cdn.rawgit.com/voronianski/soundcloud-audio.js/1.3.1/dist/soundcloud-audio.min.js"></script>
     <script type="text/javascript" src="src/app.js?v=<?= $assetsHash ?>"></script>
     <script type="text/javascript" src="src/factories/helper.js?v=<?= $assetsHash ?>"></script>
     <script type="text/javascript" src="src/factories/settings.js?v=<?= $assetsHash ?>"></script>
@@ -51,6 +51,7 @@ $assetsHash = file_get_contents(__DIR__ . '/../.assetsHash');
     <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
     <md-button class="md-raised md-primary" ng-click="init()">Connect with SoundCloud</md-button>
     <md-progress-linear md-mode="indeterminate" ng-if="loginIn"></md-progress-linear>
+    <p ng-bind="view.loginCurrentState" ng-if="view.loginCurrentState !== null"></p>
 </div>
 <div id="container" ng-show="ready">
     <div id="wrapper" ng-mouseenter="controlsOver = true" ng-mouseleave="controlsOver = false">
@@ -127,13 +128,15 @@ $assetsHash = file_get_contents(__DIR__ . '/../.assetsHash');
         <img ng-if="currentPlayingTrack.artwork_url" ng-src="{{ currentPlayingTrack.artwork_url }}">
     </div>
     <div id="controls-playback-content">
+        <i class="fa fa-step-backward fa-2x" ng-click="engine.player.previous()"></i>
         <i class="fa fa-play fa-2x" ng-if="paused" ng-click="engine.player.play()"></i>
         <i class="fa fa-pause fa-2x" ng-if="!paused" ng-click="engine.player.pause()"></i>
+        <i class="fa fa-step-forward fa-2x" ng-click="engine.player.next({loop: true})"></i>
         <a ng-href="{{ currentPlayingTrack.permalink_url }}" target="_blank">
             <i class="fa fa-external-link" aria-hidden="true"></i>
         </a>
         <div ng-bind="currentPlayingTrack.user.username" id="controls-playback-artist"></div>
-        <div ng-bind="currentPlayingTrack.title"></div>
+        <div ng-bind="currentPlayingTrack.title" id="controls-playback-title"></div>
         <div class="clear"></div>
         <canvas id="controls-wave"
                 ng-mousemove="renderWaveCursor = $event.originalEvent.pageX"

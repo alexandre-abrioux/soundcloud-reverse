@@ -40,11 +40,15 @@ html, body {
     transition: opacity, padding-bottom;
     transition-duration: 0.5s, 0.5s;
     max-width: 50vw;
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-select: none;
 }
 
 body.fftShow #wrapper {
     padding-bottom: 12vh;
 }
+
 body.fftShow.fftEnlarge #wrapper {
     padding-bottom: 2vh;
 }
@@ -76,6 +80,10 @@ body.fftShow.fftEnlarge.playing #wrapper:hover {
     color: #4d4f53;
     float: right;
     font-size: small;
+}
+
+.track-wrapper .fa-external-link {
+    margin-top: 7px;
 }
 
 .track {
@@ -245,6 +253,14 @@ body.fftShow.fftEnlarge #controls-playback {
 #controls-playback-artist {
     color: #e188ba;
     font-weight: bold;
+}
+
+#controls-playback-title {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 75%;
+    height: 1.2em;
+    white-space: nowrap;
 }
 
 body.fftShow.fftEnlarge #wrapper,

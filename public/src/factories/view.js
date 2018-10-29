@@ -1,5 +1,6 @@
 app.factory('view', [function () {
     const view = {
+        loginCurrentState: null,
         visual: true,
         canvas: document.querySelector('#fft'),
         canvasPreRender: document.createElement('canvas'),

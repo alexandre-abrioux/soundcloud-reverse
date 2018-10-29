@@ -37,29 +37,12 @@ app.controller('MainCtrl', [
          * PLAYER
          ***********************/
         $scope.play = function (playlist, track) {
+            console.info('Track [', track.id, '] > queued', track);
             $scope.currentPlayingPlaylist = playlist;
             $scope.currentPlayingTrack = track;
-            startRenderingWave();
-            console.info('Track [', track.id, '] > queued', track);
-            engine.player._track = track;
-            engine.player.play();
-        };
-        $scope.playNext = function () {
-            // in case playlists have been refreshed and this playlist doesn't exist anymore
-            if (typeof $scope.currentPlayingPlaylist === 'undefined') {
-                $scope.currentPlayingPlaylist = null;
-                $scope.currentPlayingTrack = null;
-                $scope.$apply();
-                return false;
-            }
-            const trackIndex = $scope.currentPlayingPlaylist.tracks.findIndex(helper.findByID($scope.currentPlayingTrack.id));
-            let nextTrack;
-            if (trackIndex < $scope.currentPlayingPlaylist.tracks.length - 1)
-                nextTrack = $scope.currentPlayingPlaylist.tracks[trackIndex + 1];
-            else
-                nextTrack = $scope.currentPlayingPlaylist.tracks[0];
-            $timeout(function () {
-                $scope.play($scope.currentPlayingPlaylist, nextTrack);
+            engine.player._playlist = playlist;
+            engine.player.play({
+                playlistIndex: playlist.tracks.findIndex(helper.findByID(track.id))
             });
         };
         $scope.seek = function () {
@@ -113,6 +96,8 @@ app.controller('MainCtrl', [
                     return SC.get('/me/playlists')
                         .then(function (playlists) {
                             console.info('Loaded playlists from SoundCloud');
+                            view.loginCurrentState = 'Loading playlists...';
+                            $scope.$apply();
                             return playlists;
                         })
                         .then(function (playlists) {
@@ -120,10 +105,15 @@ app.controller('MainCtrl', [
                             // We retrieve the chronological order by fetching each playlist individually.
                             // We then reverse that order.
                             let promises = [];
+                            let nbPlaylistLoaded = 0;
                             for (let i = 0; i < playlists.length; i++)
                                 promises.push(SC.get('/playlists/' + playlists[i].id).then(function (playlist) {
-                                    console.info('Loaded playlist ' + playlists[i].id + ' details from SoundCloud (' + playlists[i].title + ')');
+                                    nbPlaylistLoaded++;
+                                    var percent = Math.round(nbPlaylistLoaded / playlists.length * 100);
+                                    console.info('[' + percent + '%] Loaded playlist ' + playlists[i].id + ' details from SoundCloud (' + playlists[i].title + ')');
                                     playlists[i].tracks = playlist.tracks.reverse();
+                                    view.loginCurrentState = 'Loaded playlist ' + playlists[i].title + ' (' + percent + '%)';
+                                    $scope.$apply();
                                 }));
                             return Promise.all(promises).then(function () {
                                 return playlists;
@@ -138,6 +128,8 @@ app.controller('MainCtrl', [
                     $scope.playlists = playlists;
                     if (!refresh && localStorage.getItem('souncloud.favorites') !== null)
                         return JSON.parse(localStorage.getItem('souncloud.favorites'));
+                    view.loginCurrentState = 'Loading favorites...';
+                    $scope.$apply();
                     return SC.get('/me/favorites').then(function (favorites) {
                         console.info('Loaded favorites from SoundCloud');
                         localStorage.setItem('souncloud.favorites', JSON.stringify(favorites));
@@ -171,20 +163,17 @@ app.controller('MainCtrl', [
         /************************
          * FFT RENDERING
          ***********************/
-        let isRendering = false;
+        let mainRequestAnimationFrame;
         const startRendering = function () {
-            if (isRendering)
-                return;
-            isRendering = true;
+            if (mainRequestAnimationFrame)
+                cancelAnimationFrame(mainRequestAnimationFrame);
             renderFrame();
         };
         const logScaleOneTo100 = helper.logScale();
         const renderFrame = function () {
-            if (!settings.fftShow) {
-                isRendering = false;
+            if (!settings.fftShow)
                 return;
-            }
-            requestAnimationFrame(renderFrame);
+            mainRequestAnimationFrame = requestAnimationFrame(renderFrame);
             engine.analyser.getByteFrequencyData(engine.frequencyData);
             const frequencyDataTruncated = engine.frequencyData.subarray(0, engine.nbValuesToKeepInArray).map(function (value) {
                 return value;
@@ -231,10 +220,12 @@ app.controller('MainCtrl', [
             cursorX -= document.querySelector('#controls-playback').offsetLeft;
             return cursorX;
         };
-        let isRenderingWave = false;
+        let waveRequestAnimationFrame;
         const startRenderingWave = function () {
+            if (waveRequestAnimationFrame)
+                cancelAnimationFrame(waveRequestAnimationFrame);
             view.canvasWaveCtx.clearRect(0, 0, view.canvasWave.width, view.canvasWave.height);
-            if (isRenderingWave || !$scope.currentPlayingTrack)
+            if (!$scope.currentPlayingTrack)
                 return;
             const url = $scope.currentPlayingTrack.waveform_url;
             if (!$scope.currentPlayingTrack.waveform_data) {
@@ -244,15 +235,12 @@ app.controller('MainCtrl', [
                 });
                 return;
             }
-            isRenderingWave = true;
             renderWaveFrame();
         };
         const renderWaveFrame = function () {
-            if (!$scope.currentPlayingTrack || !$scope.currentPlayingTrack.waveform_data) {
-                isRenderingWave = false;
+            if (!$scope.currentPlayingTrack || !$scope.currentPlayingTrack.waveform_data)
                 return;
-            }
-            requestAnimationFrame(renderWaveFrame);
+            waveRequestAnimationFrame = requestAnimationFrame(renderWaveFrame);
             const data = $scope.currentPlayingTrack.waveform_data;
             const barsSize = 2;
             const spaceSize = 1;
@@ -280,16 +268,12 @@ app.controller('MainCtrl', [
          * PLAYER EVENTS
          ***********************/
         const playerEventListener = function (e) {
-            console.info('Track [', engine.player._track.id, '] >', e.type);
+            console.info('Track [', $scope.currentPlayingTrack, '] >', e.type);
             $scope.paused = true;
             switch (e.type) {
                 case 'playing':
-                    if (typeof engine.audioSrc === 'object' && engine.audioSrc !== null
-                        && typeof engine.audioSrc.disconnect === 'function')
-                        engine.audioSrc.disconnect();
-                    engine.audioSrc = engine.audioCtx.createMediaElementSource(engine.player.audio);
-                    engine.audioSrc.connect(engine.analyser);
-                    engine.audioSrc.connect(engine.gainNode);
+                    $scope.currentPlayingPlaylist = engine.player._playlist;
+                    $scope.currentPlayingTrack = engine.player._playlist.tracks[engine.player._playlistIndex];
                     engine.maxFrequencyInArray = engine.audioCtx.sampleRate / (2 * engine.audioCtx.destination.channelCount);
                     engine.frequencyData = new Uint8Array(engine.analyser.frequencyBinCount);
                     engine.nbValuesToKeepInArray = helper.normalize(view.maxFrequencyDisplayed, engine.maxFrequencyInArray, engine.analyser.frequencyBinCount);
@@ -312,7 +296,7 @@ app.controller('MainCtrl', [
                     break;
                 case 'error':
                 case 'ended':
-                    $scope.playNext();
+                    engine.player.next({loop: true});
                     break;
             }
         };
@@ -355,12 +339,12 @@ app.controller('MainCtrl', [
             helper.resizeCanvasKeepContent(view.canvasWave, view.canvasWaveCtx, canvasWaveWidth, canvasWaveHeight);
             computeFFTParameters();
         };
-        resize();
-        let resizeTimer;
+        let resizeTimer = $timeout(resize, 1000);
         angular.element($window).on('resize', function () {
             if (resizeTimer)
                 $timeout.cancel(resizeTimer);
             resizeTimer = $timeout(resize, 1000);
         });
 
-    }]);
+    }
+]);
