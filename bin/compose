@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+ROOT=`cd "$(dirname "${BASH_SOURCE[0]}")" && pwd`
+cd ${ROOT}/../
+
+set -a
+source .env
+if [ ! -f .env.local ]; then
+  touch .env.local
+fi
+source .env.local
+set +a
+
+docker-compose "$@"

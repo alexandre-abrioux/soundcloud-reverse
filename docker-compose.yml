@@ -1,0 +1,26 @@
+version: '3.5'
+
+networks:
+  reverse-proxy:
+    external:
+      name: ${COMPOSE_NETWORK_REVERSE_PROXY}
+
+services:
+
+  app:
+    container_name: ${COMPOSE_PROJECT_NAME}_app
+    build: docker/apache
+    image: soundcloud-reverse/app
+    restart: ${COMPOSE_RESTART}
+    environment:
+      SOUNDCLOUD_CLIENT_ID: ${SOUNDCLOUD_CLIENT_ID}
+      SOUNDCLOUD_REDIRECT_URI: ${SOUNDCLOUD_REDIRECT_URI}
+    volumes:
+      - .:/var/www/html
+    networks:
+      - reverse-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${HOST}"
+      - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
+      - "traefik.port=80"

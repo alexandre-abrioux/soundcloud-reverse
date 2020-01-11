@@ -1,7 +1,4 @@
 <?php
-require __DIR__ . '/../vendor/autoload.php';
-$dotenv = new Dotenv\Dotenv(__DIR__ . '/../');
-$dotenv->load();
 $assetsHash = file_get_contents(__DIR__ . '/../.assetsHash');
 ?>
 <!DOCTYPE html>
