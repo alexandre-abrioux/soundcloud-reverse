@@ -19,8 +19,8 @@ stop: 		## stop services
 restart: 	## restart services
 	bin/compose restart
 
-.PHONY: restart
-install: 	## compute assets hash
+.PHONY: assets-hash
+assets-hash: ## compute assets hash
 	bin/compose run --rm app php assetsHash.php > .assetsHash
 
 .PHONY: shell
