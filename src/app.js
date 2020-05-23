@@ -1,8 +1,10 @@
 const app = angular
     .module('app', ['ngMaterial'])
-    .config(function ($mdThemingProvider) {
+    .config(['$mdThemingProvider', function ($mdThemingProvider) {
         $mdThemingProvider.theme('default')
             .primaryPalette('pink')
             .accentPalette('blue')
             .dark();
-    });
+    }]);
+
+module.exports = app;

@@ -1,3 +1,5 @@
+const app = require('../app');
+
 app.factory('settings', [function () {
     let settings = {
         volume: 50,

@@ -2,25 +2,48 @@ version: '3.5'
 
 networks:
   reverse-proxy:
-    external:
-      name: ${COMPOSE_NETWORK_REVERSE_PROXY}
+    name: ${COMPOSE_NETWORK_REVERSE_PROXY}
+    external: true
 
 services:
 
-  app:
-    container_name: ${COMPOSE_PROJECT_NAME}_app
-    build: docker/apache
-    image: soundcloud-reverse/app
-    restart: ${COMPOSE_RESTART}
-    environment:
-      SOUNDCLOUD_CLIENT_ID: ${SOUNDCLOUD_CLIENT_ID}
-      SOUNDCLOUD_REDIRECT_URI: ${SOUNDCLOUD_REDIRECT_URI}
+  webpack:
+    container_name: ${COMPOSE_PROJECT_NAME}_webpack
+    image: ${DOCKER_IMAGE_NODE}
+    restart: 'no'
+    env_file:
+      - .env
+      - .env.local
     volumes:
-      - .:/var/www/html
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: 'true'
     networks:
       - reverse-proxy
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${HOST}"
+      - "traefik.frontend.priority=20"
+      - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
+      - "traefik.port=80"
+
+  nginx:
+    container_name: ${COMPOSE_PROJECT_NAME}_nginx
+    image: ${COMPOSE_PROJECT_NAME}/nginx
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        - "DOCKER_IMAGE_NODE=${DOCKER_IMAGE_NODE}"
+    restart: ${COMPOSE_RESTART}
+    env_file:
+      - .env
+      - .env.local
+    networks:
+      - reverse-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${HOST}"
+      - "traefik.frontend.priority=10"
       - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
       - "traefik.port=80"

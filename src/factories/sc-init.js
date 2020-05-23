@@ -1,3 +1,5 @@
+const app = require('../app');
+
 app.factory('sc-init', [
     'view',
     function (view) {
