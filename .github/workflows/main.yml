@@ -14,4 +14,4 @@ jobs:
     - name: Build Docker Image
       run: docker-compose -f docker-compose.base.yml build
     - name: Deploy
-      run: docker-compose -f docker-compose.base.yml up -d
+      run: docker-compose -f docker-compose.base.yml up -d --remove-orphans
