@@ -12,6 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build Docker Image
-      run: docker-compose build
+      run: docker-compose -f docker-compose.base.yml build
     - name: Deploy
-      run: docker-compose up -d
+      run: docker-compose -f docker-compose.base.yml up -d
