@@ -35,8 +35,8 @@ shell: up	## login to the app container
 
 .PHONY: runner
 runner:		## start the github runner
-	bin/compose -f docker-compose.runner.yml pull
-	bin/compose -f docker-compose.runner.yml up -d
+	bin/compose -p ${COMPOSE_PROJECT_NAME}-runner -f docker-compose.runner.yml pull
+	bin/compose -p ${COMPOSE_PROJECT_NAME}-runner -f docker-compose.runner.yml up -d
 
 .PHONY: help
 help:		## displays this help message
