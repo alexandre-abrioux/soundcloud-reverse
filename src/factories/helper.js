@@ -1,3 +1,5 @@
+const app = require('../app');
+
 app.factory('helper', [function () {
     return {
         normalize: function (val, maxOrigin, maxDest) {

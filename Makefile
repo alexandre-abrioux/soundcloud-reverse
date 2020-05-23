@@ -11,6 +11,10 @@ build: 		## buid services
 up: 		## deploy services
 	bin/compose up -d --remove-orphans
 
+.PHONY: serve
+serve: 		## deploy services
+	bin/compose run --rm webpack npm run serve
+
 .PHONY: stop
 stop: 		## stop services
 	bin/compose stop

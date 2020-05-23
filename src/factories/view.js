@@ -1,3 +1,5 @@
+const app = require('../app');
+
 app.factory('view', [function () {
     const view = {
         loginCurrentState: null,

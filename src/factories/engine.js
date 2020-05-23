@@ -1,3 +1,5 @@
+const app = require('../app');
+
 app.factory('engine', [
     'settings',
     'sc-params',

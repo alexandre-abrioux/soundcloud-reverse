@@ -1,3 +1,11 @@
+const app = require('./app');
+require('./factories/engine');
+require('./factories/helper');
+require('./factories/sc-init');
+require('./factories/sc-params');
+require('./factories/settings');
+require('./factories/view');
+
 app.controller('MainCtrl', [
     '$scope',
     '$http',

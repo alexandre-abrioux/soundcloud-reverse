@@ -1,0 +1,28 @@
+{
+  "name": "soundcloud-reverse",
+  "version": "1.0.0",
+  "description": "Listen to your favorite SoundCloud playlist starting from the last added song.",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alexandre-abrioux/soundcloud-reverse.git"
+  },
+  "author": "Alexandre Abrioux",
+  "homepage": "https://github.com/alexandre-abrioux/soundcloud-reverse#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode=production",
+    "serve": "webpack-dev-server"
+  },
+  "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
+    "css-loader": "^3.5.3",
+    "html-webpack-plugin": "^4.3.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
+    "terser-webpack-plugin": "^3.0.1",
+    "webpack": "^4.43.0",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.11.0"
+  }
+}
