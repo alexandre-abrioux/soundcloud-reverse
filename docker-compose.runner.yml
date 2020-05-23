@@ -1,0 +1,19 @@
+version: '3.5'
+
+services:
+
+  github-runner:
+    container_name: ${COMPOSE_PROJECT_NAME}_github-runner
+    image: myoung34/github-runner
+    restart: ${COMPOSE_RESTART}
+    environment:
+      - "REPO_URL=https://github.com/alexandre-abrioux/soundcloud-reverse"
+      - "RUNNER_NAME=${GITHUB_RUNNER_NAME}"
+      - "RUNNER_NAME_PREFIX=${COMPOSE_PROJECT_NAME}"
+      - "RUNNER_TOKEN=${GITHUB_RUNNER_TOKEN}"
+      - "RUNNER_WORKDIR=/tmp/github-runner-${COMPOSE_PROJECT_NAME}"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /tmp/github-runner-${COMPOSE_PROJECT_NAME}:/tmp/github-runner-${COMPOSE_PROJECT_NAME}
+    labels:
+      - "com.centurylinklabs.watchtower.enable=true"

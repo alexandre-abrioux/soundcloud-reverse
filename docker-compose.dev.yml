@@ -1,0 +1,23 @@
+version: '3.5'
+
+services:
+
+  webpack:
+    container_name: ${COMPOSE_PROJECT_NAME}_webpack
+    image: ${DOCKER_IMAGE_NODE}
+    restart: 'no'
+    env_file:
+      - .env
+      - .env.local
+    volumes:
+      - .:/usr/src/app
+    working_dir: /usr/src/app
+    command: 'true'
+    networks:
+      - reverse-proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.frontend.rule=Host:${HOST}"
+      - "traefik.frontend.priority=20"
+      - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
+      - "traefik.port=80"

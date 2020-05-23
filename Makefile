@@ -3,33 +3,40 @@ SHELL := /bin/bash
 
 include .env
 
+DOCKER_COMPOSE = bin/compose -f docker-compose.base.yml -f docker-compose.dev.yml
+
 .PHONY: build
 build: 		## buid services
-	bin/compose build
+	$(DOCKER_COMPOSE) build
 
 .PHONY: up
 up: 		## deploy services
-	bin/compose up -d --remove-orphans
+	$(DOCKER_COMPOSE) up -d --remove-orphans
 
 .PHONY: serve
 serve: 		## deploy services
-	bin/compose run --rm webpack npm run serve
+	$(DOCKER_COMPOSE) run --rm webpack npm run serve
 
 .PHONY: stop
 stop: 		## stop services
-	bin/compose stop
+	$(DOCKER_COMPOSE) stop
 
 .PHONY: restart
 restart: 	## restart services
-	bin/compose restart
+	$(DOCKER_COMPOSE) restart
 
 .PHONY: assets-hash
 assets-hash: ## compute assets hash
-	bin/compose run --rm app php assetsHash.php > .assetsHash
+	$(DOCKER_COMPOSE) run --rm app php assetsHash.php > .assetsHash
 
 .PHONY: shell
 shell: up	## login to the app container
-	bin/compose exec app bash
+	$(DOCKER_COMPOSE) exec app bash
+
+.PHONY: runner
+runner:		## start the github runner
+	bin/compose -f docker-compose.runner.yml pull
+	bin/compose -f docker-compose.runner.yml up -d
 
 .PHONY: help
 help:		## displays this help message

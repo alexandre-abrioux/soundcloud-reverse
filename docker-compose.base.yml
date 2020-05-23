@@ -7,26 +7,6 @@ networks:
 
 services:
 
-  webpack:
-    container_name: ${COMPOSE_PROJECT_NAME}_webpack
-    image: ${DOCKER_IMAGE_NODE}
-    restart: 'no'
-    env_file:
-      - .env
-      - .env.local
-    volumes:
-      - .:/usr/src/app
-    working_dir: /usr/src/app
-    command: 'true'
-    networks:
-      - reverse-proxy
-    labels:
-      - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${HOST}"
-      - "traefik.frontend.priority=20"
-      - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
-      - "traefik.port=80"
-
   nginx:
     container_name: ${COMPOSE_PROJECT_NAME}_nginx
     image: ${COMPOSE_PROJECT_NAME}/nginx
@@ -36,9 +16,9 @@ services:
       args:
         - "DOCKER_IMAGE_NODE=${DOCKER_IMAGE_NODE}"
     restart: ${COMPOSE_RESTART}
-    env_file:
-      - .env
-      - .env.local
+    environment:
+      - "SOUNDCLOUD_CLIENT_ID=${SOUNDCLOUD_CLIENT_ID}"
+      - "SOUNDCLOUD_REDIRECT_URI=${SOUNDCLOUD_REDIRECT_URI}"
     networks:
       - reverse-proxy
     labels:
