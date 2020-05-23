@@ -24,6 +24,5 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${HOST}"
-      - "traefik.frontend.priority=10"
       - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
       - "traefik.port=80"
