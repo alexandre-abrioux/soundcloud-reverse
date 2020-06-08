@@ -9,7 +9,7 @@ services:
 
   nginx:
     container_name: ${COMPOSE_PROJECT_NAME}_nginx
-    image: ${COMPOSE_PROJECT_NAME}/nginx
+    image: ${COMPOSE_PROJECT_NAME}/nginx:${COMPOSE_APP_VERSION}
     build:
       context: .
       dockerfile: docker/nginx/Dockerfile
