@@ -7,13 +7,11 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+    env:
+      COMPOSE_APP_VERSION: ${GITHUB_SHA:7}
     steps:
     - uses: actions/checkout@v2
     - name: Build Docker Image
-      env:
-        COMPOSE_APP_VERSION: ${GITHUB_SHA::8}
       run: docker-compose -f docker-compose.base.yml build
     - name: Deploy
-      env:
-        COMPOSE_APP_VERSION: ${GITHUB_SHA::8}
       run: docker-compose -f docker-compose.base.yml up -d --remove-orphans
