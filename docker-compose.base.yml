@@ -23,6 +23,11 @@ services:
       - reverse-proxy
     labels:
       - "traefik.enable=true"
-      - "traefik.frontend.rule=Host:${HOST}"
       - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
-      - "traefik.port=80"
+      - "traefik.http.middlewares.${COMPOSE_PROJECT_NAME}-stripprefix.stripprefix.prefixes=${TRAEFIK_STRIPPREFIX}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.rule=${TRAEFIK_RULE}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-http.entrypoints=web"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.rule=${TRAEFIK_RULE}"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.entrypoints=websecure"
+      - "traefik.http.routers.${COMPOSE_PROJECT_NAME}-https.middlewares=${COMPOSE_PROJECT_NAME}-stripprefix"
+      - "traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=80"
