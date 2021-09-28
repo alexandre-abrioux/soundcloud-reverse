@@ -2,6 +2,7 @@ ARG DOCKER_IMAGE_NODE
 
 FROM ${DOCKER_IMAGE_NODE} as node
 WORKDIR /usr/src/app/
+COPY pacthes ./pacthes/
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY webpack.config.js ./
