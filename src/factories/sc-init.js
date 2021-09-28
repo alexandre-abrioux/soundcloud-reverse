@@ -1,3 +1,4 @@
+const SC = require("soundcloud");
 const app = require("../app");
 
 app.factory("sc-init", [
