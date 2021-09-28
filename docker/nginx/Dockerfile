@@ -2,7 +2,10 @@ ARG DOCKER_IMAGE_NODE
 
 FROM ${DOCKER_IMAGE_NODE} as node
 WORKDIR /usr/src/app/
+RUN chown node:node /usr/src/app/
+USER node
 COPY patches ./patches/
+RUN ls -la patches
 COPY package.json package-lock.json ./
 RUN npm ci
 COPY webpack.config.js ./
