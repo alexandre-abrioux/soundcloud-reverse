@@ -7,9 +7,17 @@ include .env
 include .env.local
 export
 
+.PHONY: build
+build: 		## webpack build
+	$(DOCKER_COMPOSE) run --rm webpack npm run build
+
 .PHONY: serve
-serve: 			## deploy services
+serve: 		## webpack serve
 	$(DOCKER_COMPOSE) run --rm webpack npm run serve
+
+.PHONY: prettier
+prettier: 	## run prettier
+	$(DOCKER_COMPOSE) run --rm webpack npm run prettier
 
 .PHONY: runner
 runner:		## start the github runner

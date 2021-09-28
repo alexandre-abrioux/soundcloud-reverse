@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 
 networks:
   reverse-proxy:
@@ -6,7 +6,6 @@ networks:
     external: true
 
 services:
-
   nginx:
     container_name: ${COMPOSE_PROJECT_NAME}_nginx
     image: ${COMPOSE_PROJECT_NAME}/nginx:${COMPOSE_APP_VERSION}

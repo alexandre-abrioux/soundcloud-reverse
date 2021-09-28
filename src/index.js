@@ -1,2 +1,2 @@
-require('../assets/css/index.css');
-require('./controller');
+require("../assets/css/index.css");
+require("./controller");

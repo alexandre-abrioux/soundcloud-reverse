@@ -1,8 +1,8 @@
-const app = require('../app');
+const app = require("../app");
 
-app.factory('engine', [
-    'settings',
-    'sc-params',
+app.factory("engine", [
+    "settings",
+    "sc-params",
     function (settings, scParams) {
         const engine = {
             player: new SoundCloudAudio(scParams.client_id),
@@ -11,10 +11,12 @@ app.factory('engine', [
             frequencyData: null,
             frequencyDataCopy: null,
             maxFrequencyInArray: 0,
-            nbValuesToKeepInArray: 0
+            nbValuesToKeepInArray: 0,
         };
         engine.player.audio.crossOrigin = "anonymous";
-        engine.audioSrc = engine.audioCtx.createMediaElementSource(engine.player.audio);
+        engine.audioSrc = engine.audioCtx.createMediaElementSource(
+            engine.player.audio
+        );
         engine.analyser = engine.audioCtx.createAnalyser();
         engine.analyser.fftSize = Math.pow(2, 15);
         engine.analyser.minDecibels = -70;
@@ -25,4 +27,5 @@ app.factory('engine', [
         engine.audioSrc.connect(engine.analyser);
         engine.audioSrc.connect(engine.gainNode);
         return engine;
-    }]);
+    },
+]);

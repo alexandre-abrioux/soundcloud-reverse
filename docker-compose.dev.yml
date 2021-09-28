@@ -1,4 +1,4 @@
-version: '3.5'
+version: "3.5"
 
 networks:
   reverse-proxy:
@@ -6,18 +6,17 @@ networks:
     external: true
 
 services:
-
   webpack:
     container_name: ${COMPOSE_PROJECT_NAME}_webpack
     image: ${DOCKER_IMAGE_NODE}
-    restart: 'no'
+    restart: "no"
     env_file:
       - .env
       - .env.local
     volumes:
       - .:/usr/src/app
     working_dir: /usr/src/app
-    command: 'true'
+    command: "true"
     networks:
       - reverse-proxy
     labels:
