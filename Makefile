@@ -1,37 +1,15 @@
 SHELL := /bin/bash
 .DEFAULT_GOAL := help
 
+DOCKER_COMPOSE = docker-compose -f docker-compose.dev.yml
+
 include .env
-
-DOCKER_COMPOSE = bin/compose -f docker-compose.base.yml -f docker-compose.dev.yml
-
-.PHONY: build
-build: 		## buid services
-	$(DOCKER_COMPOSE) build
-
-.PHONY: up
-up: 		## deploy services
-	$(DOCKER_COMPOSE) up -d --remove-orphans
+include .env.local
+export
 
 .PHONY: serve
-serve: 		## deploy services
+serve: 			## deploy services
 	$(DOCKER_COMPOSE) run --rm webpack npm run serve
-
-.PHONY: stop
-stop: 		## stop services
-	$(DOCKER_COMPOSE) stop
-
-.PHONY: restart
-restart: 	## restart services
-	$(DOCKER_COMPOSE) restart
-
-.PHONY: assets-hash
-assets-hash: ## compute assets hash
-	$(DOCKER_COMPOSE) run --rm app php assetsHash.php > .assetsHash
-
-.PHONY: shell
-shell: up	## login to the app container
-	$(DOCKER_COMPOSE) exec app bash
 
 .PHONY: runner
 runner:		## start the github runner

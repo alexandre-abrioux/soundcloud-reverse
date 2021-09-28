@@ -1,5 +1,10 @@
 version: '3.5'
 
+networks:
+  reverse-proxy:
+    name: ${COMPOSE_NETWORK_REVERSE_PROXY}
+    external: true
+
 services:
 
   webpack:
@@ -18,6 +23,5 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.frontend.rule=Host:${HOST}"
-      - "traefik.frontend.priority=999"
       - "traefik.docker.network=${COMPOSE_NETWORK_REVERSE_PROXY}"
       - "traefik.port=80"
