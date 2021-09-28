@@ -10,10 +10,10 @@ module.exports = {
     entry: ["./src/index.js"],
     plugins: [
         new CleanWebpackPlugin(),
-        new webpack.EnvironmentPlugin([
-            "SOUNDCLOUD_CLIENT_ID",
-            "SOUNDCLOUD_REDIRECT_URI",
-        ]),
+        new webpack.EnvironmentPlugin({
+            SOUNDCLOUD_CLIENT_ID: "",
+            SOUNDCLOUD_REDIRECT_URI: "",
+        }),
         new MiniCssExtractPlugin({
             filename: "[name].[contenthash:8].css",
         }),
