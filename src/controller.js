@@ -1,5 +1,6 @@
 const SC = require("soundcloud");
 const app = require("./app");
+const SoundCloudAudio = require("soundcloud-audio");
 require("./factories/engine");
 require("./factories/helper");
 require("./factories/sc-init");
@@ -103,6 +104,19 @@ app.controller("MainCtrl", [
             localStorage.clear();
             window.location.reload();
         };
+        const initPlayer = function (token) {
+            engine.player = new SoundCloudAudio(token);
+            engine.player.audio.crossOrigin = "anonymous";
+            engine.player.on("playing", playerEventListener);
+            engine.player.on("pause", playerEventListener);
+            engine.player.on("error", playerEventListener);
+            engine.player.on("ended", playerEventListener);
+            engine.audioSrc = engine.audioCtx.createMediaElementSource(
+                engine.player.audio
+            );
+            engine.audioSrc.connect(engine.analyser);
+            engine.audioSrc.connect(engine.gainNode);
+        };
         $scope.init = function (refresh) {
             refresh = typeof refresh === "undefined" ? false : refresh;
             $scope.refreshing = refresh;
@@ -110,6 +124,7 @@ app.controller("MainCtrl", [
             sc(scParams)
                 .then(function (token) {
                     console.info("Soundcloud Token:", token);
+                    initPlayer(token);
                     $scope.loginIn = false;
                     if (
                         !refresh &&
@@ -435,10 +450,6 @@ app.controller("MainCtrl", [
                     break;
             }
         };
-        engine.player.on("playing", playerEventListener);
-        engine.player.on("pause", playerEventListener);
-        engine.player.on("error", playerEventListener);
-        engine.player.on("ended", playerEventListener);
 
         /************************
          * PARAMETERS REFRESHING
