@@ -29,6 +29,7 @@
     "webpack-dev-server": "^4.3.0"
   },
   "dependencies": {
-    "soundcloud": "^3.3.2"
+    "soundcloud": "^3.3.2",
+    "soundcloud-audio": "git+https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth"
   }
 }
