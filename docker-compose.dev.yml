@@ -8,7 +8,12 @@ networks:
 services:
   webpack:
     container_name: ${COMPOSE_PROJECT_NAME}_webpack
-    image: ${DOCKER_IMAGE_NODE}
+    build:
+      context: .
+      target: base
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        - "DOCKER_IMAGE_NODE=${DOCKER_IMAGE_NODE}"
     restart: "no"
     env_file:
       - .env

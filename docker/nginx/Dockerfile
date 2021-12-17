@@ -1,6 +1,12 @@
 ARG DOCKER_IMAGE_NODE
 
-FROM ${DOCKER_IMAGE_NODE} as node
+FROM ${DOCKER_IMAGE_NODE} as base
+RUN apk add --no-cache git
+WORKDIR /usr/src/app/
+RUN chown node:node /usr/src/app/
+USER node
+
+FROM base as node
 RUN apk add --no-cache git
 WORKDIR /usr/src/app/
 RUN chown node:node /usr/src/app/
