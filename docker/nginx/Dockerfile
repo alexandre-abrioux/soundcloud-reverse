@@ -7,10 +7,6 @@ RUN chown node:node /usr/src/app/
 USER node
 
 FROM base as node
-RUN apk add --no-cache git
-WORKDIR /usr/src/app/
-RUN chown node:node /usr/src/app/
-USER node
 COPY patches ./patches/
 COPY package.json package-lock.json ./
 RUN npm ci
