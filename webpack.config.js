@@ -3,14 +3,15 @@ const webpack = require("webpack");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const DotenvPlugin = require("dotenv-webpack");
 
 module.exports = {
     mode: "development",
     entry: ["./src/index.js"],
     plugins: [
-        new webpack.EnvironmentPlugin({
-            SOUNDCLOUD_CLIENT_ID: "",
-            SOUNDCLOUD_REDIRECT_URI: "",
+        new DotenvPlugin({
+            path: "./.env.local",
+            defaults: "./.env",
         }),
         new MiniCssExtractPlugin({
             filename: "css/[name].[contenthash:8].css",

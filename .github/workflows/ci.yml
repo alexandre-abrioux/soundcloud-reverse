@@ -5,20 +5,37 @@ on:
     branches: [master]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
 jobs:
+
   build:
-    runs-on: self-hosted
-    env:
-      COMPOSE_APP_VERSION: ${GITHUB_SHA:7}
+    runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actionsx/prettier@v2
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
         with:
-          # prettier CLI arguments.
-          args: --check .
-      - name: Set COMPOSE_APP_VERSION environment variable
-        run: echo "COMPOSE_APP_VERSION=${GITHUB_SHA::8}" >> $GITHUB_ENV
-      - name: Build Docker Image
-        run: docker-compose build
-      - name: Deploy
-        run: docker-compose up -d --remove-orphans
+          node-version: 14
+      - run: npm ci
+      - run: npx prettier --check .
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v1
+        with:
+          path: 'dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

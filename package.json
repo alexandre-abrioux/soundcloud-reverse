@@ -12,7 +12,7 @@
   "scripts": {
     "postinstall": "patch-package",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=production",
+    "build": "webpack --mode=production && cp -R ./public/* ./dist/",
     "serve": "webpack-dev-server",
     "prettier": "prettier --write ."
   },
@@ -30,6 +30,7 @@
   "devDependencies": {
     "css-loader": "^6.3.0",
     "css-minimizer-webpack-plugin": "^3.0.2",
+    "dotenv-webpack": "^8.0.1",
     "html-webpack-plugin": "^5.3.2",
     "mini-css-extract-plugin": "^2.3.0",
     "patch-package": "^6.4.7",
