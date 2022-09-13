@@ -15,7 +15,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-
   build:
     runs-on: ubuntu-latest
     steps:
@@ -28,7 +27,7 @@ jobs:
       - run: npm run build
       - uses: actions/upload-pages-artifact@v1
         with:
-          path: 'dist'
+          path: "dist"
 
   deploy:
     environment:
