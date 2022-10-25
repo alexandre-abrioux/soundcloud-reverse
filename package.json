@@ -1,42 +1,45 @@
 {
   "name": "soundcloud-reverse",
   "version": "1.0.0",
-  "description": "Listen to your favorite SoundCloud playlist starting from the last added song.",
   "private": true,
+  "description": "Listen to your favorite SoundCloud playlist starting from the last added song.",
+  "homepage": "https://github.com/alexandre-abrioux/soundcloud-reverse#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexandre-abrioux/soundcloud-reverse.git"
   },
   "author": "Alexandre Abrioux",
-  "homepage": "https://github.com/alexandre-abrioux/soundcloud-reverse#readme",
   "scripts": {
-    "postinstall": "patch-package",
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack --mode=production && cp -R ./public/* ./dist/",
-    "serve": "webpack-dev-server",
-    "prettier": "prettier --write ."
+    "build": "tsc && vite build",
+    "dev": "vite",
+    "lint": "eslint --fix --max-warnings 0 .",
+    "prettier": "prettier --write .",
+    "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.10.4",
+    "@emotion/styled": "^11.10.4",
     "@fontsource/rajdhani": "^4.5.2",
-    "angular": "^1.6.5",
-    "angular-animate": "^1.6.5",
-    "angular-aria": "^1.6.5",
-    "angular-material": "^1.1.3",
-    "font-awesome": "^4.7.0",
-    "jquery": "^3.3.1",
-    "soundcloud": "^3.3.2",
-    "soundcloud-audio": "git+https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth"
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.10",
+    "@tanstack/react-query": "^4.13.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "soundcloud-audio": "git+https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth",
+    "zustand": "^4.1.3"
   },
   "devDependencies": {
-    "css-loader": "^6.3.0",
-    "css-minimizer-webpack-plugin": "^3.0.2",
-    "dotenv-webpack": "^8.0.1",
-    "html-webpack-plugin": "^5.3.2",
-    "mini-css-extract-plugin": "^2.3.0",
-    "patch-package": "^6.4.7",
+    "@emotion/babel-plugin": "^11.10.5",
+    "@types/node": "^18.11.9",
+    "@types/react": "^18.0.17",
+    "@types/react-dom": "^18.0.6",
+    "@typescript-eslint/eslint-plugin": "^5.42.0",
+    "@typescript-eslint/parser": "^5.42.0",
+    "@vitejs/plugin-react": "^2.1.0",
+    "eslint": "^8.26.0",
+    "eslint-config-prettier": "^8.5.0",
     "prettier": "^2.4.1",
-    "webpack": "^5.54.0",
-    "webpack-cli": "^4.8.0",
-    "webpack-dev-server": "^4.3.0"
+    "typescript": "^4.8.4",
+    "vite": "^3.1.0"
   }
 }
