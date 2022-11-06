@@ -190,6 +190,7 @@ export const Background = () => {
     if (!preRenderCtx) return;
     if (!updateBackgroundParams) return;
     return () => {
+      console.log("RESIZE");
       resizeCanvas(context);
       const canvas = context.canvas;
       const { width, height } = canvas;
@@ -207,6 +208,7 @@ export const Background = () => {
     }
   }, [resizedOnce, resizeBothCanvas]);
 
+  // trigger resize on window resize
   useEffect(() => {
     if (!resizeBothCanvas) return;
     let resizeTimeout: number;
@@ -220,6 +222,15 @@ export const Background = () => {
       window.removeEventListener("resize", resizeListener);
     };
   }, [resizeBothCanvas]);
+
+  // trigger resize on fftEnlarge change
+  useEffect(() => {
+    if (!resizeBothCanvas) return;
+    const resizeTimeout = window.setTimeout(resizeBothCanvas, 200);
+    return () => {
+      clearTimeout(resizeTimeout);
+    };
+  }, [resizeBothCanvas, fftEnlarge]);
 
   const visible = fftShow && !paused;
 
@@ -240,7 +251,9 @@ export const Background = () => {
     <canvas
       ref={canvasRef}
       css={css({
-        position: "absolute",
+        position: "fixed",
+        bottom: 0,
+        left: 0,
         width: "100vw",
         opacity: visible ? 1 : 0,
         height: fftEnlarge ? "100vh" : "10vh",

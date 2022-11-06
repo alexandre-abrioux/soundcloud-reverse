@@ -18,8 +18,9 @@ const enterAnimation = keyframes({
 });
 
 export const PlayerControls = () => {
-  const { currentPlayingTrack } = useContext(PlayerContext);
+  const { currentPlayingTrack, paused } = useContext(PlayerContext);
   const fftShow = useSettingsStore((state) => state.fftShow);
+  const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
   if (!currentPlayingTrack) return null;
 
   return (
@@ -30,7 +31,7 @@ export const PlayerControls = () => {
       maxWidth="50vw"
       bottom={0}
       right={0}
-      mb={2}
+      mb={fftShow && !fftEnlarge && !paused ? "12vh" : 2}
       mr={3}
       paddingX={2}
       paddingY={2}
@@ -38,6 +39,9 @@ export const PlayerControls = () => {
       sx={{
         background: `rgba(0, 0, 0, ${fftShow ? "0.8" : "0.2"})`,
         animation: `0.5s ${enterAnimation} ease`,
+        transitionProperty: "background, margin-bottom",
+        transitionDuration: "0.5s",
+        transitionDelay: "0s, 0.2s",
       }}
     >
       <PlayerArtwork />

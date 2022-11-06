@@ -10,6 +10,7 @@ export const usePlaylists = () => {
   );
   const updateSettings = useSettingsStore((state) => state.updateSettings);
   const [step, setStep] = useState("Loading playlists...");
+  const [progress, setProgress] = useState(0);
 
   useEffect(() => {
     if (playlists) return;
@@ -23,6 +24,7 @@ export const usePlaylists = () => {
       // We retrieve the chronological order by fetching each playlist individually.
       // We then reverse that order.
       const promises = [];
+      const nbPlaylistsToLoad = playlists.length + 1;
       let nbPlaylistLoaded = 0;
       for (let i = 0; i < playlists.length; i++) {
         promises.push(
@@ -30,7 +32,7 @@ export const usePlaylists = () => {
             (playlist: SoundCloudPlaylist) => {
               nbPlaylistLoaded++;
               const percent = Math.round(
-                (nbPlaylistLoaded / playlists.length) * 100
+                (nbPlaylistLoaded / nbPlaylistsToLoad) * 100
               );
               console.info(
                 "[" +
@@ -42,9 +44,8 @@ export const usePlaylists = () => {
                   ")"
               );
               playlists[i].tracks = playlist.tracks.reverse();
-              setStep(
-                "Loaded playlist " + playlists[i].title + " (" + percent + "%)"
-              );
+              setProgress(percent);
+              setStep("Loaded playlist " + playlists[i].title);
             }
           )
         );
@@ -54,6 +55,7 @@ export const usePlaylists = () => {
       // Retrieve Favorites
       setStep("Loading favorites...");
       const favorites: SoundCloudTrack[] = await window.SC.get("/me/favorites");
+      setProgress(100);
       setStep("Loaded favorites.");
       // The favorites are already sorted properly.
       playlists.unshift({
@@ -72,5 +74,5 @@ export const usePlaylists = () => {
     })();
   }, []);
 
-  return { step };
+  return { step, progress };
 };

@@ -7,6 +7,7 @@ import { PlayerContext } from "../../context/PlayerContext";
 
 export const Left = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);
+  const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
   const { paused } = useContext(PlayerContext);
   return (
     <Box
@@ -23,8 +24,8 @@ export const Left = () => {
         ml={3}
         sx={{
           background: `rgba(0, 0, 0, ${fftShow ? "0.8" : "0.2"})`,
-          opacity: fftShow && !paused ? 0 : 1,
-          transition: "opacity",
+          opacity: fftShow && !paused && fftEnlarge ? 0 : 1,
+          transitionProperty: "background, opacity",
           transitionDuration: "0.5s",
           "&:hover": {
             opacity: 1,
