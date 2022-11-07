@@ -1,24 +1,30 @@
 import { Box, Slider } from "@mui/material";
-import {
-  SettingsStore,
-  useSettingsStore,
-} from "../../hooks/stores/settings-store";
+import { StoreApi, UseBoundStore } from "zustand";
+import { Mutate } from "zustand/vanilla";
 
-type KeysMatching<T extends object, V> = {
-  [K in keyof T]-?: T[K] extends V ? K : never;
-}[keyof T];
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type SliderStoreContent = Record<string, any> & {
+  updateSettings: (settings: Partial<SliderStoreContent>) => void;
+};
 
-type NumericSettings = KeysMatching<SettingsStore, number>;
+export type SliderStore = UseBoundStore<
+  Mutate<
+    StoreApi<SliderStoreContent>,
+    [["zustand/devtools", never], ["zustand/persist", SliderStoreContent]]
+  >
+>;
 
 export const SettingSlider = ({
-  name,
+  store,
   setting,
+  name,
   max,
   min,
   step,
 }: {
+  store: SliderStore;
+  setting: string;
   name: string;
-  setting: NumericSettings;
   max: number;
   min?: number;
   step?: number;
@@ -29,25 +35,33 @@ export const SettingSlider = ({
         {name}
       </Box>
       <Box height={100} display="flex" justifyContent="center" pt={1}>
-        <SliderControl setting={setting} max={max} min={min} step={step} />
+        <SliderControl
+          store={store}
+          setting={setting}
+          max={max}
+          min={min}
+          step={step}
+        />
       </Box>
     </Box>
   );
 };
 
 const SliderControl = ({
+  store,
   setting,
   max,
   min = 0,
   step = 1,
 }: {
-  setting: NumericSettings;
+  store: SliderStore;
+  setting: string;
   max: number;
   min?: number;
   step?: number;
 }) => {
-  const value = useSettingsStore((state) => state[setting]);
-  const updateSettings = useSettingsStore((state) => state.updateSettings);
+  const value = store((state) => state[setting]) as number;
+  const updateSettings = store((state) => state.updateSettings);
   return (
     <Slider
       value={value}

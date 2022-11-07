@@ -3,16 +3,12 @@ import { devtools, persist } from "zustand/middleware";
 
 export interface SettingsStore {
   volume: number;
-  nbBarsMax: number;
-  nbLinesMax: number;
+  smoothing: number;
   fftShow: boolean;
   fftEnlarge: boolean;
-  smoothing: number;
-  accent: number;
+  selectedPlugin: string;
   selectedPlaylistID: number | null;
-  updateSettings: (
-    settings: Partial<Omit<SettingsStore, "updateSettings">>
-  ) => void;
+  updateSettings: (settings: Partial<SettingsStore>) => void;
 }
 
 export const useSettingsStore = create<
@@ -23,16 +19,14 @@ export const useSettingsStore = create<
     persist(
       (set) => ({
         volume: 50,
-        nbBarsMax: 255,
-        nbLinesMax: 50,
+        smoothing: 40,
         fftShow: true,
         fftEnlarge: true,
-        smoothing: 40,
-        accent: 40,
+        selectedPlugin: "fft",
         selectedPlaylistID: null,
         updateSettings: set,
       }),
-      { name: "settings.v2" }
+      { name: "settings" }
     )
   )
 );

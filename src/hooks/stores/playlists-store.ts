@@ -16,7 +16,7 @@ export const usePlaylistsStore = create<
         playlists: null,
         setPlaylists: (playlists) => set({ playlists }),
       }),
-      { name: "soundcloud.playlists.v2" }
+      { name: "soundcloud.playlists" }
     )
   )
 );

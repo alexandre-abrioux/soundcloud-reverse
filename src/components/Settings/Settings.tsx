@@ -1,13 +1,28 @@
-import { Box, FormControlLabel, Switch } from "@mui/material";
+import {
+  Box,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  MenuItem,
+  Radio,
+  RadioGroup,
+  Select,
+  Switch,
+} from "@mui/material";
 import { useSettingsStore } from "../../hooks/stores/settings-store";
-import { SettingSlider } from "./SettingSlider";
+import { SettingSlider, SliderStore } from "./SettingSlider";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Logout } from "./Logout";
+import { createPluginSettingsStore } from "../../hooks/stores/plugin-settings-store";
+import { useCurrentPlugin } from "../../hooks/useCurrentPlugin";
+import { plugins } from "../../plugins/plugins";
 
 export const Settings = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
+  const selectedPluginName = useSettingsStore((state) => state.selectedPlugin);
   const updateSettings = useSettingsStore((state) => state.updateSettings);
+  const { settings, usePluginSettingsStore } = useCurrentPlugin();
 
   return (
     <Box
@@ -97,13 +112,53 @@ export const Settings = () => {
                   }
                   sx={{ marginRight: 0 }}
                 />
+                {plugins.length > 1 && (
+                  <FormControl>
+                    <FormLabel>Plugin</FormLabel>
+                    <RadioGroup
+                      value={selectedPluginName}
+                      onChange={(e) => {
+                        updateSettings({
+                          selectedPlugin: e.target.value,
+                        });
+                      }}
+                    >
+                      {plugins.map((plugin) => (
+                        <FormControlLabel
+                          value={plugin.name}
+                          key={`plugin-${plugin.name}`}
+                          control={<Radio size="small" />}
+                          label={plugin.name}
+                        />
+                      ))}
+                    </RadioGroup>
+                  </FormControl>
+                )}
               </Box>
             </Box>
-            <SettingSlider name="Volume" setting="volume" max={100} />
-            <SettingSlider name="Bars" setting="nbBarsMax" max={255} step={5} />
-            <SettingSlider name="Lines" setting="nbLinesMax" min={1} max={50} />
-            <SettingSlider name="Smooth" setting="smoothing" max={99} />
-            <SettingSlider name="Accent" setting="accent" max={100} />
+            <SettingSlider
+              store={useSettingsStore as SliderStore}
+              setting="volume"
+              name="Volume"
+              max={100}
+            />
+            <SettingSlider
+              store={useSettingsStore as SliderStore}
+              setting="smoothing"
+              name="Smooth"
+              max={99}
+            />
+            {Object.keys(settings).map((setting, i) => (
+              <SettingSlider
+                key={`plugin-slider-${i}`}
+                store={usePluginSettingsStore}
+                setting={setting}
+                name={settings[setting].name}
+                min={settings[setting].min}
+                max={settings[setting].max}
+                step={settings[setting].step}
+              />
+            ))}
           </Box>
           <Box display="flex" justifyContent="right" mt={2}>
             <Logout />
