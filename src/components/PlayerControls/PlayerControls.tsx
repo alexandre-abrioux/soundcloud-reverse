@@ -1,6 +1,4 @@
 import { Box, keyframes, Link } from "@mui/material";
-import { useContext } from "react";
-import { PlayerContext } from "../../context/PlayerContext";
 import { PlayerArtwork } from "./PlayerArtwork";
 import { PlayerActions } from "./PlayerActions";
 import { PlayerWaves } from "./PlayerWaves";

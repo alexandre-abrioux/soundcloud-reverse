@@ -3,17 +3,14 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
-  MenuItem,
   Radio,
   RadioGroup,
-  Select,
   Switch,
 } from "@mui/material";
 import { useSettingsStore } from "../../hooks/stores/settings-store";
 import { SettingSlider, SliderStore } from "./SettingSlider";
 import SettingsIcon from "@mui/icons-material/Settings";
 import { Logout } from "./Logout";
-import { createPluginSettingsStore } from "../../hooks/stores/plugin-settings-store";
 import { useCurrentPlugin } from "../../hooks/useCurrentPlugin";
 import { plugins } from "../../plugins/plugins";
 

@@ -3,7 +3,7 @@ import { useSettingsStore } from "../../hooks/stores/settings-store";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Link } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
-import { MouseEvent, useCallback, useContext, useEffect } from "react";
+import { MouseEvent, useCallback, useContext } from "react";
 import { PlayerContext } from "../../context/PlayerContext";
 import { actionPink } from "../../App";
 import { usePlayerStore } from "../../hooks/stores/player-store";
