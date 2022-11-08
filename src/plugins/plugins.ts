@@ -1,5 +1,6 @@
 import { fftPlugin } from "./fft";
 import { createPluginSettingsStore } from "../hooks/stores/plugin-settings-store";
+import { rainPlugin } from "./rain";
 
 export type PluginHook = () => PluginHookReturn;
 export type PluginHookReturn = {
@@ -18,4 +19,4 @@ export type Plugin = {
   usePluginSettingsStore: ReturnType<typeof createPluginSettingsStore>;
 };
 
-export const plugins: Plugin[] = [fftPlugin];
+export const plugins: Plugin[] = [fftPlugin, rainPlugin];

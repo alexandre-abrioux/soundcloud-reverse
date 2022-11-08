@@ -18,8 +18,10 @@ type EngineContext = {
   maxFrequencyInArray: number | null;
   nbValuesToKeepInArray: number | null;
   frequencyBinCount: number | null;
+  fftSize: number | null;
   frequencyData: Uint8Array | null;
   frequencyDataCopy: Uint8Array | null;
+  timeDomainData: Float32Array | null;
   updateEngine: () => void;
 };
 
@@ -34,6 +36,7 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     useState<EngineContext["nbValuesToKeepInArray"]>(null);
   const [frequencyBinCount, setFrequencyBinCount] =
     useState<EngineContext["frequencyBinCount"]>(null);
+  const [fftSize, setFftSize] = useState<EngineContext["fftSize"]>(null);
 
   const audioCtx = useMemo(() => {
     return new (window.AudioContext || window.webkitAudioContext)();
@@ -65,6 +68,11 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     return new Uint8Array(frequencyBinCount);
   }, [frequencyBinCount]);
 
+  const timeDomainData = useMemo(() => {
+    if (!fftSize) return null;
+    return new Float32Array(fftSize);
+  }, [fftSize]);
+
   const updateEngine = useCallback(() => {
     if (!analyser) return;
     const maxFrequencyInArray =
@@ -77,6 +85,7 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setMaxFrequencyInArray(maxFrequencyInArray);
     setNbValuesToKeepInArray(nbValuesToKeepInArray);
     setFrequencyBinCount(analyser?.frequencyBinCount || 0);
+    setFftSize(analyser?.fftSize || 0);
   }, [audioCtx, analyser]);
 
   const contextValue: EngineContext = {
@@ -87,8 +96,10 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     maxFrequencyInArray,
     nbValuesToKeepInArray,
     frequencyBinCount,
+    fftSize,
     frequencyData,
     frequencyDataCopy,
+    timeDomainData,
     updateEngine,
   };
 

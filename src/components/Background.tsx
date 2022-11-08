@@ -5,12 +5,19 @@ import { resizeCanvas, useCanvas } from "../hooks/useCanvas";
 import { clearCanvas } from "../utils";
 import { useCurrentPlugin } from "../hooks/useCurrentPlugin";
 import { usePlayerStore } from "../hooks/stores/player-store";
+import { PluginHook } from "../plugins/plugins";
 
 export const Background = () => {
+  const { name, usePlugin } = useCurrentPlugin();
+  return (
+    <BackgroundContent key={`background-plugin-${name}`} plugin={usePlugin} />
+  );
+};
+
+const BackgroundContent = ({ plugin: usePlugin }: { plugin: PluginHook }) => {
   const paused = usePlayerStore((state) => state.paused);
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
-  const { usePlugin } = useCurrentPlugin();
   const { draw, postResize, postClear } = usePlugin();
   const [resizedOnce, setResizedOnce] = useState(false);
   const [fftStart, setFftStart] = useState(fftShow);
