@@ -6,6 +6,6 @@ export const settings: PluginSettings = {
     min: 0,
     max: 100,
     step: 1,
-    default: 50,
+    default: 80,
   },
 };
