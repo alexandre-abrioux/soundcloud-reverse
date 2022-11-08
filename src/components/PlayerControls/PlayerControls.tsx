@@ -6,6 +6,7 @@ import { PlayerActions } from "./PlayerActions";
 import { PlayerWaves } from "./PlayerWaves";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useSettingsStore } from "../../hooks/stores/settings-store";
+import { usePlayerStore } from "../../hooks/stores/player-store";
 
 const enterAnimation = keyframes({
   from: {
@@ -18,7 +19,10 @@ const enterAnimation = keyframes({
 });
 
 export const PlayerControls = () => {
-  const { currentPlayingTrack, paused } = useContext(PlayerContext);
+  const paused = usePlayerStore((state) => state.paused);
+  const currentPlayingTrack = usePlayerStore(
+    (state) => state.currentPlayingTrack
+  );
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
   if (!currentPlayingTrack) return null;

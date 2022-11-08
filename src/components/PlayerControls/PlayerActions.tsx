@@ -6,6 +6,7 @@ import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
+import { usePlayerStore } from "../../hooks/stores/player-store";
 
 const controlButtonSize = "1.5rem";
 
@@ -36,7 +37,8 @@ const spin = keyframes({
 });
 
 export const PlayerActions = () => {
-  const { player, paused } = useContext(PlayerContext);
+  const { player } = useContext(PlayerContext);
+  const paused = usePlayerStore((state) => state.paused);
   if (!player) return null;
   return (
     <Box

@@ -5,19 +5,16 @@ import React, {
   useContext,
   useEffect,
   useMemo,
-  useState,
 } from "react";
 import SoundCloudAudio from "soundcloud-audio";
 import { useAuthStore } from "../hooks/stores/auth-store";
 import { EngineContext } from "./EngineContext";
 import { findByID } from "../utils";
+import { usePlayerStore } from "../hooks/stores/player-store";
 
 type PlayerContext = {
   player: SoundCloudAudio | undefined;
-  paused: boolean;
   play: (playlist: SoundCloudPlaylist, track: SoundCloudTrack) => void;
-  currentPlayingTrack: SoundCloudTrack | null;
-  currentPlayingPlaylist: SoundCloudPlaylist | null;
 };
 
 export const PlayerContext = createContext<PlayerContext>({} as PlayerContext);
@@ -27,11 +24,16 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { token } = useAuthStore();
   const { audioCtx, analyser, gainNode, updateEngine } =
     useContext(EngineContext);
-  const [paused, setPaused] = useState<PlayerContext["paused"]>(true);
-  const [currentPlayingTrack, setCurrentPlayingTrack] =
-    useState<PlayerContext["currentPlayingTrack"]>(null);
-  const [currentPlayingPlaylist, setCurrentPlayingPlaylist] =
-    useState<PlayerContext["currentPlayingPlaylist"]>(null);
+  const currentPlayingTrack = usePlayerStore(
+    (state) => state.currentPlayingTrack
+  );
+  const setPaused = usePlayerStore((state) => state.setPaused);
+  const setCurrentPlayingTrack = usePlayerStore(
+    (state) => state.setCurrentPlayingTrack
+  );
+  const setCurrentPlayingPlaylist = usePlayerStore(
+    (state) => state.setCurrentPlayingPlaylist
+  );
 
   const player = useMemo(() => {
     if (!token) return;
@@ -117,14 +119,16 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const contextValue: PlayerContext = {
     player,
-    paused,
     play,
-    currentPlayingTrack,
-    currentPlayingPlaylist,
   };
 
+  const contextValueMemoized = useMemo(
+    () => contextValue,
+    Object.values(contextValue)
+  );
+
   return (
-    <PlayerContext.Provider value={contextValue}>
+    <PlayerContext.Provider value={contextValueMemoized}>
       {children}
     </PlayerContext.Provider>
   );

@@ -2,13 +2,12 @@ import { Box } from "@mui/material";
 import { Playlists } from "./Playlists";
 import { Tracks } from "./Tracks";
 import { useSettingsStore } from "../../hooks/stores/settings-store";
-import { useContext } from "react";
-import { PlayerContext } from "../../context/PlayerContext";
+import { usePlayerStore } from "../../hooks/stores/player-store";
 
 export const Left = () => {
+  const paused = usePlayerStore((state) => state.paused);
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
-  const { paused } = useContext(PlayerContext);
   return (
     <Box
       position="fixed"

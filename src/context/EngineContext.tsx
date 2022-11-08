@@ -92,8 +92,13 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     updateEngine,
   };
 
+  const contextValueMemoized = useMemo(
+    () => contextValue,
+    Object.values(contextValue)
+  );
+
   return (
-    <EngineContext.Provider value={contextValue}>
+    <EngineContext.Provider value={contextValueMemoized}>
       <EngineSettingsController />
       {children}
     </EngineContext.Provider>

@@ -4,6 +4,7 @@ import { css, Skeleton } from "@mui/material";
 import { useCanvas } from "../../hooks/useCanvas";
 import { normalize } from "../../utils";
 import { useQuery } from "@tanstack/react-query";
+import { usePlayerStore } from "../../hooks/stores/player-store";
 
 let renderWaveCursor = 0;
 const updateRenderWaveCursor = (e: MouseEvent) => {
@@ -14,7 +15,11 @@ const resetRenderWaveCursor = () => {
 };
 
 export const PlayerWaves = () => {
-  const { player, paused, currentPlayingTrack } = useContext(PlayerContext);
+  const { player } = useContext(PlayerContext);
+  const paused = usePlayerStore((state) => state.paused);
+  const currentPlayingTrack = usePlayerStore(
+    (state) => state.currentPlayingTrack
+  );
   const [hovering, setHovering] = useState(false);
 
   const { data: waveformData, isLoading: waveFormLoading } = useQuery<{

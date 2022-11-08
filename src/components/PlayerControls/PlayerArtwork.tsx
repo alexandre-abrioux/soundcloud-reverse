@@ -1,9 +1,11 @@
-import { useContext, useEffect, useState } from "react";
-import { PlayerContext } from "../../context/PlayerContext";
+import { useEffect, useState } from "react";
 import { Box, Skeleton } from "@mui/material";
+import { usePlayerStore } from "../../hooks/stores/player-store";
 
 export const PlayerArtwork = () => {
-  const { currentPlayingTrack } = useContext(PlayerContext);
+  const currentPlayingTrack = usePlayerStore(
+    (state) => state.currentPlayingTrack
+  );
   const [imageLoaded, setImageLoaded] = useState(false);
 
   useEffect(() => {

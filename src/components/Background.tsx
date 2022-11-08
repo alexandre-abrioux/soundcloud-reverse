@@ -1,13 +1,13 @@
 import { useSettingsStore } from "../hooks/stores/settings-store";
 import { css } from "@mui/material";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { resizeCanvas, useCanvas } from "../hooks/useCanvas";
 import { clearCanvas } from "../utils";
-import { PlayerContext } from "../context/PlayerContext";
 import { useCurrentPlugin } from "../hooks/useCurrentPlugin";
+import { usePlayerStore } from "../hooks/stores/player-store";
 
 export const Background = () => {
-  const { paused } = useContext(PlayerContext);
+  const paused = usePlayerStore((state) => state.paused);
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
   const { usePlugin } = useCurrentPlugin();
