@@ -1,16 +1,16 @@
-import { usePlaylistsStore } from "../../hooks/stores/playlists-store";
 import { useSettingsStore } from "../../hooks/stores/settings-store";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Link } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { MouseEvent, useCallback, useContext } from "react";
 import { PlayerContext } from "../../context/PlayerContext";
-import { actionPink } from "../../App";
 import { usePlayerStore } from "../../hooks/stores/player-store";
+import { usePlaylists } from "../../hooks/usePlaylists";
+import { actionPink } from "../../config/theme";
 
 export const Tracks = () => {
   const { play } = useContext(PlayerContext);
-  const playlists = usePlaylistsStore((state) => state.playlists);
+  const { playlists } = usePlaylists();
   const currentPlayingTrack = usePlayerStore(
     (state) => state.currentPlayingTrack
   );

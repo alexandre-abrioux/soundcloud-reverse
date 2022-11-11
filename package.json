@@ -22,7 +22,9 @@
     "@fontsource/rajdhani": "^4.5.2",
     "@mui/icons-material": "^5.10.9",
     "@mui/material": "^5.10.10",
+    "@tanstack/query-sync-storage-persister": "^4.14.5",
     "@tanstack/react-query": "^4.13.4",
+    "@tanstack/react-query-persist-client": "^4.14.5",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "soundcloud-audio": "git+https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth",
@@ -30,6 +32,7 @@
   },
   "devDependencies": {
     "@emotion/babel-plugin": "^11.10.5",
+    "@tanstack/react-query-devtools": "^4.14.5",
     "@types/node": "^18.11.9",
     "@types/react": "^18.0.17",
     "@types/react-dom": "^18.0.6",

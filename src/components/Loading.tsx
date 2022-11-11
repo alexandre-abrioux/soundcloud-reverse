@@ -1,8 +1,9 @@
 import { Box, CircularProgress } from "@mui/material";
-import { usePlaylists } from "../hooks/usePlaylists";
+import { usePlaylistsStore } from "../hooks/stores/playlists-store";
 
 export const Loading = () => {
-  const { step, progress } = usePlaylists();
+  const step = usePlaylistsStore((state) => state.step);
+  const progress = usePlaylistsStore((state) => state.progress);
 
   return (
     <Box

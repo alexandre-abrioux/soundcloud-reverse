@@ -2,7 +2,8 @@ import { Box } from "@mui/material";
 import { useSettingsStore } from "../../hooks/stores/settings-store";
 import { Logout } from "./Logout";
 import { SettingsContentLeft } from "./SettingsContentLeft";
-import { SettingsContentRight } from "./SettingsContentRight";
+import { SettingsContentSliders } from "./SettingsContentSliders";
+import { SettingsContentPlugins } from "./SettingsContentPlugins";
 
 export const SettingsContent = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);
@@ -33,7 +34,8 @@ export const SettingsContent = () => {
       >
         <Box display="flex">
           <SettingsContentLeft />
-          <SettingsContentRight />
+          <SettingsContentPlugins />
+          <SettingsContentSliders />
         </Box>
         <Box display="flex" justifyContent="right" mt={2}>
           <Logout />

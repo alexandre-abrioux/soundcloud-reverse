@@ -17,6 +17,7 @@ export const useAuthStore = create<
         setToken: (token) => set({ token }),
       }),
       { name: "soundcloud.token" }
-    )
+    ),
+    { name: "AuthStore" }
   )
 );

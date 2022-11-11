@@ -1,5 +1,6 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import { resizeCanvasKeepContent } from "../utils";
+import { StatsContext } from "../context/StatsContext";
 
 export const resizeCanvas = (ctx: CanvasRenderingContext2D) => {
   const canvas = ctx.canvas;
@@ -14,16 +15,21 @@ export const resizeCanvas = (ctx: CanvasRenderingContext2D) => {
 export const useCanvas = ({
   start,
   autoResize = true,
+  updateStats = false,
   draw,
+  onClick,
   maxFps = null,
   ctxOptions,
 }: {
   start: boolean;
   autoResize?: boolean;
+  updateStats?: boolean;
   draw: (ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) => void;
+  onClick?: (e: MouseEvent) => void;
   maxFps?: number | null;
   ctxOptions?: CanvasRenderingContext2DSettings;
 }) => {
+  const stats = useContext(StatsContext);
   const [canvas, setCanvas] = useState<HTMLCanvasElement>();
   const [context, setContext] = useState<CanvasRenderingContext2D>();
 
@@ -43,6 +49,16 @@ export const useCanvas = ({
     ctx.imageSmoothingEnabled = false;
     setContext(ctx);
   }, [canvas]);
+
+  // click on canvas
+  useEffect(() => {
+    if (!canvas) return;
+    if (!onClick) return;
+    canvas.addEventListener("click", onClick);
+    return () => {
+      canvas.removeEventListener("click", onClick);
+    };
+  }, [canvas, onClick]);
 
   // resize canvas
   useEffect(() => {
@@ -77,15 +93,17 @@ export const useCanvas = ({
         const delta = time - previousTime;
         if (delta < maxDelta) return;
       }
+      updateStats && stats?.begin();
       draw(context, time);
       previousTime = time;
+      updateStats && stats?.end();
     };
     animationFrameId = window.requestAnimationFrame(render);
     return () => {
       running = false;
       window.cancelAnimationFrame(animationFrameId);
     };
-  }, [context, start, draw, maxFps]);
+  }, [context, start, draw, maxFps, stats, updateStats]);
 
   return { canvasRef, canvas, context };
 };

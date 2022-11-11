@@ -5,6 +5,7 @@ import { rainPlugin } from "./rain";
 export type PluginHook = () => PluginHookReturn;
 export type PluginHookReturn = {
   draw: (ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) => void;
+  onClick?: (e?: MouseEvent) => void;
   postResize: ((ctx: CanvasRenderingContext2D) => void) | undefined;
   postClear?: (() => void) | undefined;
 };
@@ -14,6 +15,7 @@ export type PluginSettings = Record<
 >;
 export type Plugin = {
   name: string;
+  needsFrequencyData: boolean;
   usePlugin: PluginHook;
   settings: PluginSettings;
   usePluginSettingsStore: ReturnType<typeof createPluginSettingsStore>;

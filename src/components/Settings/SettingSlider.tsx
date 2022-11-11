@@ -1,6 +1,7 @@
-import { Box, Slider } from "@mui/material";
+import { Box } from "@mui/material";
 import { StoreApi, UseBoundStore } from "zustand";
 import { Mutate } from "zustand/vanilla";
+import { SliderControl } from "./SliderControl";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SliderStoreContent = Record<string, any> & {
@@ -44,37 +45,5 @@ export const SettingSlider = ({
         />
       </Box>
     </Box>
-  );
-};
-
-const SliderControl = ({
-  store,
-  setting,
-  max,
-  min = 0,
-  step = 1,
-}: {
-  store: SliderStore;
-  setting: string;
-  max: number;
-  min?: number;
-  step?: number;
-}) => {
-  const value = store((state) => state[setting]) as number;
-  const updateSettings = store((state) => state.updateSettings);
-  return (
-    <Slider
-      value={value}
-      min={min}
-      step={step}
-      max={max}
-      onChange={(e, newValue) =>
-        updateSettings({ [setting]: newValue as number })
-      }
-      orientation="vertical"
-      valueLabelDisplay="auto"
-      size="small"
-      color="secondary"
-    />
   );
 };

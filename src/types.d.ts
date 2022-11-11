@@ -20,6 +20,8 @@ declare module "soundcloud-audio" {
 interface Window {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   SC: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Stats: any;
   webkitAudioContext: typeof AudioContext;
 }
 

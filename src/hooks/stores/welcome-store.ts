@@ -10,8 +10,11 @@ export const useWelcomeStore = create<
   WelcomeStore,
   [["zustand/devtools", never]]
 >(
-  devtools((set) => ({
-    ready: false,
-    makeReady: () => set({ ready: true }),
-  }))
+  devtools(
+    (set) => ({
+      ready: false,
+      makeReady: () => set({ ready: true }),
+    }),
+    { name: "WelcomeStore" }
+  )
 );

@@ -27,7 +27,7 @@ export const PlayerWaves = () => {
     height: number;
     samples: number[];
   }>(
-    ["wave", currentPlayingTrack?.id],
+    ["soundcloud.wave", currentPlayingTrack?.id],
     async () => {
       if (!currentPlayingTrack?.waveform_url) return;
       const waveformData = await fetch(
@@ -84,22 +84,26 @@ export const PlayerWaves = () => {
     [player, waveformData]
   );
 
+  const seek = useCallback(
+    (e: MouseEvent) => {
+      if (!player) return;
+      const canvas = e.target as HTMLCanvasElement;
+      const position = normalize(
+        renderWaveCursor,
+        canvas.width,
+        player.audio.duration
+      );
+      player.setTime(position);
+    },
+    [player]
+  );
+
   const { canvasRef, canvas } = useCanvas({
     start: !!waveformData && (!paused || hovering),
     draw,
+    onClick: seek,
     maxFps: hovering ? null : 3,
   });
-
-  const seek = useCallback(() => {
-    if (!canvas) return;
-    if (!player) return;
-    const position = normalize(
-      renderWaveCursor,
-      canvas.width,
-      player.audio.duration
-    );
-    player.setTime(position);
-  }, [player, canvas]);
 
   useEffect(() => {
     if (!canvas) return;
@@ -113,13 +117,11 @@ export const PlayerWaves = () => {
     };
     canvas.addEventListener("mousemove", mouseMove);
     canvas.addEventListener("mouseleave", mouseLeave);
-    canvas.addEventListener("click", seek);
     return () => {
       canvas.removeEventListener("mousemove", mouseMove);
       canvas.removeEventListener("mouseleave", mouseLeave);
-      canvas.removeEventListener("click", seek);
     };
-  }, [canvas, seek]);
+  }, [canvas]);
 
   if (waveFormLoading)
     return (

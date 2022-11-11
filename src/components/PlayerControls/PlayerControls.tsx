@@ -2,9 +2,10 @@ import { Box, keyframes, Link } from "@mui/material";
 import { PlayerArtwork } from "./PlayerArtwork";
 import { PlayerActions } from "./PlayerActions";
 import { PlayerWaves } from "./PlayerWaves";
-import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { useSettingsStore } from "../../hooks/stores/settings-store";
 import { usePlayerStore } from "../../hooks/stores/player-store";
+import { PlayerVolume } from "./PlayerVolume";
+import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 const enterAnimation = keyframes({
   from: {
@@ -65,16 +66,22 @@ export const PlayerControls = () => {
             <Box sx={{ color: "text.secondary" }} fontWeight="700">
               {currentPlayingTrack.user.username}
             </Box>
-            <Box>{currentPlayingTrack.title}</Box>
-          </Box>
-          <Box flex="0">
-            <Link href={currentPlayingTrack.permalink_url} target="_blank">
-              <OpenInNewIcon sx={{ fontSize: "1rem", color: "#4d4f53" }} />
-            </Link>
+            <Box display="flex" alignItems="center">
+              <span>{currentPlayingTrack.title}</span>
+              <Link
+                href={currentPlayingTrack.permalink_url}
+                target="_blank"
+                lineHeight={0}
+                pl={1}
+              >
+                <OpenInNewIcon sx={{ fontSize: "1rem", color: "#4d4f53" }} />
+              </Link>
+            </Box>
           </Box>
         </Box>
         <PlayerWaves />
       </Box>
+      <PlayerVolume />
     </Box>
   );
 };

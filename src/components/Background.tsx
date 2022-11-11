@@ -1,30 +1,23 @@
 import { useSettingsStore } from "../hooks/stores/settings-store";
 import { css } from "@mui/material";
-import { useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { resizeCanvas, useCanvas } from "../hooks/useCanvas";
 import { clearCanvas } from "../utils";
-import { useCurrentPlugin } from "../hooks/useCurrentPlugin";
 import { usePlayerStore } from "../hooks/stores/player-store";
-import { PluginHook } from "../plugins/plugins";
+import { PluginContext } from "../context/PluginContext";
 
 export const Background = () => {
-  const { name, usePlugin } = useCurrentPlugin();
-  return (
-    <BackgroundContent key={`background-plugin-${name}`} plugin={usePlugin} />
-  );
-};
-
-const BackgroundContent = ({ plugin: usePlugin }: { plugin: PluginHook }) => {
   const paused = usePlayerStore((state) => state.paused);
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
-  const { draw, postResize, postClear } = usePlugin();
+  const { draw, postResize, postClear } = useContext(PluginContext);
   const [resizedOnce, setResizedOnce] = useState(false);
   const [fftStart, setFftStart] = useState(fftShow);
 
   const { canvasRef, context } = useCanvas({
     start: fftStart,
     autoResize: false,
+    updateStats: true,
     draw,
     ctxOptions: {
       alpha: false,

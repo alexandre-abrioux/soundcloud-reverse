@@ -1,4 +1,4 @@
-import { useCallback, useContext, useMemo } from "react";
+import { useCallback, useContext, useMemo, useState } from "react";
 import { EngineContext } from "../../context/EngineContext";
 import { PluginHook, PluginHookReturn } from "../plugins";
 import { useRainSettingsStore } from "./store";
@@ -14,16 +14,23 @@ class Branch {
   }
 }
 
+const generateRandomColors = () => {
+  return {
+    random_r: Math.floor(200 * Math.random()),
+    random_g: Math.floor(200 * Math.random()),
+    random_b: Math.floor(200 * Math.random()),
+    random_r_multiplicateur: Math.floor(20 * Math.random()),
+    random_g_multiplicateur: Math.floor(20 * Math.random()),
+    random_b_multiplicateur: Math.floor(20 * Math.random()),
+  };
+};
+
 export const useRain: PluginHook = () => {
   const { analyser, timeDomainData } = useContext(EngineContext);
+  const [colors, setColors] = useState<ReturnType<typeof generateRandomColors>>(
+    generateRandomColors()
+  );
   const intensity = useRainSettingsStore((state) => state.intensity);
-
-  const random_r = Math.floor(200 * Math.random());
-  const random_g = Math.floor(200 * Math.random());
-  const random_b = Math.floor(200 * Math.random());
-  const random_r_multiplicateur = Math.floor(20 * Math.random());
-  const random_g_multiplicateur = Math.floor(20 * Math.random());
-  const random_b_multiplicateur = Math.floor(20 * Math.random());
 
   const draw: PluginHookReturn["draw"] = useCallback(
     (ctx: CanvasRenderingContext2D) => {
@@ -32,6 +39,14 @@ export const useRain: PluginHook = () => {
 
       const { canvas } = ctx;
       const { width, height } = canvas;
+      const {
+        random_r,
+        random_g,
+        random_b,
+        random_r_multiplicateur,
+        random_g_multiplicateur,
+        random_b_multiplicateur,
+      } = colors;
 
       analyser.getFloatTimeDomainData(timeDomainData);
       const signal =
@@ -90,8 +105,12 @@ export const useRain: PluginHook = () => {
         }
       }
     },
-    [analyser, timeDomainData, intensity]
+    [analyser, timeDomainData, intensity, colors]
   );
+
+  const onClick: PluginHookReturn["onClick"] = useCallback(() => {
+    setColors(generateRandomColors());
+  }, []);
 
   const postResize: PluginHookReturn["postResize"] = useMemo(
     () => () => undefined,
@@ -105,6 +124,7 @@ export const useRain: PluginHook = () => {
 
   return {
     draw,
+    onClick,
     postResize,
     postClear,
   };

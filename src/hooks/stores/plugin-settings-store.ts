@@ -20,6 +20,7 @@ export const createPluginSettingsStore = <T extends Record<string, number>>(
           updateSettings: set,
         }),
         { name: `plugin.${name}` }
-      )
+      ),
+      { name: `PluginSettingsStore-${name}` }
     )
   );

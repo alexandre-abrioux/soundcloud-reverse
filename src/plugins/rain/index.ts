@@ -6,6 +6,7 @@ import { useRainSettingsStore } from "./store";
 
 export const rainPlugin: Plugin = {
   name,
+  needsFrequencyData: false,
   usePlugin: useRain,
   settings,
   usePluginSettingsStore: useRainSettingsStore,

@@ -14,14 +14,17 @@ export const usePlayerStore = create<
   PlayerStore,
   [["zustand/devtools", never]]
 >(
-  devtools((set) => ({
-    paused: true,
-    currentPlayingTrack: null,
-    currentPlayingPlaylist: null,
-    setPaused: (paused: boolean) => set({ paused }),
-    setCurrentPlayingTrack: (track: SoundCloudTrack) =>
-      set({ currentPlayingTrack: track }),
-    setCurrentPlayingPlaylist: (playlist: SoundCloudPlaylist) =>
-      set({ currentPlayingPlaylist: playlist }),
-  }))
+  devtools(
+    (set) => ({
+      paused: true,
+      currentPlayingTrack: null,
+      currentPlayingPlaylist: null,
+      setPaused: (paused: boolean) => set({ paused }),
+      setCurrentPlayingTrack: (track: SoundCloudTrack) =>
+        set({ currentPlayingTrack: track }),
+      setCurrentPlayingPlaylist: (playlist: SoundCloudPlaylist) =>
+        set({ currentPlayingPlaylist: playlist }),
+    }),
+    { name: "PlayerStore" }
+  )
 );

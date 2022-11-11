@@ -6,6 +6,7 @@ import { useFftSettingsStore } from "./store";
 
 export const fftPlugin: Plugin = {
   name,
+  needsFrequencyData: true,
   usePlugin: useFft,
   settings,
   usePluginSettingsStore: useFftSettingsStore,

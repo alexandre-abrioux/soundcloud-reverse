@@ -1,20 +1,23 @@
-import { useEffect, useState } from "react";
-import { usePlaylistsStore } from "./stores/playlists-store";
+import { useContext } from "react";
 import { useSettingsStore } from "./stores/settings-store";
+import { useQuery } from "@tanstack/react-query";
+import { AuthContext } from "../components/AuthContext";
+import { usePlaylistsStore } from "./stores/playlists-store";
 
 export const usePlaylists = () => {
-  const playlists = usePlaylistsStore((state) => state.playlists);
-  const setPlaylists = usePlaylistsStore((state) => state.setPlaylists);
+  const { isConnected } = useContext(AuthContext);
+  const setStep = usePlaylistsStore((state) => state.setStep);
+  const setProgress = usePlaylistsStore((state) => state.setProgress);
   const selectedPlaylistID = useSettingsStore(
     (state) => state.selectedPlaylistID
   );
   const updateSettings = useSettingsStore((state) => state.updateSettings);
-  const [step, setStep] = useState("Loading playlists...");
-  const [progress, setProgress] = useState(0);
 
-  useEffect(() => {
-    if (playlists) return;
-    void (async () => {
+  const { data: playlists, isFetching } = useQuery<SoundCloudPlaylist[]>({
+    queryKey: ["soundcloud.playlists"],
+    staleTime: Number.POSITIVE_INFINITY,
+    enabled: isConnected,
+    queryFn: async () => {
       //---------------------------------------------------------------------------------
       // Retrieve Playlists
       const playlists: SoundCloudPlaylist[] = await window.SC.get(
@@ -55,8 +58,6 @@ export const usePlaylists = () => {
       // Retrieve Favorites
       setStep("Loading favorites...");
       const favorites: SoundCloudTrack[] = await window.SC.get("/me/favorites");
-      setProgress(100);
-      setStep("Loaded favorites.");
       // The favorites are already sorted properly.
       playlists.unshift({
         kind: "playlist",
@@ -64,15 +65,19 @@ export const usePlaylists = () => {
         title: "Likes",
         tracks: favorites,
       });
-      setPlaylists(playlists);
+      setProgress(100);
+      setStep("Loaded favorites.");
+      return playlists;
+    },
+    onSuccess: (playlists) => {
       if (
         selectedPlaylistID === null ||
         !playlists.some((playlist) => playlist.id === selectedPlaylistID)
       ) {
         updateSettings({ selectedPlaylistID: playlists[0]?.id });
       }
-    })();
-  }, []);
+    },
+  });
 
-  return { step, progress };
+  return { playlists, isFetching };
 };

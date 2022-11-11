@@ -118,13 +118,14 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
 const EngineSettingsController: React.FC = () => {
   const volume = useSettingsStore((state) => state.volume);
+  const muted = useSettingsStore((state) => state.muted);
   const smoothing = useSettingsStore((state) => state.smoothing);
   const { gainNode, analyser } = useContext(EngineContext);
 
   useEffect(() => {
     if (!gainNode) return;
-    gainNode.gain.value = volume / 100;
-  }, [gainNode, volume]);
+    gainNode.gain.value = muted ? 0 : volume / 100;
+  }, [gainNode, volume, muted]);
 
   useEffect(() => {
     if (!analyser) return;
