@@ -21,7 +21,7 @@ export const PlayerContext = createContext<PlayerContext>({} as PlayerContext);
 PlayerContext.displayName = "PlayerContext";
 
 export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
-  const { token } = useAuthStore();
+  const { accessToken } = useAuthStore();
   const { audioCtx, analyser, gainNode, updateEngine } =
     useContext(EngineContext);
   const currentPlayingTrack = usePlayerStore(
@@ -36,11 +36,11 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   );
 
   const player = useMemo(() => {
-    if (!token) return;
-    const player = new SoundCloudAudio(token);
+    if (!accessToken) return;
+    const player = new SoundCloudAudio(accessToken);
     player.audio.crossOrigin = "anonymous";
     return player;
-  }, [token]);
+  }, [accessToken]);
 
   const audioSrc = useMemo(() => {
     if (!audioCtx) return;
