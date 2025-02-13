@@ -20,10 +20,10 @@ export const App = () => {
         <EngineProvider>
           <PlayerProvider>
             <ThemeProvider theme={theme}>
-              <BrowserRouter>
+              <BrowserRouter basename={import.meta.env.VITE_BASE_PATH}>
                 <AuthProvider>
                   <Routes>
-                    <Route path={import.meta.env.VITE_BASE_PATH}>
+                    <Route>
                       <Route path="" element={<AppContent />} />
                       <Route path="login" element={<Login />} />
                     </Route>

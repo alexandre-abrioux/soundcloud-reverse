@@ -10,7 +10,7 @@
   },
   "author": "Alexandre Abrioux",
   "scripts": {
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && mkdir dist/login && cp dist/index.html dist/login/index.html",
     "dev": "vite",
     "lint": "eslint --fix --max-warnings 0 .",
     "prettier": "prettier --write .",

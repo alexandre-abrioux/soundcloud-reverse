@@ -103,7 +103,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setAccessToken(oauth2Token.accessToken);
     setAccessTokenExpiresAt(oauth2Token.expiresAt?.toString() || "");
     setRefreshToken(oauth2Token.refreshToken || "");
-    navigate(`${import.meta.env.VITE_BASE_PATH}/login`);
+    navigate("/");
   }, [codeVerifier, state, setAccessToken, navigate]);
 
   const contextValue = { connect, handleOAuthRedirect, isConnected };
