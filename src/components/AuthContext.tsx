@@ -46,8 +46,6 @@ const oAuth2Client = new OAuth2Client({
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     accessToken,
-    accessTokenExpiresAt,
-    refreshToken,
     codeVerifier,
     state,
     setAccessToken,
