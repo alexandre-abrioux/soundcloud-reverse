@@ -47,5 +47,8 @@
     "typescript": "^4.8.4",
     "vite": "^3.1.0"
   },
-  "packageManager": "pnpm@8.15.3+sha1.64838798f519c18029c1e8a1310e16101fc2eda0"
+  "engines": {
+    "pnpm": "^9"
+  },
+  "packageManager": "pnpm@9.10.0"
 }
