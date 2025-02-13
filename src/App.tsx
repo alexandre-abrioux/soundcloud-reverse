@@ -10,6 +10,8 @@ import { theme } from "./config/theme";
 import { queryClient } from "./config/react-query";
 import { AppContent } from "./AppContent";
 import { StatsProvider } from "./context/StatsContext";
+import { BrowserRouter, Route, Routes } from "react-router";
+import { Login } from "./components/Login";
 
 export const App = () => {
   return (
@@ -18,9 +20,14 @@ export const App = () => {
         <EngineProvider>
           <PlayerProvider>
             <ThemeProvider theme={theme}>
-              <AuthProvider>
-                <AppContent />
-              </AuthProvider>
+              <BrowserRouter>
+                <AuthProvider>
+                  <Routes>
+                    <Route path="/" element={<AppContent />} />
+                    <Route path="/login" element={<Login />} />
+                  </Routes>
+                </AuthProvider>
+              </BrowserRouter>
             </ThemeProvider>
           </PlayerProvider>
         </EngineProvider>
