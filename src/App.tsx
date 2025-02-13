@@ -24,8 +24,8 @@ export const App = () => {
                 <AuthProvider>
                   <Routes>
                     <Route path={import.meta.env.VITE_BASE_PATH}>
-                      <Route path="/" element={<AppContent />} />
-                      <Route path="/login" element={<Login />} />
+                      <Route path="" element={<AppContent />} />
+                      <Route path="login" element={<Login />} />
                     </Route>
                   </Routes>
                 </AuthProvider>
