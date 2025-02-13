@@ -2,8 +2,16 @@ import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 export interface AuthStore {
-  token: string;
-  setToken: (token: string) => void;
+  accessToken: string;
+  accessTokenExpiresAt: string;
+  refreshToken: string;
+  state: string;
+  codeVerifier: string;
+  setAccessToken: (accessToken: string) => void;
+  setAccessTokenExpiresAt: (accessToken: string) => void;
+  setRefreshToken: (accessToken: string) => void;
+  setState: (accessToken: string) => void;
+  setCodeVerifier: (accessToken: string) => void;
 }
 
 export const useAuthStore = create<
@@ -13,8 +21,17 @@ export const useAuthStore = create<
   devtools(
     persist(
       (set) => ({
-        token: "",
-        setToken: (token) => set({ token }),
+        accessToken: "",
+        accessTokenExpiresAt: "",
+        refreshToken: "",
+        state: "",
+        codeVerifier: "",
+        setAccessToken: (accessToken) => set({ accessToken }),
+        setAccessTokenExpiresAt: (accessTokenExpiresAt) =>
+          set({ accessTokenExpiresAt }),
+        setRefreshToken: (refreshToken) => set({ refreshToken }),
+        setState: (state) => set({ state }),
+        setCodeVerifier: (codeVerifier) => set({ codeVerifier }),
       }),
       { name: "soundcloud.token" }
     ),
