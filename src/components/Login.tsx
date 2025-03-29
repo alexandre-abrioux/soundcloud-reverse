@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 export const Login = () => {
   const { handleOAuthRedirect } = useContext(AuthContext);

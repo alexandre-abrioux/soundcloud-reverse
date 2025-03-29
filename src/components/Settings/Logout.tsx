@@ -1,12 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-
-const logout = () => {
-  localStorage.clear();
-  window.location.reload();
-};
+import { AuthContext } from "../../context/AuthContext";
+import { useContext } from "react";
 
 export const Logout = () => {
+  const { logout } = useContext(AuthContext);
+
   return (
     <Box
       onClick={logout}

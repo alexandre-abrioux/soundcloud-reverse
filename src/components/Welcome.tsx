@@ -1,6 +1,6 @@
 import { Box, Button } from "@mui/material";
 import { useContext } from "react";
-import { AuthContext } from "./AuthContext";
+import { AuthContext } from "../context/AuthContext";
 
 export const Welcome = () => {
   const { connect } = useContext(AuthContext);
