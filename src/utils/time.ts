@@ -6,7 +6,7 @@
  */
 export const runAt = (
   timestampMS: number,
-  callback: (...args: unknown[]) => void
+  callback: () => void | Promise<void>
 ): (() => void) => {
   let timeout: NodeJS.Timeout;
   const initTimeout = (tMs: number): void => {
