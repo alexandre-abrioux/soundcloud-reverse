@@ -1,18 +1,19 @@
 {
+  "private": true,
   "name": "soundcloud-reverse",
   "version": "1.0.0",
-  "private": true,
   "description": "Listen to your favorite SoundCloud playlist starting from the last added song.",
+  "author": "Alexandre Abrioux",
   "homepage": "https://github.com/alexandre-abrioux/soundcloud-reverse#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/alexandre-abrioux/soundcloud-reverse.git"
   },
-  "author": "Alexandre Abrioux",
   "scripts": {
     "build": "tsc && vite build && mkdir dist/login && cp dist/index.html dist/login/index.html",
     "dev": "vite",
     "lint": "eslint --fix --max-warnings 0 .",
+    "prepare": "husky",
     "prettier": "prettier --write .",
     "preview": "vite preview"
   },
@@ -43,12 +44,25 @@
     "@vitejs/plugin-react": "^2.1.0",
     "eslint": "^8.26.0",
     "eslint-config-prettier": "^8.5.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.0",
     "prettier": "^2.4.1",
+    "prettier-package-json": "^2.8.0",
     "typescript": "^4.8.4",
     "vite": "^3.1.0"
   },
   "engines": {
     "pnpm": "^9"
+  },
+  "lint-staged": {
+    "*.{js,ts,tsx}": [
+      "eslint --fix --max-warnings 0",
+      "prettier --write"
+    ],
+    "!(*.{js,ts,tsx})": [
+      "prettier --write --ignore-unknown"
+    ],
+    "package.json": "prettier-package-json --write"
   },
   "packageManager": "pnpm@9.10.0"
 }

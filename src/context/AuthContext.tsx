@@ -53,6 +53,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     accessToken,
     accessTokenExpiresAt,
+    refreshToken,
     codeVerifier,
     state,
     setAccessToken,
@@ -108,8 +109,8 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!accessTokenExpiresAt) return;
     // Will refresh right away on page load if the REFRESH_AT time is already passed
-    return runAt(Number(accessTokenExpiresAt), renew);
-  }, [accessTokenExpiresAt, renew]);
+    return runAt(Number(accessTokenExpiresAt), () => renew(refreshToken));
+  }, [refreshToken, accessTokenExpiresAt, renew]);
 
   const connect = useCallback(async () => {
     // In a browser this might work as follows:

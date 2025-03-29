@@ -2,7 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 permissions:
@@ -11,7 +13,7 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -28,11 +30,13 @@ jobs:
       - run: pnpm prettier --check .
       - run: pnpm eslint --max-warnings=0 .
       - run: pnpm build
-      - uses: actions/upload-pages-artifact@v3
+      - if: ${{ github.ref == 'refs/heads/master' }}
+        uses: actions/upload-pages-artifact@v3
         with:
           path: "dist"
 
   deploy:
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
     permissions:
       pages: write

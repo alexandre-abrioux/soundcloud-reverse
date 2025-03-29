@@ -6,7 +6,7 @@
  */
 export const runAt = (
   timestampMS: number,
-  callback: (...args: any[]) => void,
+  callback: () => void | Promise<void>
 ): (() => void) => {
   let timeout: NodeJS.Timeout;
   const initTimeout = (tMs: number): void => {
@@ -33,12 +33,12 @@ export const runAt = (
   };
   window.document.addEventListener(
     "visibilitychange",
-    windowVisibilityChangeListener,
+    windowVisibilityChangeListener
   );
   return () => {
     window.document.removeEventListener(
       "visibilitychange",
-      windowVisibilityChangeListener,
+      windowVisibilityChangeListener
     );
     clearTimeout(timeout);
   };
