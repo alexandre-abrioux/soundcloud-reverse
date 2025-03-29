@@ -1,6 +1,0 @@
-# .eslintignore is a symlink to .prettierignore
-/.env.local
-/.env.*.local
-/dist/
-/node_modules/
-/public/libs/
