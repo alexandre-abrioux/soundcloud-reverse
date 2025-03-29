@@ -30,8 +30,8 @@ export const useSettingsStore = create<
         displayStats: false,
         updateSettings: set,
       }),
-      { name: "settings" }
+      { name: "settings" },
     ),
-    { name: "SettingsStore" }
-  )
+    { name: "SettingsStore" },
+  ),
 );

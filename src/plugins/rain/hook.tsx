@@ -28,7 +28,7 @@ const generateRandomColors = () => {
 export const useRain: PluginHook = () => {
   const { analyser, timeDomainData } = useContext(EngineContext);
   const [colors, setColors] = useState<ReturnType<typeof generateRandomColors>>(
-    generateRandomColors()
+    generateRandomColors(),
   );
   const intensity = useRainSettingsStore((state) => state.intensity);
 
@@ -65,13 +65,13 @@ export const useRain: PluginHook = () => {
       ctx.fillRect(0, 0, width, height);
 
       const maxBranches = Math.ceil(
-        Math.min(Math.exp(signal) / width, width / 80)
+        Math.min(Math.exp(signal) / width, width / 80),
       );
       if (branches.length < maxBranches)
         branches.push(
           ...new Array(maxBranches - branches.length)
             .fill(0)
-            .map(() => new Branch(width))
+            .map(() => new Branch(width)),
         );
 
       ctx.lineWidth = Math.min(signal, 1);
@@ -105,7 +105,7 @@ export const useRain: PluginHook = () => {
         }
       }
     },
-    [analyser, timeDomainData, intensity, colors]
+    [analyser, timeDomainData, intensity, colors],
   );
 
   const onClick: PluginHookReturn["onClick"] = useCallback(() => {
@@ -114,12 +114,12 @@ export const useRain: PluginHook = () => {
 
   const postResize: PluginHookReturn["postResize"] = useMemo(
     () => () => undefined,
-    []
+    [],
   );
 
   const postClear: PluginHookReturn["postClear"] = useMemo(
     () => () => undefined,
-    []
+    [],
   );
 
   return {

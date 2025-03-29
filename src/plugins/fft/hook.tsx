@@ -49,7 +49,7 @@ export const useFft: PluginHook = () => {
       nbBars = Math.floor(Math.min(nbBars, width / 3, nbValuesToKeepInArray));
       const barHorizOffset = Math.max(
         1,
-        Math.round((width - nbBars * barWidth * 1.5) / 2 + barWidth / 4)
+        Math.round((width - nbBars * barWidth * 1.5) / 2 + barWidth / 4),
       );
       const lineHeight = Math.round(Math.max(height / nbLines, 1));
       const barArraySize = Math.floor(nbValuesToKeepInArray / nbBars);
@@ -82,7 +82,7 @@ export const useFft: PluginHook = () => {
           barHorizOffset + barWidth + x * barWidthTotal,
           0,
           spaceBetweenBars,
-          height
+          height,
         );
       }
     });
@@ -104,14 +104,14 @@ export const useFft: PluginHook = () => {
       analyser.getByteFrequencyData(frequencyData);
       const frequencyDataTruncated = frequencyData.subarray(
         0,
-        nbValuesToKeepInArray
+        nbValuesToKeepInArray,
       );
       const frequencyDataGrouped = new Uint8Array(nbBars);
       let maxAmp = 0;
       for (let i = 0; i < nbBars; i++) {
         const subArray = frequencyDataTruncated.subarray(
           barArraySize * i,
-          barArraySize * (i + 1)
+          barArraySize * (i + 1),
         );
         frequencyDataGrouped[i] = Math.max.apply(null, Array.from(subArray));
         maxAmp = Math.max(frequencyDataGrouped[i], maxAmp);
@@ -146,7 +146,7 @@ export const useFft: PluginHook = () => {
           x * barWidthTotal + barHorizOffset,
           0,
           barWidth,
-          lineHeight
+          lineHeight,
         );
       }
       ctx.drawImage(preRenderCanvas, 0, 0);
@@ -166,7 +166,7 @@ export const useFft: PluginHook = () => {
       barHorizOffset,
       barArraySize,
       accent,
-    ]
+    ],
   );
 
   const postResize: PluginHookReturn["postResize"] = useMemo(() => {

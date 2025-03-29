@@ -15,6 +15,6 @@ export const useWelcomeStore = create<
       ready: false,
       makeReady: () => set({ ready: true }),
     }),
-    { name: "WelcomeStore" }
-  )
+    { name: "WelcomeStore" },
+  ),
 );

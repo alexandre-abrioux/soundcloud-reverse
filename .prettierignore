@@ -1,5 +1,6 @@
-/.env.local
-/.env.*.local
 /dist/
 /node_modules/
 /public/libs/
+/.env.local
+/.env.*.local
+/pnpm-lock.yaml

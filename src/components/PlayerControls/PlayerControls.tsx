@@ -20,7 +20,7 @@ const enterAnimation = keyframes({
 export const PlayerControls = () => {
   const paused = usePlayerStore((state) => state.paused);
   const currentPlayingTrack = usePlayerStore(
-    (state) => state.currentPlayingTrack
+    (state) => state.currentPlayingTrack,
   );
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);

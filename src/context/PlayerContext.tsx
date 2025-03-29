@@ -25,14 +25,14 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { audioCtx, analyser, gainNode, updateEngine } =
     useContext(EngineContext);
   const currentPlayingTrack = usePlayerStore(
-    (state) => state.currentPlayingTrack
+    (state) => state.currentPlayingTrack,
   );
   const setPaused = usePlayerStore((state) => state.setPaused);
   const setCurrentPlayingTrack = usePlayerStore(
-    (state) => state.setCurrentPlayingTrack
+    (state) => state.setCurrentPlayingTrack,
   );
   const setCurrentPlayingPlaylist = usePlayerStore(
-    (state) => state.setCurrentPlayingPlaylist
+    (state) => state.setCurrentPlayingPlaylist,
   );
 
   const player = useMemo(() => {
@@ -76,7 +76,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           audioCtx.resume(); // Fixes muted in Chrome
           setCurrentPlayingPlaylist(player._playlist);
           setCurrentPlayingTrack(
-            player._playlist.tracks[player._playlistIndex]
+            player._playlist.tracks[player._playlistIndex],
           );
           updateEngine();
           setPaused(false);
@@ -118,7 +118,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         playlistIndex: playlist.tracks.findIndex(findByID(track.id)),
       });
     },
-    [player]
+    [player],
   );
 
   const contextValue: PlayerContext = {
@@ -128,7 +128,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const contextValueMemoized = useMemo(
     () => contextValue,
-    Object.values(contextValue)
+    Object.values(contextValue),
   );
 
   return (

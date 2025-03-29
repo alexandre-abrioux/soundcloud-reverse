@@ -23,6 +23,6 @@ export const usePlaylistsStore = create<
       setProgress: (progress: number) => set({ progress }),
       resetProgress: () => set({ progress: 0, step: initStep }),
     }),
-    { name: "PlaylistsStore" }
-  )
+    { name: "PlaylistsStore" },
+  ),
 );

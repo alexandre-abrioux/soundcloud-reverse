@@ -4,5 +4,5 @@ import { convertPluginSettingsToStore } from "../utils";
 
 export const useRainSettingsStore = convertPluginSettingsToStore(
   name,
-  settings
+  settings,
 );

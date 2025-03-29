@@ -7,7 +7,7 @@ type PluginSettingsStore<T extends Record<string, number>> = T & {
 
 export const createPluginSettingsStore = <T extends Record<string, number>>(
   name: string,
-  settingsDefaults: T
+  settingsDefaults: T,
 ) =>
   create<
     PluginSettingsStore<T>,
@@ -19,8 +19,8 @@ export const createPluginSettingsStore = <T extends Record<string, number>>(
           ...settingsDefaults,
           updateSettings: set,
         }),
-        { name: `plugin.${name}` }
+        { name: `plugin.${name}` },
       ),
-      { name: `PluginSettingsStore-${name}` }
-    )
+      { name: `PluginSettingsStore-${name}` },
+    ),
   );

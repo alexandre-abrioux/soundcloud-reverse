@@ -25,6 +25,6 @@ export const usePlayerStore = create<
       setCurrentPlayingPlaylist: (playlist: SoundCloudPlaylist) =>
         set({ currentPlayingPlaylist: playlist }),
     }),
-    { name: "PlayerStore" }
-  )
+    { name: "PlayerStore" },
+  ),
 );

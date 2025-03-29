@@ -33,8 +33,8 @@ export const useAuthStore = create<
         setState: (state) => set({ state }),
         setCodeVerifier: (codeVerifier) => set({ codeVerifier }),
       }),
-      { name: "soundcloud.token" }
+      { name: "soundcloud.token" },
     ),
-    { name: "AuthStore" }
-  )
+    { name: "AuthStore" },
+  ),
 );

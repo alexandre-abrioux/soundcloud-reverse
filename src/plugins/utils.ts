@@ -3,7 +3,7 @@ import { PluginSettings } from "./plugins";
 
 export const convertPluginSettingsToStore = (
   name: string,
-  settings: PluginSettings
+  settings: PluginSettings,
 ) => {
   const settingsDefaults: Record<string, number> = {};
   for (const setting in settings) {

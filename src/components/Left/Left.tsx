@@ -49,5 +49,5 @@ const LeftContent = memo(
         </Box>
       </Box>
     );
-  }
+  },
 );

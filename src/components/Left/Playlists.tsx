@@ -10,7 +10,7 @@ export const Playlists = () => {
   const { playlists } = usePlaylists();
   const resetProgress = usePlaylistsStore((state) => state.resetProgress);
   const selectedPlaylistID = useSettingsStore(
-    (state) => state.selectedPlaylistID
+    (state) => state.selectedPlaylistID,
   );
   const updateSettings = useSettingsStore((state) => state.updateSettings);
   const queryClient = useQueryClient();

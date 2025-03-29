@@ -11,7 +11,7 @@ export const clearCanvas = (ctx: CanvasRenderingContext2D) => {
 export const resizeCanvasKeepContent = (
   ctx: CanvasRenderingContext2D,
   w: number,
-  h: number
+  h: number,
 ) => {
   const canvas = ctx.canvas;
   const _canvas = window.document.createElement("canvas");

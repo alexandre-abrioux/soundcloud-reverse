@@ -9,7 +9,7 @@ export const usePlaylists = () => {
   const setStep = usePlaylistsStore((state) => state.setStep);
   const setProgress = usePlaylistsStore((state) => state.setProgress);
   const selectedPlaylistID = useSettingsStore(
-    (state) => state.selectedPlaylistID
+    (state) => state.selectedPlaylistID,
   );
   const updateSettings = useSettingsStore((state) => state.updateSettings);
 
@@ -20,9 +20,8 @@ export const usePlaylists = () => {
     queryFn: async () => {
       //---------------------------------------------------------------------------------
       // Retrieve Playlists
-      const playlists: SoundCloudPlaylist[] = await window.SC.get(
-        "/me/playlists"
-      );
+      const playlists: SoundCloudPlaylist[] =
+        await window.SC.get("/me/playlists");
       // The track arrays returned by /me/playlists are ordered by track creation date.
       // We retrieve the chronological order by fetching each playlist individually.
       // We then reverse that order.
@@ -35,7 +34,7 @@ export const usePlaylists = () => {
             (playlist: SoundCloudPlaylist) => {
               nbPlaylistLoaded++;
               const percent = Math.round(
-                (nbPlaylistLoaded / nbPlaylistsToLoad) * 100
+                (nbPlaylistLoaded / nbPlaylistsToLoad) * 100,
               );
               console.info(
                 "[" +
@@ -44,13 +43,13 @@ export const usePlaylists = () => {
                   playlists[i].id +
                   " details from SoundCloud (" +
                   playlists[i].title +
-                  ")"
+                  ")",
               );
               playlists[i].tracks = playlist.tracks.reverse();
               setProgress(percent);
               setStep("Loaded playlist " + playlists[i].title);
-            }
-          )
+            },
+          ),
         );
       }
       await Promise.all(promises);

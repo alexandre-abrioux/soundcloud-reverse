@@ -12,13 +12,13 @@ export const Tracks = () => {
   const { play } = useContext(PlayerContext);
   const { playlists } = usePlaylists();
   const currentPlayingTrack = usePlayerStore(
-    (state) => state.currentPlayingTrack
+    (state) => state.currentPlayingTrack,
   );
   const selectedPlaylistID = useSettingsStore(
-    (state) => state.selectedPlaylistID
+    (state) => state.selectedPlaylistID,
   );
   const playlist = playlists?.find(
-    (playlist) => playlist.id === selectedPlaylistID
+    (playlist) => playlist.id === selectedPlaylistID,
   );
 
   if (!playlist) return null;
@@ -31,7 +31,7 @@ export const Tracks = () => {
       const track = playlist.tracks[Number(trackIndex)];
       play(playlist, track);
     },
-    [play, playlist]
+    [play, playlist],
   );
 
   const tracks = playlist?.tracks;

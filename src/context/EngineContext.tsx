@@ -80,7 +80,7 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     const nbValuesToKeepInArray = normalize(
       maxFrequencyDisplayed,
       maxFrequencyInArray,
-      analyser.frequencyBinCount
+      analyser.frequencyBinCount,
     );
     setMaxFrequencyInArray(maxFrequencyInArray);
     setNbValuesToKeepInArray(nbValuesToKeepInArray);
@@ -105,7 +105,7 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const contextValueMemoized = useMemo(
     () => contextValue,
-    Object.values(contextValue)
+    Object.values(contextValue),
   );
 
   return (

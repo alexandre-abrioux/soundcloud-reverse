@@ -18,7 +18,7 @@ export const PlayerWaves = () => {
   const { player } = useContext(PlayerContext);
   const paused = usePlayerStore((state) => state.paused);
   const currentPlayingTrack = usePlayerStore(
-    (state) => state.currentPlayingTrack
+    (state) => state.currentPlayingTrack,
   );
   const [hovering, setHovering] = useState(false);
 
@@ -31,11 +31,11 @@ export const PlayerWaves = () => {
     async () => {
       if (!currentPlayingTrack?.waveform_url) return;
       const waveformData = await fetch(
-        currentPlayingTrack.waveform_url.replace(/\.png$/, ".json")
+        currentPlayingTrack.waveform_url.replace(/\.png$/, ".json"),
       );
       return waveformData.json();
     },
-    { staleTime: Number.POSITIVE_INFINITY }
+    { staleTime: Number.POSITIVE_INFINITY },
   );
 
   const draw = useCallback(
@@ -52,13 +52,13 @@ export const PlayerWaves = () => {
       const currentTime = normalize(
         player.audio.currentTime,
         player.audio.duration,
-        nbBars
+        nbBars,
       );
       ctx.clearRect(0, 0, width, height);
       for (let x = 0; x < nbBars; x++) {
         const subArray = waveformData.samples.slice(
           barArraySize * x,
-          barArraySize * (x + 1)
+          barArraySize * (x + 1),
         );
         const maxValue = Math.max.apply(null, subArray);
         const barHeight = Math.floor((height * maxValue) / waveformData.height);
@@ -70,18 +70,18 @@ export const PlayerWaves = () => {
           x * gapSize,
           (2 * height) / 3,
           barsSize,
-          (-barHeight * 2) / 3
+          (-barHeight * 2) / 3,
         );
         ctx.fillStyle = fillStyle + "0.5)";
         ctx.fillRect(
           x * gapSize,
           (2 * height) / 3 + spaceSize,
           barsSize,
-          barHeight / 3
+          barHeight / 3,
         );
       }
     },
-    [player, waveformData]
+    [player, waveformData],
   );
 
   const seek = useCallback(
@@ -91,11 +91,11 @@ export const PlayerWaves = () => {
       const position = normalize(
         renderWaveCursor,
         canvas.width,
-        player.audio.duration
+        player.audio.duration,
       );
       player.setTime(position);
     },
-    [player]
+    [player],
   );
 
   const { canvasRef, canvas } = useCanvas({

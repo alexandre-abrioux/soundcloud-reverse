@@ -4,7 +4,7 @@ import { usePlayerStore } from "../../hooks/stores/player-store";
 
 export const PlayerArtwork = () => {
   const currentPlayingTrack = usePlayerStore(
-    (state) => state.currentPlayingTrack
+    (state) => state.currentPlayingTrack,
   );
   const [imageLoaded, setImageLoaded] = useState(false);
 

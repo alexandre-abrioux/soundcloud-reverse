@@ -3,7 +3,7 @@ import { PluginHook, PluginHookReturn } from "../plugins/plugins";
 import { useCurrentPlugin } from "../hooks/useCurrentPlugin";
 
 export const PluginContext = createContext<PluginHookReturn>(
-  {} as PluginHookReturn
+  {} as PluginHookReturn,
 );
 PluginContext.displayName = "PluginContext";
 
