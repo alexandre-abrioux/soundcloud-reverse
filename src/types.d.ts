@@ -9,8 +9,9 @@ declare module "soundcloud-audio" {
     off(event: string, listener: EventListener): this;
   }
   class SoundCloudAudio {
-    constructor(token: string): void;
+    constructor(): void;
     audio: HTMLMediaElement;
+    _oauthToken: string;
     _playlist: SoundCloudPlaylist;
     _playlistIndex: number;
   }

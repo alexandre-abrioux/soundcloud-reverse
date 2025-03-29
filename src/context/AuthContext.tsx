@@ -6,11 +6,17 @@ import React, {
   useState,
 } from "react";
 import { useAuthStore } from "../hooks/stores/auth-store";
-import { generateCodeVerifier, OAuth2Client } from "@badgateway/oauth2-client";
+import {
+  generateCodeVerifier,
+  OAuth2Client,
+  OAuth2Token,
+} from "@badgateway/oauth2-client";
 import { useNavigate } from "react-router";
+import { runAt } from "../utils/time";
 
 type AuthContext = {
   connect: () => void;
+  logout: () => void;
   handleOAuthRedirect: () => void;
   isConnected: boolean;
 };
@@ -46,6 +52,7 @@ const oAuth2Client = new OAuth2Client({
 export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const {
     accessToken,
+    accessTokenExpiresAt,
     codeVerifier,
     state,
     setAccessToken,
@@ -57,6 +64,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [isConnected, setIsConnected] = useState(false);
   const navigate = useNavigate();
 
+  // initialize OAuth2 code verifier and state
   useEffect(() => {
     void (async () => {
       if (!codeVerifier) setCodeVerifier(await generateCodeVerifier());
@@ -64,6 +72,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     })();
   }, [codeVerifier, state]);
 
+  // initialize SoundCloud SDK on login or token refresh
   useEffect(() => {
     if (accessToken) {
       window.SC.initialize({
@@ -74,6 +83,33 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     }
     setIsConnected(Boolean(accessToken));
   }, [accessToken]);
+
+  const logout = useCallback(() => {
+    localStorage.clear();
+    window.location.reload();
+  }, []);
+
+  const renew = useCallback(
+    async (refreshToken: string) => {
+      try {
+        const newToken = await oAuth2Client.refreshToken({
+          refreshToken,
+        } as OAuth2Token);
+        setAccessToken(newToken.accessToken);
+        setAccessTokenExpiresAt(newToken.expiresAt?.toString() || "");
+      } catch (e) {
+        logout();
+      }
+    },
+    [oAuth2Client, logout]
+  );
+
+  // renew the access token when it is expiring soon
+  useEffect(() => {
+    if (!accessTokenExpiresAt) return;
+    // Will refresh right away on page load if the REFRESH_AT time is already passed
+    return runAt(Number(accessTokenExpiresAt), renew);
+  }, [accessTokenExpiresAt, renew]);
 
   const connect = useCallback(async () => {
     // In a browser this might work as follows:
@@ -106,7 +142,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     navigate("/");
   }, [codeVerifier, state, setAccessToken, navigate]);
 
-  const contextValue = { connect, handleOAuthRedirect, isConnected };
+  const contextValue = { connect, logout, handleOAuthRedirect, isConnected };
 
   return (
     <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>

@@ -6,8 +6,8 @@ export default ({ mode }) => {
   // https://vitejs.dev/config/
   return defineConfig({
     base: process.env.VITE_BASE_PATH,
-    server: { port: 3000, host: true },
-    preview: { port: 3000, host: true },
+    server: { port: 3000, host: true, open: "http://sc.webdev" },
+    preview: { port: 3000, host: true, open: "http://sc.webdev" },
     plugins: [
       react({
         jsxImportSource: "@emotion/react",

@@ -36,10 +36,14 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   );
 
   const player = useMemo(() => {
-    if (!accessToken) return;
-    const player = new SoundCloudAudio(accessToken);
+    const player = new SoundCloudAudio();
     player.audio.crossOrigin = "anonymous";
     return player;
+  }, []);
+
+  useEffect(() => {
+    if (!accessToken) return;
+    player._oauthToken = accessToken;
   }, [accessToken]);
 
   const audioSrc = useMemo(() => {

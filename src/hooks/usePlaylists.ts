@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { useSettingsStore } from "./stores/settings-store";
 import { useQuery } from "@tanstack/react-query";
-import { AuthContext } from "../components/AuthContext";
 import { usePlaylistsStore } from "./stores/playlists-store";
+import { AuthContext } from "../context/AuthContext";
 
 export const usePlaylists = () => {
   const { isConnected } = useContext(AuthContext);
