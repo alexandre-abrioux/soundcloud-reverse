@@ -1,11 +1,12 @@
 import { fftPlugin } from "./fft";
 import { createPluginSettingsStore } from "../hooks/stores/plugin-settings-store";
 import { rainPlugin } from "./rain";
+import { MouseEventHandler } from "react";
 
 export type PluginHook = () => PluginHookReturn;
 export type PluginHookReturn = {
   draw: (ctx: CanvasRenderingContext2D, time: DOMHighResTimeStamp) => void;
-  onClick?: (e?: MouseEvent) => void;
+  onClick?: MouseEventHandler;
   postResize: ((ctx: CanvasRenderingContext2D) => void) | undefined;
   postClear?: (() => void) | undefined;
 };

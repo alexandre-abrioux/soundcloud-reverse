@@ -98,7 +98,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         } as OAuth2Token);
         setAccessToken(newToken.accessToken);
         setAccessTokenExpiresAt(newToken.expiresAt?.toString() || "");
-      } catch (e) {
+      } catch {
         logout();
       }
     },

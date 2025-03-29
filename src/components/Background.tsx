@@ -75,8 +75,8 @@ export const Background = () => {
     }
     const timeout = window.setTimeout(() => {
       setFftStart(false);
-      context && clearCanvas(context);
-      postClear && postClear();
+      if (context) clearCanvas(context);
+      if (postClear) postClear();
     }, 1000);
     return () => clearTimeout(timeout);
   }, [visible, context, postClear]);

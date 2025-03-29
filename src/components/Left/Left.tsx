@@ -25,9 +25,7 @@ const LeftContent = memo(
         width="100vw"
         pr={5} // hide scrollbar
         sx={{ overflowY: "scroll", userSelect: "none" }}
-        onClick={() => {
-          onClick && onClick();
-        }}
+        onClick={onClick}
       >
         <Box
           display="inline-block"

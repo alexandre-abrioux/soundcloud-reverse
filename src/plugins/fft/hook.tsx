@@ -182,7 +182,7 @@ export const useFft: PluginHook = () => {
 
   const postClear: PluginHookReturn["postClear"] = useMemo(() => {
     return () => {
-      preRenderCtx && clearCanvas(preRenderCtx);
+      if (preRenderCtx) clearCanvas(preRenderCtx);
     };
   }, [preRenderCtx]);
 

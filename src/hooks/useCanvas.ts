@@ -91,12 +91,12 @@ export const useCanvas = ({
       animationFrameId = window.requestAnimationFrame(render);
       if (maxFps !== null) {
         const delta = time - previousTime;
-        if (delta < maxDelta) return;
+        if (maxDelta && delta < maxDelta) return;
       }
-      updateStats && stats?.begin();
+      if (updateStats) stats?.begin();
       draw(context, time);
       previousTime = time;
-      updateStats && stats?.end();
+      if (updateStats) stats?.end();
     };
     animationFrameId = window.requestAnimationFrame(render);
     return () => {
