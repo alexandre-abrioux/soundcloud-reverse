@@ -1,5 +1,10 @@
 declare module "soundcloud-audio" {
-  interface SoundCloudAudio {
+  class SoundCloudAudio {
+    constructor(): void;
+    audio: HTMLMediaElement;
+    _oauthToken: string;
+    _playlist: SoundCloudPlaylist;
+    _playlistIndex: number;
     play(opts?: { playlistIndex?: number }): void;
     pause(): void;
     previous(): void;
@@ -7,13 +12,6 @@ declare module "soundcloud-audio" {
     setTime(time: number): void;
     on(event: string, listener: EventListener): this;
     off(event: string, listener: EventListener): this;
-  }
-  class SoundCloudAudio {
-    constructor(): void;
-    audio: HTMLMediaElement;
-    _oauthToken: string;
-    _playlist: SoundCloudPlaylist;
-    _playlistIndex: number;
   }
   export default SoundCloudAudio;
 }
