@@ -72,10 +72,12 @@ export const usePlaylists = () => {
 
   useEffect(() => {
     if (
-      selectedPlaylistID === null ||
-      playlists?.every((playlist) => playlist.id !== selectedPlaylistID)
+      playlists &&
+      playlists.length > 0 &&
+      (selectedPlaylistID === null ||
+        playlists.every((playlist) => playlist.id !== selectedPlaylistID))
     ) {
-      updateSettings({ selectedPlaylistID: playlists?.[0]?.id });
+      updateSettings({ selectedPlaylistID: playlists[0]?.id });
     }
   }, [selectedPlaylistID, playlists]);
 
