@@ -1,13 +1,19 @@
-import { defineConfig, loadEnv } from "vite";
+import { defineConfig, loadEnv, ServerOptions } from "vite";
 import react from "@vitejs/plugin-react";
 
+// https://vitejs.dev/config/
 export default ({ mode }) => {
   process.env = { ...process.env, ...loadEnv(mode, process.cwd()) };
-  // https://vitejs.dev/config/
+  const serverConfig: ServerOptions = {
+    port: 3000,
+    host: true,
+    open: "http://sc.webdev",
+    allowedHosts: true,
+  };
   return defineConfig({
     base: process.env.VITE_BASE_PATH,
-    server: { port: 3000, host: true, open: "http://sc.webdev" },
-    preview: { port: 3000, host: true, open: "http://sc.webdev" },
+    server: serverConfig,
+    preview: serverConfig,
     plugins: [
       react({
         jsxImportSource: "@emotion/react",
