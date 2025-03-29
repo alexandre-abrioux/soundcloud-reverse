@@ -26,17 +26,17 @@ export const PlayerWaves = () => {
     width: number;
     height: number;
     samples: number[];
-  }>(
-    ["soundcloud.wave", currentPlayingTrack?.id],
-    async () => {
+  }>({
+    queryKey: ["soundcloud.wave", currentPlayingTrack?.id],
+    queryFn: async () => {
       if (!currentPlayingTrack?.waveform_url) return;
       const waveformData = await fetch(
         currentPlayingTrack.waveform_url.replace(/\.png$/, ".json"),
       );
       return waveformData.json();
     },
-    { staleTime: Number.POSITIVE_INFINITY },
-  );
+    staleTime: Number.POSITIVE_INFINITY,
+  });
 
   const draw = useCallback(
     (ctx: CanvasRenderingContext2D) => {
