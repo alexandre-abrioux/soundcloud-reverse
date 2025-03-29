@@ -10,7 +10,7 @@ persistQueryClient({
   queryClient,
   persister,
   dehydrateOptions: {
-    dehydrateMutations: false,
+    shouldDehydrateMutation: () => false,
     shouldDehydrateQuery: (query) => {
       return (
         query.state.status === "success" &&

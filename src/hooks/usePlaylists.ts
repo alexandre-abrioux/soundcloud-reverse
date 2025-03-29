@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { useSettingsStore } from "./stores/settings-store";
 import { useQuery } from "@tanstack/react-query";
 import { usePlaylistsStore } from "./stores/playlists-store";
@@ -68,15 +68,18 @@ export const usePlaylists = () => {
       setStep("Loaded favorites.");
       return playlists;
     },
-    onSuccess: (playlists) => {
-      if (
-        selectedPlaylistID === null ||
-        !playlists.some((playlist) => playlist.id === selectedPlaylistID)
-      ) {
-        updateSettings({ selectedPlaylistID: playlists[0]?.id });
-      }
-    },
   });
+
+  useEffect(() => {
+    if (
+      playlists &&
+      playlists.length > 0 &&
+      (selectedPlaylistID === null ||
+        playlists.every((playlist) => playlist.id !== selectedPlaylistID))
+    ) {
+      updateSettings({ selectedPlaylistID: playlists[0].id });
+    }
+  }, [selectedPlaylistID, playlists]);
 
   return { playlists, isFetching };
 };
