@@ -11,7 +11,13 @@ export const PluginContainer: React.FC<
   PropsWithChildren<{ plugin: PluginHook }>
 > = ({ plugin: usePlugin, children }) => {
   const plugin = usePlugin();
-  const pluginMemoized = useMemo(() => plugin, Object.values(plugin));
+
+  const pluginMemoized = useMemo(
+    () => plugin,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    Object.values(plugin),
+  );
+
   return (
     <PluginContext.Provider value={pluginMemoized}>
       {children}

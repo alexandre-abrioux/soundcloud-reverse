@@ -44,7 +44,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   useEffect(() => {
     if (!accessToken) return;
     player._oauthToken = accessToken;
-  }, [accessToken]);
+  }, [accessToken, player]);
 
   const audioSrc = useMemo(() => {
     if (!audioCtx) return;
@@ -73,7 +73,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       setPaused(true);
       switch (e.type) {
         case "playing":
-          audioCtx.resume(); // Fixes muted in Chrome
+          void audioCtx.resume(); // Fixes muted in Chrome
           setCurrentPlayingPlaylist(player._playlist);
           setCurrentPlayingTrack(
             player._playlist.tracks[player._playlistIndex],
@@ -105,7 +105,16 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       player.off("error", playerEventListener);
       player.off("ended", playerEventListener);
     };
-  }, [player, currentPlayingTrack, currentPlayingTrack]);
+  }, [
+    player,
+    currentPlayingTrack,
+    audioCtx,
+    analyser,
+    setPaused,
+    setCurrentPlayingPlaylist,
+    setCurrentPlayingTrack,
+    updateEngine,
+  ]);
 
   const play = useCallback<PlayerContext["play"]>(
     (playlist, track) => {
@@ -118,7 +127,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         playlistIndex: playlist.tracks.findIndex(findByID(track.id)),
       });
     },
-    [player],
+    [player, setCurrentPlayingPlaylist, setCurrentPlayingTrack],
   );
 
   const contextValue: PlayerContext = {
@@ -128,6 +137,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const contextValueMemoized = useMemo(
     () => contextValue,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     Object.values(contextValue),
   );
 

@@ -21,10 +21,9 @@ export const Tracks = () => {
     (playlist) => playlist.id === selectedPlaylistID,
   );
 
-  if (!playlist) return null;
-
   const playTrack = useCallback(
     (e: MouseEvent<HTMLDivElement>) => {
+      if (!playlist) return;
       const trackIndex =
         e.currentTarget.attributes.getNamedItem("data-track-index")?.value;
       if (!trackIndex) return;

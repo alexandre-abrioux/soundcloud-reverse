@@ -79,7 +79,7 @@ export const usePlaylists = () => {
     ) {
       updateSettings({ selectedPlaylistID: playlists[0].id });
     }
-  }, [selectedPlaylistID, playlists]);
+  }, [selectedPlaylistID, playlists, updateSettings]);
 
   return { playlists, isFetching };
 };

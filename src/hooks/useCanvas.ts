@@ -48,7 +48,7 @@ export const useCanvas = ({
     }
     ctx.imageSmoothingEnabled = false;
     setContext(ctx);
-  }, [canvas]);
+  }, [canvas, ctxOptions]);
 
   // click on canvas
   useEffect(() => {

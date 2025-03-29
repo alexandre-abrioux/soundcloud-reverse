@@ -105,6 +105,7 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const contextValueMemoized = useMemo(
     () => contextValue,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     Object.values(contextValue),
   );
 

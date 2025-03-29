@@ -71,7 +71,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       if (!codeVerifier) setCodeVerifier(await generateCodeVerifier());
       if (!state) setState(await generateCodeVerifier());
     })();
-  }, [codeVerifier, state]);
+  }, [codeVerifier, setCodeVerifier, setState, state]);
 
   // initialize SoundCloud SDK on login or token refresh
   useEffect(() => {
@@ -102,7 +102,7 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         logout();
       }
     },
-    [oAuth2Client, logout],
+    [setAccessToken, setAccessTokenExpiresAt, logout],
   );
 
   // renew the access token when it is expiring soon
@@ -141,7 +141,14 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setAccessTokenExpiresAt(oauth2Token.expiresAt?.toString() || "");
     setRefreshToken(oauth2Token.refreshToken || "");
     navigate("/");
-  }, [codeVerifier, state, setAccessToken, navigate]);
+  }, [
+    codeVerifier,
+    state,
+    setAccessToken,
+    setAccessTokenExpiresAt,
+    setRefreshToken,
+    navigate,
+  ]);
 
   const contextValue = { connect, logout, handleOAuthRedirect, isConnected };
 
