@@ -67,12 +67,13 @@ export const useRain: PluginHook = () => {
       const maxBranches = Math.ceil(
         Math.min(Math.exp(signal) / width, width / 80),
       );
-      if (branches.length < maxBranches)
-        branches.push(
-          ...new Array(maxBranches - branches.length)
-            .fill(0)
-            .map(() => new Branch(width)),
-        );
+
+      if (branches.length < maxBranches) {
+        const random = Math.random();
+        if (random < signal / 50) {
+          branches.push(new Branch(width));
+        }
+      }
 
       ctx.lineWidth = Math.min(signal, 1);
       const color_r = Math.floor(signal * random_r_multiplicateur) + random_r;
