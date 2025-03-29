@@ -77,7 +77,7 @@ export const usePlaylists = () => {
       (selectedPlaylistID === null ||
         playlists.every((playlist) => playlist.id !== selectedPlaylistID))
     ) {
-      updateSettings({ selectedPlaylistID: playlists[0]?.id });
+      updateSettings({ selectedPlaylistID: playlists[0].id });
     }
   }, [selectedPlaylistID, playlists]);
 
