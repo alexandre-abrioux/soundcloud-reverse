@@ -9,6 +9,7 @@ export interface SettingsStore {
   fftEnlarge: boolean;
   selectedPlugin: string;
   selectedPlaylistID: number | null;
+  pinPlaylists: boolean;
   displayStats: boolean;
   updateSettings: (settings: Partial<SettingsStore>) => void;
 }
@@ -27,6 +28,7 @@ export const useSettingsStore = create<
         fftEnlarge: true,
         selectedPlugin: "fft",
         selectedPlaylistID: null,
+        pinPlaylists: false,
         displayStats: false,
         updateSettings: set,
       }),

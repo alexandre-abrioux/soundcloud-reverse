@@ -3,12 +3,14 @@ import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { useCurrentPlugin } from "../../hooks/useCurrentPlugin.js";
 
 export const SettingsContentSliders = () => {
+  const fftShow = useSettingsStore((state) => state.fftShow);
   const {
     name: pluginName,
     needsFrequencyData,
     settings,
     usePluginSettingsStore,
   } = useCurrentPlugin();
+  if (!fftShow) return null;
 
   return (
     <>

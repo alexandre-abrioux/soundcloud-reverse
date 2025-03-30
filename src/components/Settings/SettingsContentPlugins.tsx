@@ -6,7 +6,7 @@ export const SettingsContentPlugins = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);
   const selectedPluginName = useSettingsStore((state) => state.selectedPlugin);
   const updateSettings = useSettingsStore((state) => state.updateSettings);
-  if (!fftShow || plugins.length <= 0) return null;
+  if (!fftShow) return null;
 
   return (
     <Box display="flex" flexDirection="column" whiteSpace="nowrap">

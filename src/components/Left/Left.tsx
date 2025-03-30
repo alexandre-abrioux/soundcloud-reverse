@@ -3,7 +3,7 @@ import { Playlists } from "./Playlists.js";
 import { Tracks } from "./Tracks.js";
 import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { usePlayerStore } from "../../hooks/stores/player-store.js";
-import { memo, useContext } from "react";
+import { memo, useContext, useState } from "react";
 import { PluginContext } from "../../context/PluginContext.js";
 import { PluginHookReturn } from "../../plugins/plugins.js";
 
@@ -17,6 +17,8 @@ const LeftContent = memo(
     const paused = usePlayerStore((state) => state.paused);
     const fftShow = useSettingsStore((state) => state.fftShow);
     const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
+    const pinPlaylists = useSettingsStore((state) => state.pinPlaylists);
+    const [forceShowLeft, setForceShowLeft] = useState(false);
 
     return (
       <Box
@@ -29,12 +31,15 @@ const LeftContent = memo(
       >
         <Box
           display="inline-block"
-          paddingX={3}
-          paddingY={4}
+          minWidth="40vw"
+          minHeight="100vh"
           ml={3}
           sx={{
             background: `rgba(0, 0, 0, ${fftShow ? "0.8" : "0.2"})`,
-            opacity: fftShow && !paused && fftEnlarge ? 0 : 1,
+            opacity:
+              forceShowLeft || pinPlaylists || !fftShow || !fftEnlarge || paused
+                ? 1
+                : 0,
             transitionProperty: "background, opacity",
             transitionDuration: "0.5s",
             "&:hover": {
@@ -42,7 +47,7 @@ const LeftContent = memo(
             },
           }}
         >
-          <Playlists />
+          <Playlists setForceShowLeft={setForceShowLeft} />
           <Tracks />
         </Box>
       </Box>

@@ -4,6 +4,7 @@ import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 export const SettingsContentLeft = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
+  const pinPlaylists = useSettingsStore((state) => state.pinPlaylists);
   const displayStats = useSettingsStore((state) => state.displayStats);
   const updateSettings = useSettingsStore((state) => state.updateSettings);
 
@@ -30,6 +31,18 @@ export const SettingsContentLeft = () => {
                   checked={fftEnlarge}
                   onChange={(e) =>
                     updateSettings({ fftEnlarge: e.target.checked })
+                  }
+                />
+              }
+              sx={{ marginRight: 0 }}
+            />
+            <FormControlLabel
+              label="Pin Playlists"
+              control={
+                <Switch
+                  checked={pinPlaylists}
+                  onChange={(e) =>
+                    updateSettings({ pinPlaylists: e.target.checked })
                   }
                 />
               }

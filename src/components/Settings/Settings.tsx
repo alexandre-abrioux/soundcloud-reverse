@@ -9,6 +9,9 @@ export const Settings = () => (
     right={0}
     sx={{
       userSelect: "none",
+      "> .MuiBox-root:last-of-type": {
+        minWidth: "475px",
+      },
       "&:hover": {
         "> .MuiBox-root:first-of-type": {
           opacity: 0,
