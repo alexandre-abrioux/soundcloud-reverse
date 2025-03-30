@@ -1,5 +1,5 @@
-import { createPluginSettingsStore } from "../hooks/stores/plugin-settings-store";
-import { PluginSettings } from "./plugins";
+import { createPluginSettingsStore } from "../hooks/stores/plugin-settings-store.js";
+import { PluginSettings } from "./plugins.js";
 
 export const convertPluginSettingsToStore = (
   name: string,

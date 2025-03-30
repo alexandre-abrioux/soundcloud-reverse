@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { resizeCanvasKeepContent } from "../utils";
-import { StatsContext } from "../context/StatsContext";
+import { resizeCanvasKeepContent } from "../utils.js";
+import { StatsContext } from "../context/StatsContext.js";
 
 export const resizeCanvas = (ctx: CanvasRenderingContext2D) => {
   const canvas = ctx.canvas;

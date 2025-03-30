@@ -1,7 +1,6 @@
 import { Box } from "@mui/material";
-import { StoreApi, UseBoundStore } from "zustand";
-import { Mutate } from "zustand/vanilla";
-import { SliderControl } from "./SliderControl";
+import { Mutate, StoreApi, UseBoundStore } from "zustand";
+import { SliderControl } from "./SliderControl.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type SliderStoreContent = Record<string, any> & {

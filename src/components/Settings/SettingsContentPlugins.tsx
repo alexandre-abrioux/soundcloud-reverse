@@ -1,6 +1,6 @@
 import { Box, FormControlLabel, Radio, RadioGroup } from "@mui/material";
-import { plugins } from "../../plugins/plugins";
-import { useSettingsStore } from "../../hooks/stores/settings-store";
+import { plugins } from "../../plugins/plugins.js";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 
 export const SettingsContentPlugins = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);

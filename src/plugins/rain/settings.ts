@@ -1,4 +1,4 @@
-import { PluginSettings } from "../plugins";
+import { PluginSettings } from "../plugins.js";
 
 export const settings: PluginSettings = {
   intensity: {

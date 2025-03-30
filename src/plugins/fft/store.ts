@@ -1,5 +1,5 @@
-import { settings } from "./settings";
-import { name } from "./name";
-import { convertPluginSettingsToStore } from "../utils";
+import { settings } from "./settings.js";
+import { name } from "./name.js";
+import { convertPluginSettingsToStore } from "../utils.js";
 
 export const useFftSettingsStore = convertPluginSettingsToStore(name, settings);

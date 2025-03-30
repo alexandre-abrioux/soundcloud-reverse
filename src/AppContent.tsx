@@ -1,9 +1,9 @@
 import { useContext } from "react";
-import { usePlaylists } from "./hooks/usePlaylists";
-import { Main } from "./components/Main";
-import { Loading } from "./components/Loading";
-import { Welcome } from "./components/Welcome";
-import { AuthContext } from "./context/AuthContext";
+import { usePlaylists } from "./hooks/usePlaylists.js";
+import { Main } from "./components/Main.js";
+import { Loading } from "./components/Loading.js";
+import { Welcome } from "./components/Welcome.js";
+import { AuthContext } from "./context/AuthContext.js";
 
 export const AppContent = () => {
   const { isConnected } = useContext(AuthContext);

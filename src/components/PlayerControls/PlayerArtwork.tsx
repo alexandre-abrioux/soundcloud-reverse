@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Box, Skeleton } from "@mui/material";
-import { usePlayerStore } from "../../hooks/stores/player-store";
+import { usePlayerStore } from "../../hooks/stores/player-store.js";
 
 export const PlayerArtwork = () => {
   const currentPlayingTrack = usePlayerStore(

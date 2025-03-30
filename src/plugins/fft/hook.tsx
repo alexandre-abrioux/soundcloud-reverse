@@ -5,10 +5,10 @@ import {
   logScaleOneTo100,
   normalize,
   resizeCanvasKeepContent,
-} from "../../utils";
-import { EngineContext } from "../../context/EngineContext";
-import { useFftSettingsStore } from "./store";
-import { PluginHook, PluginHookReturn } from "../plugins";
+} from "../../utils.js";
+import { EngineContext } from "../../context/EngineContext.js";
+import { useFftSettingsStore } from "./store.js";
+import { PluginHook, PluginHookReturn } from "../plugins.js";
 
 export const useFft: PluginHook = () => {
   const { analyser, nbValuesToKeepInArray, frequencyData, frequencyDataCopy } =

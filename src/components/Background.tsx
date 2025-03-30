@@ -1,10 +1,10 @@
-import { useSettingsStore } from "../hooks/stores/settings-store";
+import { useSettingsStore } from "../hooks/stores/settings-store.js";
 import { css } from "@mui/material";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { resizeCanvas, useCanvas } from "../hooks/useCanvas";
-import { clearCanvas } from "../utils";
-import { usePlayerStore } from "../hooks/stores/player-store";
-import { PluginContext } from "../context/PluginContext";
+import { resizeCanvas, useCanvas } from "../hooks/useCanvas.js";
+import { clearCanvas } from "../utils.js";
+import { usePlayerStore } from "../hooks/stores/player-store.js";
+import { PluginContext } from "../context/PluginContext.js";
 
 export const Background = () => {
   const paused = usePlayerStore((state) => state.paused);

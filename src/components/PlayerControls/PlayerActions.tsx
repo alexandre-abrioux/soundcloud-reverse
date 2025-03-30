@@ -1,12 +1,12 @@
 import { Box, keyframes, SvgIcon, SvgIconProps } from "@mui/material";
 import { useContext } from "react";
-import { PlayerContext } from "../../context/PlayerContext";
+import { PlayerContext } from "../../context/PlayerContext.js";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
-import { usePlayerStore } from "../../hooks/stores/player-store";
-import { actionPink } from "../../config/theme";
+import { usePlayerStore } from "../../hooks/stores/player-store.js";
+import { actionPink } from "../../config/theme.js";
 
 const controlButtonSize = "1.5rem";
 

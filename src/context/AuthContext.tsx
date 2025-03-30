@@ -5,14 +5,14 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useAuthStore } from "../hooks/stores/auth-store";
+import { useAuthStore } from "../hooks/stores/auth-store.js";
 import {
   generateCodeVerifier,
   OAuth2Client,
   OAuth2Token,
 } from "@badgateway/oauth2-client";
 import { useNavigate } from "react-router";
-import { runAt } from "../utils/time";
+import { runAt } from "../utils/time.js";
 
 type AuthContext = {
   connect: () => void;

@@ -1,5 +1,5 @@
 import { Box, CircularProgress } from "@mui/material";
-import { usePlaylistsStore } from "../hooks/stores/playlists-store";
+import { usePlaylistsStore } from "../hooks/stores/playlists-store.js";
 
 export const Loading = () => {
   const step = usePlaylistsStore((state) => state.step);

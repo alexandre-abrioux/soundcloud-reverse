@@ -7,10 +7,10 @@ import React, {
   useMemo,
 } from "react";
 import SoundCloudAudio from "soundcloud-audio";
-import { useAuthStore } from "../hooks/stores/auth-store";
-import { EngineContext } from "./EngineContext";
-import { findByID } from "../utils";
-import { usePlayerStore } from "../hooks/stores/player-store";
+import { useAuthStore } from "../hooks/stores/auth-store.js";
+import { EngineContext } from "./EngineContext.js";
+import { findByID } from "../utils.js";
+import { usePlayerStore } from "../hooks/stores/player-store.js";
 
 type PlayerContext = {
   player: SoundCloudAudio | undefined;

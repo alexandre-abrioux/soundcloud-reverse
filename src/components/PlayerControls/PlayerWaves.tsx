@@ -1,10 +1,10 @@
 import { useCallback, useContext, useEffect, useState } from "react";
-import { PlayerContext } from "../../context/PlayerContext";
+import { PlayerContext } from "../../context/PlayerContext.js";
 import { css, Skeleton } from "@mui/material";
-import { useCanvas } from "../../hooks/useCanvas";
-import { normalize } from "../../utils";
+import { useCanvas } from "../../hooks/useCanvas.js";
+import { normalize } from "../../utils.js";
 import { useQuery } from "@tanstack/react-query";
-import { usePlayerStore } from "../../hooks/stores/player-store";
+import { usePlayerStore } from "../../hooks/stores/player-store.js";
 
 let renderWaveCursor = 0;
 const updateRenderWaveCursor = (e: MouseEvent) => {

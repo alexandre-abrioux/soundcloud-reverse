@@ -4,7 +4,7 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import { useSettingsStore } from "../hooks/stores/settings-store";
+import { useSettingsStore } from "../hooks/stores/settings-store.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type StatsContext = any | null;

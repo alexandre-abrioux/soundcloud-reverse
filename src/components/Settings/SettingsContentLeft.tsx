@@ -1,5 +1,5 @@
 import { Box, FormControlLabel, Switch } from "@mui/material";
-import { useSettingsStore } from "../../hooks/stores/settings-store";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 
 export const SettingsContentLeft = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);

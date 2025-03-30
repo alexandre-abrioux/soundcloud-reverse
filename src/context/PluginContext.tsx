@@ -1,6 +1,6 @@
 import React, { createContext, PropsWithChildren, useMemo } from "react";
-import { PluginHook, PluginHookReturn } from "../plugins/plugins";
-import { useCurrentPlugin } from "../hooks/useCurrentPlugin";
+import { PluginHook, PluginHookReturn } from "../plugins/plugins.js";
+import { useCurrentPlugin } from "../hooks/useCurrentPlugin.js";
 
 export const PluginContext = createContext<PluginHookReturn>(
   {} as PluginHookReturn,

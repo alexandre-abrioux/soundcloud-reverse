@@ -1,9 +1,9 @@
 import { Box } from "@mui/material";
-import { useSettingsStore } from "../../hooks/stores/settings-store";
-import { Logout } from "./Logout";
-import { SettingsContentLeft } from "./SettingsContentLeft";
-import { SettingsContentSliders } from "./SettingsContentSliders";
-import { SettingsContentPlugins } from "./SettingsContentPlugins";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
+import { Logout } from "./Logout.js";
+import { SettingsContentLeft } from "./SettingsContentLeft.js";
+import { SettingsContentSliders } from "./SettingsContentSliders.js";
+import { SettingsContentPlugins } from "./SettingsContentPlugins.js";
 
 export const SettingsContent = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);

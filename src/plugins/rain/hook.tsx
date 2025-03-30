@@ -1,7 +1,7 @@
 import { useCallback, useContext, useMemo, useState } from "react";
-import { EngineContext } from "../../context/EngineContext";
-import { PluginHook, PluginHookReturn } from "../plugins";
-import { useRainSettingsStore } from "./store";
+import { EngineContext } from "../../context/EngineContext.js";
+import { PluginHook, PluginHookReturn } from "../plugins.js";
+import { useRainSettingsStore } from "./store.js";
 
 const branches = new Array(0);
 

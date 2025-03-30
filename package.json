@@ -9,6 +9,7 @@
     "type": "git",
     "url": "git+https://github.com/alexandre-abrioux/soundcloud-reverse.git"
   },
+  "type": "module",
   "scripts": {
     "build": "tsc && vite build && mkdir dist/login && cp dist/index.html dist/login/index.html",
     "dev": "vite",

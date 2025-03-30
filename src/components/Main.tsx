@@ -1,8 +1,8 @@
-import { PlayerControls } from "./PlayerControls/PlayerControls";
-import { Background } from "./Background";
-import { Left } from "./Left/Left";
-import { Settings } from "./Settings/Settings";
-import { PluginProvider } from "../context/PluginContext";
+import { PlayerControls } from "./PlayerControls/PlayerControls.js";
+import { Background } from "./Background.js";
+import { Left } from "./Left/Left.js";
+import { Settings } from "./Settings/Settings.js";
+import { PluginProvider } from "../context/PluginContext.js";
 
 export const Main = () => {
   return (

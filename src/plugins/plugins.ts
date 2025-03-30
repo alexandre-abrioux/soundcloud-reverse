@@ -1,6 +1,6 @@
-import { fftPlugin } from "./fft";
-import { createPluginSettingsStore } from "../hooks/stores/plugin-settings-store";
-import { rainPlugin } from "./rain";
+import { fftPlugin } from "./fft/index.js";
+import { createPluginSettingsStore } from "../hooks/stores/plugin-settings-store.js";
+import { rainPlugin } from "./rain/index.js";
 import { MouseEventHandler } from "react";
 
 export type PluginHook = () => PluginHookReturn;

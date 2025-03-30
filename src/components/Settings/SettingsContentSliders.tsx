@@ -1,6 +1,6 @@
-import { SettingSlider, SliderStore } from "./SettingSlider";
-import { useSettingsStore } from "../../hooks/stores/settings-store";
-import { useCurrentPlugin } from "../../hooks/useCurrentPlugin";
+import { SettingSlider, SliderStore } from "./SettingSlider.js";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
+import { useCurrentPlugin } from "../../hooks/useCurrentPlugin.js";
 
 export const SettingsContentSliders = () => {
   const {

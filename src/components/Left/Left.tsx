@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
-import { Playlists } from "./Playlists";
-import { Tracks } from "./Tracks";
-import { useSettingsStore } from "../../hooks/stores/settings-store";
-import { usePlayerStore } from "../../hooks/stores/player-store";
+import { Playlists } from "./Playlists.js";
+import { Tracks } from "./Tracks.js";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
+import { usePlayerStore } from "../../hooks/stores/player-store.js";
 import { memo, useContext } from "react";
-import { PluginContext } from "../../context/PluginContext";
-import { PluginHookReturn } from "../../plugins/plugins";
+import { PluginContext } from "../../context/PluginContext.js";
+import { PluginHookReturn } from "../../plugins/plugins.js";
 
 export const Left = () => {
   const { onClick } = useContext(PluginContext);

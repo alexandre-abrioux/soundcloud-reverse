@@ -1,4 +1,4 @@
-import { PluginSettings } from "../plugins";
+import { PluginSettings } from "../plugins.js";
 
 export const settings: PluginSettings = {
   nbLinesMax: { name: "Rows", min: 1, max: 50, step: 1, default: 50 },
