@@ -1,13 +1,13 @@
 import { Box } from "@mui/material";
-import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { Logout } from "./Logout.js";
 import { SettingsContentLeft } from "./SettingsContentLeft.js";
 import { SettingsContentSliders } from "./SettingsContentSliders.js";
 import { SettingsContentPlugins } from "./SettingsContentPlugins.js";
 import { SettingsReset } from "./SettingsReset.js";
+import { useDarkTheme } from "../../hooks/useDarkTheme.js";
 
 export const SettingsContent = () => {
-  const fftShow = useSettingsStore((state) => state.fftShow);
+  const { isDark } = useDarkTheme();
 
   return (
     <Box
@@ -30,7 +30,7 @@ export const SettingsContent = () => {
         px={2}
         py={2}
         sx={{
-          background: `rgba(0, 0, 0, ${fftShow ? "0.8" : "0.2"})`,
+          background: `rgba(0, 0, 0, ${isDark ? "0.8" : "0.2"})`,
         }}
       >
         <Box display="flex">

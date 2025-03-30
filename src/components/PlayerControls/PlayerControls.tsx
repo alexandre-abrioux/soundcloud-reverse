@@ -6,6 +6,7 @@ import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { usePlayerStore } from "../../hooks/stores/player-store.js";
 import { PlayerVolume } from "./PlayerVolume.js";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
+import { useDarkTheme } from "../../hooks/useDarkTheme.js";
 
 const enterAnimation = keyframes({
   from: {
@@ -24,6 +25,7 @@ export const PlayerControls = () => {
   );
   const fftShow = useSettingsStore((state) => state.fftShow);
   const fftEnlarge = useSettingsStore((state) => state.fftEnlarge);
+  const { isDark } = useDarkTheme();
   if (!currentPlayingTrack) return null;
 
   return (
@@ -40,7 +42,7 @@ export const PlayerControls = () => {
       paddingY={2}
       borderRadius={0.5}
       sx={{
-        background: `rgba(0, 0, 0, ${fftShow && !paused ? "0.8" : "0.2"})`,
+        background: `rgba(0, 0, 0, ${isDark ? "0.8" : "0.2"})`,
         animation: `0.5s ${enterAnimation} ease`,
         transitionProperty: "background, margin-bottom",
         transitionDuration: "0.5s",

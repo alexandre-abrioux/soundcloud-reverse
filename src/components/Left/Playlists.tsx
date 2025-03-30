@@ -3,6 +3,7 @@ import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import CachedIcon from "@mui/icons-material/Cached";
 import { usePlaylists } from "../../hooks/usePlaylists.js";
 import { useEffect } from "react";
+import { useDarkTheme } from "../../hooks/useDarkTheme.js";
 
 export const Playlists = ({
   setForceShowLeft,
@@ -10,6 +11,7 @@ export const Playlists = ({
   setForceShowLeft: (forceShowLeft: boolean) => void;
 }) => {
   const { palette } = useTheme();
+  const { isDark } = useDarkTheme();
   const { playlists, refetchPlaylists } = usePlaylists();
   const selectedPlaylistID = useSettingsStore(
     (state) => state.selectedPlaylistID,
@@ -40,8 +42,8 @@ export const Playlists = ({
       top={-1} // for IntersectionObserver to work
       sx={{
         "&[data-stuck]": {
-          background: "rgba(0, 0, 0, 0.9)",
-          boxShadow: "0 0 15px black",
+          background: isDark ? "rgba(0, 0, 0, 0.9)" : "#292929",
+          boxShadow: `0 0 15px ${isDark ? "black" : "#222"}`,
           clipPath: "inset(0 0 -15px 0)",
         },
       }}
