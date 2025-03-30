@@ -1,5 +1,5 @@
 import { Slider } from "@mui/material";
-import { SliderStore } from "./SettingSlider.js";
+import { SliderStore } from "./SettingsSlider.js";
 
 export const SliderControl = ({
   store,

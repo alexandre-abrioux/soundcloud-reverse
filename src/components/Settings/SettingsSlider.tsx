@@ -14,7 +14,7 @@ export type SliderStore = UseBoundStore<
   >
 >;
 
-export const SettingSlider = ({
+export const SettingsSlider = ({
   store,
   setting,
   name,

@@ -12,7 +12,7 @@ export const Welcome = () => {
       alignItems="center"
     >
       <Button variant="contained" onClick={connect}>
-        Connect with SoundCloud
+        Log in with SoundCloud
       </Button>
     </Box>
   );

@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
+import { LOCAL_STORAGE_KEYS } from "./localstorage.js";
 
 export interface AuthStore {
   accessToken: string;
@@ -33,7 +34,7 @@ export const useAuthStore = create<
         setState: (state) => set({ state }),
         setCodeVerifier: (codeVerifier) => set({ codeVerifier }),
       }),
-      { name: "soundcloud.token" },
+      { name: LOCAL_STORAGE_KEYS.SC_TOKEN },
     ),
     { name: "AuthStore" },
   ),

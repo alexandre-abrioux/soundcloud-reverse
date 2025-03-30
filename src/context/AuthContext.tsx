@@ -13,6 +13,7 @@ import {
 } from "@badgateway/oauth2-client";
 import { useNavigate } from "react-router";
 import { runAt } from "../utils/time.js";
+import { LOCAL_STORAGE_KEYS } from "../hooks/stores/localstorage.js";
 
 type AuthContext = {
   connect: () => void;
@@ -86,7 +87,8 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [accessToken]);
 
   const logout = useCallback(() => {
-    localStorage.clear();
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.REACT_QUERY);
+    localStorage.removeItem(LOCAL_STORAGE_KEYS.SC_TOKEN);
     window.location.reload();
   }, []);
 

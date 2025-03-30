@@ -1,7 +1,7 @@
 import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { Box } from "@mui/material";
 import { SliderControl } from "../Settings/SliderControl.js";
-import { SliderStore } from "../Settings/SettingSlider.js";
+import { SliderStore } from "../Settings/SettingsSlider.js";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeDownIcon from "@mui/icons-material/VolumeDown";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";

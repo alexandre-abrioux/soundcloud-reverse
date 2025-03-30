@@ -4,6 +4,7 @@ import { Logout } from "./Logout.js";
 import { SettingsContentLeft } from "./SettingsContentLeft.js";
 import { SettingsContentSliders } from "./SettingsContentSliders.js";
 import { SettingsContentPlugins } from "./SettingsContentPlugins.js";
+import { SettingsReset } from "./SettingsReset.js";
 
 export const SettingsContent = () => {
   const fftShow = useSettingsStore((state) => state.fftShow);
@@ -37,7 +38,8 @@ export const SettingsContent = () => {
           <SettingsContentPlugins />
           <SettingsContentSliders />
         </Box>
-        <Box display="flex" justifyContent="right" mt={2}>
+        <Box display="flex" justifyContent="space-between" mt={2}>
+          <SettingsReset />
           <Logout />
         </Box>
       </Box>

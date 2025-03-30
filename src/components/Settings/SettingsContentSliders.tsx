@@ -1,4 +1,4 @@
-import { SettingSlider, SliderStore } from "./SettingSlider.js";
+import { SettingsSlider, SliderStore } from "./SettingsSlider.js";
 import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { useCurrentPlugin } from "../../hooks/useCurrentPlugin.js";
 
@@ -15,7 +15,7 @@ export const SettingsContentSliders = () => {
   return (
     <>
       {needsFrequencyData && (
-        <SettingSlider
+        <SettingsSlider
           store={useSettingsStore as SliderStore}
           setting="smoothing"
           name="Smooth"
@@ -23,7 +23,7 @@ export const SettingsContentSliders = () => {
         />
       )}
       {Object.keys(settings).map((setting, i) => (
-        <SettingSlider
+        <SettingsSlider
           key={`plugin-slider-${pluginName}-${i}`}
           store={usePluginSettingsStore}
           setting={setting}

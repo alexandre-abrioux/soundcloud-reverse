@@ -15,7 +15,7 @@ export const Logout = () => {
     >
       <LogoutIcon fontSize="small" />
       <Typography fontSize="small" pl={1}>
-        Disconnect
+        Log Out
       </Typography>
     </Box>
   );
