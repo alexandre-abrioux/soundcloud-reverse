@@ -23,6 +23,20 @@ const configFn: UserConfigFnObject = ({ mode }) => {
         },
       }),
     ],
+    build: {
+      rollupOptions: {
+        output: {
+          manualChunks: (id) => {
+            if (id.includes("node_modules")) {
+              if (id.includes("@mui")) {
+                return "vendor-mui";
+              }
+              return "vendor";
+            }
+          },
+        },
+      },
+    },
   });
 };
 
