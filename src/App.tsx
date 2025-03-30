@@ -1,6 +1,5 @@
 import { ThemeProvider } from "@mui/material";
-import "@fontsource/rajdhani/latin-400.css";
-import "@fontsource/rajdhani/latin-700.css";
+import "./css/index.css" with { type: "css" };
 import { EngineProvider } from "./context/EngineContext.js";
 import { PlayerProvider } from "./context/PlayerContext.js";
 import { QueryClientProvider } from "@tanstack/react-query";

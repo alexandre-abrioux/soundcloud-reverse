@@ -1,3 +1,5 @@
+@import "fonts.css";
+
 * {
   margin: 0;
   padding: 0;
@@ -6,6 +8,6 @@
 html,
 body {
   background: #333;
-  font-family: "Rajdhani", sans-serif;
+  font-family: Rajdhani, Rajdhani-ext, sans-serif;
   color: #7f88a2;
 }
