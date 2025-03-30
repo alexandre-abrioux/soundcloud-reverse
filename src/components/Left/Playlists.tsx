@@ -41,9 +41,12 @@ export const Playlists = ({
       position="sticky"
       top={-1} // for IntersectionObserver to work
       sx={{
+        transitionProperty: "background",
+        transitionDuration: ".3s",
+        background: isDark ? "transparent" : "#292929",
         "&[data-stuck]": {
-          background: isDark ? "rgba(0, 0, 0, 0.9)" : "#292929",
-          boxShadow: `0 0 15px ${isDark ? "black" : "#222"}`,
+          background: isDark ? "#0b0b0b" : "#292929",
+          boxShadow: `0 0 15px ${isDark ? "#000" : "#222"}`,
           clipPath: "inset(0 0 -15px 0)",
         },
       }}
