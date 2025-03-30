@@ -98,11 +98,12 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
         } as OAuth2Token);
         setAccessToken(newToken.accessToken);
         setAccessTokenExpiresAt(newToken.expiresAt?.toString() || "");
+        setRefreshToken(newToken.refreshToken || "");
       } catch {
         logout();
       }
     },
-    [setAccessToken, setAccessTokenExpiresAt, logout],
+    [setAccessToken, setAccessTokenExpiresAt, setRefreshToken, logout],
   );
 
   // renew the access token when it is expiring soon
@@ -119,7 +120,6 @@ export const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
       redirectUri: import.meta.env.VITE_SOUNDCLOUD_REDIRECT_URI,
       codeVerifier,
       state,
-      scope: ["non-expiring"],
     });
   }, [codeVerifier, state]);
 
