@@ -37,7 +37,7 @@ export const Tracks = () => {
   if (!tracks) return null;
 
   return (
-    <Box display="flex" flexDirection="column" paddingX={3} paddingY={4}>
+    <Box display="flex" flexDirection="column" paddingX={3} paddingBottom={4}>
       {tracks?.map((track, i) => (
         <Box
           display="flex"
