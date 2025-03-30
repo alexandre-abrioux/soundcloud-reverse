@@ -1,14 +1,14 @@
 import { Slider } from "@mui/material";
-import { SliderStore } from "./SettingsSlider.js";
+import { SliderStore, SliderStoreContent } from "./SettingsSlider.js";
 
-export const SliderControl = ({
+export const SliderControl = <T extends SliderStoreContent>({
   store,
   setting,
   max,
   min = 0,
   step = 1,
 }: {
-  store: SliderStore;
+  store: SliderStore<T>;
   setting: string;
   max: number;
   min?: number;

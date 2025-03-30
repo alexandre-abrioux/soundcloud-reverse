@@ -1,11 +1,11 @@
 import { Box, Typography } from "@mui/material";
 import RestartAltIcon from "@mui/icons-material/RestartAlt";
-import { useCurrentPluginSettingsStore } from "../../hooks/useCurrentPluginSettingsStore.js";
 import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { useCallback } from "react";
+import { useCurrentPlugin } from "../../hooks/useCurrentPlugin.js";
 
 export const SettingsReset = () => {
-  const usePluginSettingsStore = useCurrentPluginSettingsStore();
+  const { usePluginSettingsStore } = useCurrentPlugin();
   const isDirtySmoothing = useSettingsStore((state) => state.isDirtySmoothing);
   const resetSmoothing = useSettingsStore((state) => state.resetSmoothing);
   const isPluginSettingsDirty = usePluginSettingsStore(

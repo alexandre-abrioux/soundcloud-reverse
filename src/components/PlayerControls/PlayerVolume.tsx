@@ -1,7 +1,6 @@
 import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import { Box } from "@mui/material";
 import { SliderControl } from "../Settings/SliderControl.js";
-import { SliderStore } from "../Settings/SettingsSlider.js";
 import VolumeUpIcon from "@mui/icons-material/VolumeUp";
 import VolumeDownIcon from "@mui/icons-material/VolumeDown";
 import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
@@ -40,7 +39,7 @@ export const PlayerVolume = () => {
       </Box>
       <Box flex={1} display="flex" justifyContent="center" pt={1}>
         <SliderControl
-          store={useSettingsStore as SliderStore}
+          store={useSettingsStore}
           setting="volume"
           max={100}
           min={0}

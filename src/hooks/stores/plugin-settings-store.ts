@@ -1,4 +1,4 @@
-import { create, Mutate, StoreApi, UseBoundStore } from "zustand";
+import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 type PluginSettingsStore<T extends Record<string, number>> = T & {
@@ -7,24 +7,11 @@ type PluginSettingsStore<T extends Record<string, number>> = T & {
   resetSettings: () => void;
 };
 
-export const pluginSettingsStores: Record<
-  string,
-  UseBoundStore<
-    Mutate<
-      StoreApi<PluginSettingsStore<Record<string, number>>>,
-      [
-        ["zustand/devtools", never],
-        ["zustand/persist", PluginSettingsStore<Record<string, number>>],
-      ]
-    >
-  >
-> = {};
-
 export const createPluginSettingsStore = <T extends Record<string, number>>(
   name: string,
   settingsDefaults: T,
 ) => {
-  const pluginSettingStore = create<
+  return create<
     PluginSettingsStore<T>,
     [["zustand/devtools", never], ["zustand/persist", PluginSettingsStore<T>]]
   >(
@@ -45,7 +32,4 @@ export const createPluginSettingsStore = <T extends Record<string, number>>(
       { name: `PluginSettingsStore-${name}` },
     ),
   );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  pluginSettingsStores[name] = pluginSettingStore as any;
-  return pluginSettingStore;
 };

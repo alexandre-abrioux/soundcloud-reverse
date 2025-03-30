@@ -3,18 +3,15 @@ import { Mutate, StoreApi, UseBoundStore } from "zustand";
 import { SliderControl } from "./SliderControl.js";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-type SliderStoreContent = Record<string, any> & {
+export type SliderStoreContent = Record<string, any> & {
   updateSettings: (settings: Partial<SliderStoreContent>) => void;
 };
 
-export type SliderStore = UseBoundStore<
-  Mutate<
-    StoreApi<SliderStoreContent>,
-    [["zustand/devtools", never], ["zustand/persist", SliderStoreContent]]
-  >
+export type SliderStore<T extends SliderStoreContent> = UseBoundStore<
+  Mutate<StoreApi<T>, [["zustand/devtools", never], ["zustand/persist", T]]>
 >;
 
-export const SettingsSlider = ({
+export const SettingsSlider = <T extends SliderStoreContent>({
   store,
   setting,
   name,
@@ -22,7 +19,7 @@ export const SettingsSlider = ({
   min,
   step,
 }: {
-  store: SliderStore;
+  store: SliderStore<T>;
   setting: string;
   name: string;
   max: number;
