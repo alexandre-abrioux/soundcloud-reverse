@@ -15,10 +15,10 @@ StatsContext.displayName = "StatsContext";
 export const StatsProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [stats, setStats] = useState<StatsContext>(null);
   const displayStats = useSettingsStore((state) => state.displayStats);
+  const fftShow = useSettingsStore((state) => state.fftShow);
 
   useEffect(() => {
-    if (!displayStats) return;
-    console.log("create stats");
+    if (!displayStats || !fftShow) return;
     const stats = new window.Stats();
     stats.showPanel(0);
     window.document.body.appendChild(stats.dom);
@@ -27,7 +27,7 @@ export const StatsProvider: React.FC<PropsWithChildren> = ({ children }) => {
       setStats(null);
       stats.dom.remove();
     };
-  }, [displayStats]);
+  }, [displayStats, fftShow]);
 
   return (
     <StatsContext.Provider value={stats}>{children}</StatsContext.Provider>
