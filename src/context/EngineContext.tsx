@@ -7,8 +7,8 @@ import React, {
   useMemo,
   useState,
 } from "react";
-import { useSettingsStore } from "../hooks/stores/settings-store";
-import { normalize } from "../utils";
+import { useSettingsStore } from "../hooks/stores/settings-store.js";
+import { normalize } from "../utils.js";
 
 type EngineContext = {
   audioCtx: AudioContext | undefined;

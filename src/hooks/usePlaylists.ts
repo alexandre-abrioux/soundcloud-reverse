@@ -1,8 +1,8 @@
 import { useContext, useEffect } from "react";
-import { useSettingsStore } from "./stores/settings-store";
+import { useSettingsStore } from "./stores/settings-store.js";
 import { useQuery } from "@tanstack/react-query";
-import { usePlaylistsStore } from "./stores/playlists-store";
-import { AuthContext } from "../context/AuthContext";
+import { usePlaylistsStore } from "./stores/playlists-store.js";
+import { AuthContext } from "../context/AuthContext.js";
 
 export const usePlaylists = () => {
   const { isConnected } = useContext(AuthContext);

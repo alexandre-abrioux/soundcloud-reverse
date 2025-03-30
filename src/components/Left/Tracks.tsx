@@ -1,12 +1,12 @@
-import { useSettingsStore } from "../../hooks/stores/settings-store";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Link } from "@mui/material";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { MouseEvent, useCallback, useContext } from "react";
-import { PlayerContext } from "../../context/PlayerContext";
-import { usePlayerStore } from "../../hooks/stores/player-store";
-import { usePlaylists } from "../../hooks/usePlaylists";
-import { actionPink } from "../../config/theme";
+import { PlayerContext } from "../../context/PlayerContext.js";
+import { usePlayerStore } from "../../hooks/stores/player-store.js";
+import { usePlaylists } from "../../hooks/usePlaylists.js";
+import { actionPink } from "../../config/theme.js";
 
 export const Tracks = () => {
   const { play } = useContext(PlayerContext);

@@ -1,6 +1,6 @@
-import { useSettingsStore } from "./stores/settings-store";
+import { useSettingsStore } from "./stores/settings-store.js";
 import { useMemo } from "react";
-import { plugins } from "../plugins/plugins";
+import { plugins } from "../plugins/plugins.js";
 
 export const useCurrentPlugin = () => {
   const pluginName = useSettingsStore((state) => state.selectedPlugin);

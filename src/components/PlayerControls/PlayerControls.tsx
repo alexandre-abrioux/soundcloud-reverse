@@ -1,10 +1,10 @@
 import { Box, keyframes, Link } from "@mui/material";
-import { PlayerArtwork } from "./PlayerArtwork";
-import { PlayerActions } from "./PlayerActions";
-import { PlayerWaves } from "./PlayerWaves";
-import { useSettingsStore } from "../../hooks/stores/settings-store";
-import { usePlayerStore } from "../../hooks/stores/player-store";
-import { PlayerVolume } from "./PlayerVolume";
+import { PlayerArtwork } from "./PlayerArtwork.js";
+import { PlayerActions } from "./PlayerActions.js";
+import { PlayerWaves } from "./PlayerWaves.js";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
+import { usePlayerStore } from "../../hooks/stores/player-store.js";
+import { PlayerVolume } from "./PlayerVolume.js";
 import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 
 const enterAnimation = keyframes({

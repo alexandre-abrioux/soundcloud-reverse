@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { AuthContext } from "../../context/AuthContext";
+import { AuthContext } from "../../context/AuthContext.js";
 import { useContext } from "react";
 
 export const Logout = () => {

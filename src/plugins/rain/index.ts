@@ -1,8 +1,8 @@
-import { useRain } from "./hook";
-import { Plugin } from "../plugins";
-import { name } from "./name";
-import { settings } from "./settings";
-import { useRainSettingsStore } from "./store";
+import { useRain } from "./hook.js";
+import { Plugin } from "../plugins.js";
+import { name } from "./name.js";
+import { settings } from "./settings.js";
+import { useRainSettingsStore } from "./store.js";
 
 export const rainPlugin: Plugin = {
   name,

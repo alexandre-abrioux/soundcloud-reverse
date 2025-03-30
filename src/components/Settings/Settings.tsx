@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
-import { SettingsGear } from "./SettingsGear";
-import { SettingsContent } from "./SettingsContent";
+import { SettingsGear } from "./SettingsGear.js";
+import { SettingsContent } from "./SettingsContent.js";
 
 export const Settings = () => (
   <Box

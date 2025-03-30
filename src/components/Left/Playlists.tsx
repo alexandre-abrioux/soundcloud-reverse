@@ -1,9 +1,9 @@
 import { Box, IconButton, MenuItem, Select, useTheme } from "@mui/material";
-import { useSettingsStore } from "../../hooks/stores/settings-store";
+import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import CachedIcon from "@mui/icons-material/Cached";
 import { useQueryClient } from "@tanstack/react-query";
-import { usePlaylists } from "../../hooks/usePlaylists";
-import { usePlaylistsStore } from "../../hooks/stores/playlists-store";
+import { usePlaylists } from "../../hooks/usePlaylists.js";
+import { usePlaylistsStore } from "../../hooks/stores/playlists-store.js";
 
 export const Playlists = () => {
   const { palette } = useTheme();
