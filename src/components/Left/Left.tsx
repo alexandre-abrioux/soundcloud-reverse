@@ -35,7 +35,7 @@ const LeftContent = memo(
           minHeight="100vh"
           ml={3}
           sx={{
-            background: `rgba(0, 0, 0, ${fftShow ? "0.8" : "0.2"})`,
+            background: `rgba(0, 0, 0, ${fftShow && !paused ? "0.8" : "0.2"})`,
             opacity:
               forceShowLeft || pinPlaylists || !fftShow || !fftEnlarge || paused
                 ? 1

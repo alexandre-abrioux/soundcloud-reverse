@@ -40,7 +40,7 @@ export const PlayerControls = () => {
       paddingY={2}
       borderRadius={0.5}
       sx={{
-        background: `rgba(0, 0, 0, ${fftShow ? "0.8" : "0.2"})`,
+        background: `rgba(0, 0, 0, ${fftShow && !paused ? "0.8" : "0.2"})`,
         animation: `0.5s ${enterAnimation} ease`,
         transitionProperty: "background, margin-bottom",
         transitionDuration: "0.5s",

@@ -1,22 +1,34 @@
-import { useContext, useEffect } from "react";
+import { useCallback, useContext } from "react";
 import { useSettingsStore } from "./stores/settings-store.js";
 import { useQuery } from "@tanstack/react-query";
 import { usePlaylistsStore } from "./stores/playlists-store.js";
 import { AuthContext } from "../context/AuthContext.js";
 
 export const usePlaylists = () => {
-  const { isConnected } = useContext(AuthContext);
+  const { isConnected, logout } = useContext(AuthContext);
   const setStep = usePlaylistsStore((state) => state.setStep);
   const setProgress = usePlaylistsStore((state) => state.setProgress);
+  const resetProgress = usePlaylistsStore((state) => state.resetProgress);
   const selectedPlaylistID = useSettingsStore(
     (state) => state.selectedPlaylistID,
   );
   const updateSettings = useSettingsStore((state) => state.updateSettings);
 
-  const { data: playlists, isFetching } = useQuery<SoundCloudPlaylist[]>({
+  const {
+    data: playlists,
+    isFetching,
+    refetch,
+  } = useQuery<SoundCloudPlaylist[]>({
     queryKey: ["soundcloud.playlists"],
     staleTime: Number.POSITIVE_INFINITY,
     enabled: isConnected,
+    retry: (failureCount, error) => {
+      if ("status" in error && error.status === 401) {
+        logout();
+        return false;
+      }
+      return failureCount < 3;
+    },
     queryFn: async () => {
       //---------------------------------------------------------------------------------
       // Retrieve Playlists
@@ -55,7 +67,6 @@ export const usePlaylists = () => {
       await Promise.all(promises);
       //---------------------------------------------------------------------------------
       // Retrieve Favorites
-      setStep("Loading favorites...");
       const favorites: SoundCloudTrack[] = await window.SC.get("/me/favorites");
       // The favorites are already sorted properly.
       playlists.unshift({
@@ -66,20 +77,24 @@ export const usePlaylists = () => {
       });
       setProgress(100);
       setStep("Loaded favorites.");
+      //---------------------------------------------------------------------------------
+      // Update selected playlist ID
+      if (
+        playlists &&
+        playlists.length > 0 &&
+        (selectedPlaylistID === null ||
+          playlists.every((playlist) => playlist.id !== selectedPlaylistID))
+      ) {
+        updateSettings({ selectedPlaylistID: playlists[0].id });
+      }
       return playlists;
     },
   });
 
-  useEffect(() => {
-    if (
-      playlists &&
-      playlists.length > 0 &&
-      (selectedPlaylistID === null ||
-        playlists.every((playlist) => playlist.id !== selectedPlaylistID))
-    ) {
-      updateSettings({ selectedPlaylistID: playlists[0].id });
-    }
-  }, [selectedPlaylistID, playlists, updateSettings]);
+  const refetchPlaylists = useCallback(() => {
+    resetProgress();
+    void refetch();
+  }, [refetch, resetProgress]);
 
-  return { playlists, isFetching };
+  return { playlists, isFetching, refetchPlaylists };
 };

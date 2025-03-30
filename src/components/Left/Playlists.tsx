@@ -1,9 +1,7 @@
 import { Box, IconButton, MenuItem, Select, useTheme } from "@mui/material";
 import { useSettingsStore } from "../../hooks/stores/settings-store.js";
 import CachedIcon from "@mui/icons-material/Cached";
-import { useQueryClient } from "@tanstack/react-query";
 import { usePlaylists } from "../../hooks/usePlaylists.js";
-import { usePlaylistsStore } from "../../hooks/stores/playlists-store.js";
 import { useEffect } from "react";
 
 export const Playlists = ({
@@ -12,13 +10,11 @@ export const Playlists = ({
   setForceShowLeft: (forceShowLeft: boolean) => void;
 }) => {
   const { palette } = useTheme();
-  const { playlists } = usePlaylists();
-  const resetProgress = usePlaylistsStore((state) => state.resetProgress);
+  const { playlists, refetchPlaylists } = usePlaylists();
   const selectedPlaylistID = useSettingsStore(
     (state) => state.selectedPlaylistID,
   );
   const updateSettings = useSettingsStore((state) => state.updateSettings);
-  const queryClient = useQueryClient();
 
   useEffect(() => {
     const playlistsElement = document.querySelector("#playlists");
@@ -29,7 +25,7 @@ export const Playlists = ({
     );
     observer.observe(playlistsElement);
     return () => {
-      observer.unobserve(playlistsElement);
+      observer.disconnect();
     };
   }, []);
 
@@ -73,14 +69,7 @@ export const Playlists = ({
         ))}
       </Select>
 
-      <IconButton
-        onClick={async () => {
-          resetProgress();
-          void queryClient.fetchQuery({
-            queryKey: ["soundcloud.playlists"],
-          });
-        }}
-      >
+      <IconButton onClick={refetchPlaylists}>
         <CachedIcon fontSize="small" sx={{ color: palette.text.primary }} />
       </IconButton>
     </Box>
