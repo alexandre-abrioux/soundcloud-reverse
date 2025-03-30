@@ -55,9 +55,12 @@ export const PlayerActions = () => {
         onClick={() => player.previous()}
       />
       {paused ? (
-        <ControlButton icon={PlayArrowIcon} onClick={() => player.play()} />
+        <ControlButton
+          icon={PlayArrowIcon}
+          onClick={() => player.audio.play()}
+        />
       ) : (
-        <ControlButton icon={PauseIcon} onClick={() => player.pause()} />
+        <ControlButton icon={PauseIcon} onClick={() => player.audio.pause()} />
       )}
       <ControlButton
         icon={SkipNextIcon}
