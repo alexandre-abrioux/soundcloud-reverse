@@ -1,12 +1,11 @@
 import { Box, keyframes, SvgIcon, SvgIconProps } from "@mui/material";
-import { useContext } from "react";
-import { PlayerContext } from "../../context/PlayerContext.js";
 import SkipPreviousIcon from "@mui/icons-material/SkipPrevious";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from "@mui/icons-material/Pause";
 import SkipNextIcon from "@mui/icons-material/SkipNext";
 import { usePlayerStore } from "../../hooks/stores/player-store.js";
 import { actionPink } from "../../config/theme.js";
+import { player } from "../../context/EngineContext.js";
 
 const controlButtonSize = "1.5rem";
 
@@ -37,9 +36,7 @@ const spin = keyframes({
 });
 
 export const PlayerActions = () => {
-  const { player } = useContext(PlayerContext);
   const paused = usePlayerStore((state) => state.paused);
-  if (!player) return null;
   return (
     <Box
       display="flex"

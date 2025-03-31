@@ -1,5 +1,5 @@
 import { useCallback, useContext, useMemo, useState } from "react";
-import { EngineContext } from "../../context/EngineContext.js";
+import { analyser, EngineContext } from "../../context/EngineContext.js";
 import { PluginHook, PluginHookReturn } from "../plugins.js";
 import { useRainSettingsStore } from "./store.js";
 
@@ -26,7 +26,7 @@ const generateRandomColors = () => {
 };
 
 export const useRain: PluginHook = () => {
-  const { analyser, timeDomainData } = useContext(EngineContext);
+  const { timeDomainData } = useContext(EngineContext);
   const [colors, setColors] = useState<ReturnType<typeof generateRandomColors>>(
     generateRandomColors(),
   );
@@ -34,7 +34,6 @@ export const useRain: PluginHook = () => {
 
   const draw: PluginHookReturn["draw"] = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      if (!analyser) return;
       if (!timeDomainData) return;
 
       const { canvas } = ctx;
@@ -106,7 +105,7 @@ export const useRain: PluginHook = () => {
         }
       }
     },
-    [analyser, timeDomainData, intensity, colors],
+    [timeDomainData, intensity, colors],
   );
 
   const onClick: PluginHookReturn["onClick"] = useCallback(() => {

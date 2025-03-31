@@ -6,14 +6,12 @@ import React, {
   useEffect,
   useMemo,
 } from "react";
-import SoundCloudAudio from "soundcloud-audio";
 import { useAuthStore } from "../hooks/stores/auth-store.js";
-import { EngineContext } from "./EngineContext.js";
+import { analyser, audioCtx, EngineContext, player } from "./EngineContext.js";
 import { findByID } from "../utils.js";
 import { usePlayerStore } from "../hooks/stores/player-store.js";
 
 type PlayerContext = {
-  player: SoundCloudAudio | undefined;
   play: (playlist: SoundCloudPlaylist, track: SoundCloudTrack) => void;
 };
 
@@ -22,8 +20,7 @@ PlayerContext.displayName = "PlayerContext";
 
 export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const { accessToken } = useAuthStore();
-  const { audioCtx, analyser, gainNode, updateEngine } =
-    useContext(EngineContext);
+  const { updateEngine } = useContext(EngineContext);
   const currentPlayingTrack = usePlayerStore(
     (state) => state.currentPlayingTrack,
   );
@@ -35,38 +32,12 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
     (state) => state.setCurrentPlayingPlaylist,
   );
 
-  const player = useMemo(() => {
-    const player = new SoundCloudAudio();
-    player.audio.crossOrigin = "anonymous";
-    return player;
-  }, []);
-
   useEffect(() => {
     if (!accessToken) return;
     player._oauthToken = accessToken;
-  }, [accessToken, player]);
-
-  const audioSrc = useMemo(() => {
-    if (!audioCtx) return;
-    if (!player) return;
-    return audioCtx.createMediaElementSource(player.audio);
-  }, [audioCtx, player]);
+  }, [accessToken]);
 
   useEffect(() => {
-    if (!audioSrc) return;
-    if (!analyser) return;
-    if (!gainNode) return;
-    audioSrc.connect(analyser);
-    audioSrc.connect(gainNode);
-    return () => {
-      audioSrc.disconnect(analyser);
-      audioSrc.disconnect(gainNode);
-    };
-  }, [audioSrc, analyser, gainNode]);
-
-  useEffect(() => {
-    if (!player) return;
-    if (!audioCtx) return;
     if (!analyser) return;
     const playerEventListener = (e: Event) => {
       console.info("Track [", currentPlayingTrack?.id, "] >", e.type);
@@ -106,10 +77,7 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
       player.off("ended", playerEventListener);
     };
   }, [
-    player,
     currentPlayingTrack,
-    audioCtx,
-    analyser,
     setPaused,
     setCurrentPlayingPlaylist,
     setCurrentPlayingTrack,
@@ -118,7 +86,6 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
 
   const play = useCallback<PlayerContext["play"]>(
     (playlist, track) => {
-      if (!player) return;
       console.info("Track [", track.id, "] > queued", track);
       setCurrentPlayingPlaylist(playlist);
       setCurrentPlayingTrack(track);
@@ -127,11 +94,10 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
         playlistIndex: playlist.tracks.findIndex(findByID(track.id)),
       });
     },
-    [player, setCurrentPlayingPlaylist, setCurrentPlayingTrack],
+    [setCurrentPlayingPlaylist, setCurrentPlayingTrack],
   );
 
   const contextValue: PlayerContext = {
-    player,
     play,
   };
 

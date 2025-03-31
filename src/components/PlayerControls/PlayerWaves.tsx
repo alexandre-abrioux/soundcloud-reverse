@@ -1,10 +1,10 @@
-import { useCallback, useContext, useEffect, useState } from "react";
-import { PlayerContext } from "../../context/PlayerContext.js";
+import { useCallback, useEffect, useState } from "react";
 import { css, Skeleton } from "@mui/material";
 import { useCanvas } from "../../hooks/useCanvas.js";
 import { normalize } from "../../utils.js";
 import { useQuery } from "@tanstack/react-query";
 import { usePlayerStore } from "../../hooks/stores/player-store.js";
+import { player } from "../../context/EngineContext.js";
 
 let renderWaveCursor = 0;
 const updateRenderWaveCursor = (e: MouseEvent) => {
@@ -15,7 +15,6 @@ const resetRenderWaveCursor = () => {
 };
 
 export const PlayerWaves = () => {
-  const { player } = useContext(PlayerContext);
   const paused = usePlayerStore((state) => state.paused);
   const currentPlayingTrack = usePlayerStore(
     (state) => state.currentPlayingTrack,
@@ -40,7 +39,6 @@ export const PlayerWaves = () => {
 
   const draw = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      if (!player) return;
       if (!waveformData) return;
       const { width, height } = ctx.canvas;
       const barsSize = 2;
@@ -81,22 +79,18 @@ export const PlayerWaves = () => {
         );
       }
     },
-    [player, waveformData],
+    [waveformData],
   );
 
-  const seek = useCallback(
-    (e: MouseEvent) => {
-      if (!player) return;
-      const canvas = e.target as HTMLCanvasElement;
-      const position = normalize(
-        renderWaveCursor,
-        canvas.width,
-        player.audio.duration,
-      );
-      player.setTime(position);
-    },
-    [player],
-  );
+  const seek = useCallback((e: MouseEvent) => {
+    const canvas = e.target as HTMLCanvasElement;
+    const position = normalize(
+      renderWaveCursor,
+      canvas.width,
+      player.audio.duration,
+    );
+    player.setTime(position);
+  }, []);
 
   const { canvasRef, canvas } = useCanvas({
     start: !!waveformData && (!paused || hovering),
