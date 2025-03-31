@@ -2,18 +2,29 @@ import React, {
   createContext,
   PropsWithChildren,
   useCallback,
-  useContext,
   useEffect,
   useMemo,
   useState,
 } from "react";
+import SoundCloudAudio from "soundcloud-audio";
 import { useSettingsStore } from "../hooks/stores/settings-store.js";
 import { normalize } from "../utils.js";
 
+export const player = new SoundCloudAudio();
+player.audio.crossOrigin = "anonymous";
+export const audioCtx = new (window.AudioContext ||
+  window.webkitAudioContext)();
+export const audioSrc = audioCtx.createMediaElementSource(player.audio);
+export const analyser = audioCtx.createAnalyser();
+analyser.fftSize = Math.pow(2, 15);
+analyser.minDecibels = -70;
+analyser.maxDecibels = -10;
+export const gainNode = audioCtx.createGain();
+audioSrc.connect(analyser);
+audioSrc.connect(gainNode);
+gainNode.connect(audioCtx.destination);
+
 type EngineContext = {
-  audioCtx: AudioContext | undefined;
-  gainNode: GainNode | undefined;
-  analyser: AnalyserNode | undefined;
   maxFrequencyDisplayed: number;
   maxFrequencyInArray: number | null;
   nbValuesToKeepInArray: number | null;
@@ -38,26 +49,6 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     useState<EngineContext["frequencyBinCount"]>(null);
   const [fftSize, setFftSize] = useState<EngineContext["fftSize"]>(null);
 
-  const audioCtx = useMemo(() => {
-    return new (window.AudioContext || window.webkitAudioContext)();
-  }, []);
-
-  const analyser = useMemo(() => {
-    if (!audioCtx) return;
-    const analyser = audioCtx.createAnalyser();
-    analyser.fftSize = Math.pow(2, 15);
-    analyser.minDecibels = -70;
-    analyser.maxDecibels = -10;
-    return analyser;
-  }, [audioCtx]);
-
-  const gainNode = useMemo(() => {
-    if (!audioCtx) return;
-    const gainNode = audioCtx.createGain();
-    gainNode.connect(audioCtx.destination);
-    return gainNode;
-  }, [audioCtx]);
-
   const frequencyData = useMemo(() => {
     if (!frequencyBinCount) return null;
     return new Uint8Array(frequencyBinCount);
@@ -74,7 +65,6 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
   }, [fftSize]);
 
   const updateEngine = useCallback(() => {
-    if (!analyser) return;
     const maxFrequencyInArray =
       audioCtx.sampleRate / (2 * audioCtx.destination.channelCount);
     const nbValuesToKeepInArray = normalize(
@@ -86,12 +76,9 @@ export const EngineProvider: React.FC<PropsWithChildren> = ({ children }) => {
     setNbValuesToKeepInArray(nbValuesToKeepInArray);
     setFrequencyBinCount(analyser?.frequencyBinCount || 0);
     setFftSize(analyser?.fftSize || 0);
-  }, [audioCtx, analyser]);
+  }, []);
 
   const contextValue: EngineContext = {
-    audioCtx,
-    gainNode,
-    analyser,
     maxFrequencyDisplayed,
     maxFrequencyInArray,
     nbValuesToKeepInArray,
@@ -121,17 +108,14 @@ const EngineSettingsController: React.FC = () => {
   const volume = useSettingsStore((state) => state.volume);
   const muted = useSettingsStore((state) => state.muted);
   const smoothing = useSettingsStore((state) => state.smoothing);
-  const { gainNode, analyser } = useContext(EngineContext);
 
   useEffect(() => {
-    if (!gainNode) return;
     gainNode.gain.value = muted ? 0 : volume / 100;
-  }, [gainNode, volume, muted]);
+  }, [volume, muted]);
 
   useEffect(() => {
-    if (!analyser) return;
     analyser.smoothingTimeConstant = smoothing / 100;
-  }, [analyser, smoothing]);
+  }, [smoothing]);
 
   return null;
 };

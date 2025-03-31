@@ -6,12 +6,12 @@ import {
   normalize,
   resizeCanvasKeepContent,
 } from "../../utils.js";
-import { EngineContext } from "../../context/EngineContext.js";
+import { analyser, EngineContext } from "../../context/EngineContext.js";
 import { useFftSettingsStore } from "./store.js";
 import { PluginHook, PluginHookReturn } from "../plugins.js";
 
 export const useFft: PluginHook = () => {
-  const { analyser, nbValuesToKeepInArray, frequencyData, frequencyDataCopy } =
+  const { nbValuesToKeepInArray, frequencyData, frequencyDataCopy } =
     useContext(EngineContext);
   const nbBarsMax = useFftSettingsStore((state) => state.nbBarsMax);
   const nbLinesMax = useFftSettingsStore((state) => state.nbLinesMax);
@@ -94,7 +94,6 @@ export const useFft: PluginHook = () => {
 
   const draw: PluginHookReturn["draw"] = useCallback(
     (ctx: CanvasRenderingContext2D) => {
-      if (!analyser) return;
       if (!preRenderCtx) return;
       if (!frequencyData) return;
       if (!frequencyDataCopy) return;
@@ -155,7 +154,6 @@ export const useFft: PluginHook = () => {
       ctx.setTransform(1, 0, 0, 1, 0, 0);
     },
     [
-      analyser,
       preRenderCtx,
       frequencyData,
       frequencyDataCopy,
