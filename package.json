@@ -31,7 +31,7 @@
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-router": "^7.4.1",
-    "soundcloud-audio": "git+https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth",
+    "soundcloud-audio": "https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

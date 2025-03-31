@@ -45,7 +45,7 @@ importers:
         specifier: ^7.4.1
         version: 7.4.1(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       soundcloud-audio:
-        specifier: git+https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth
+        specifier: https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth
         version: https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/af0d44dfe50d24d8ed48a660d7d7a981ba4c265c
       zustand:
         specifier: ^5.0.3
