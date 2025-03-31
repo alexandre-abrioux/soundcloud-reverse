@@ -47,11 +47,13 @@ export const PlayerWaves = () => {
       const nbBars = Math.floor(width / gapSize);
       const barArraySize = Math.floor(waveformData.width / nbBars);
       const cursorX = normalize(renderWaveCursor, width, nbBars);
-      const currentTime = normalize(
-        player.audio.currentTime,
-        player.audio.duration,
-        nbBars,
-      );
+
+      const currentTime =
+        // @ts-expect-error Custom property to reset the seek time ASAP when changing song
+        player.audio.__id !== currentPlayingTrack?.id
+          ? 0
+          : normalize(player.audio.currentTime, player.audio.duration, nbBars);
+
       ctx.clearRect(0, 0, width, height);
       for (let x = 0; x < nbBars; x++) {
         const subArray = waveformData.samples.slice(
@@ -79,7 +81,7 @@ export const PlayerWaves = () => {
         );
       }
     },
-    [waveformData],
+    [currentPlayingTrack?.id, waveformData],
   );
 
   const seek = useCallback((e: MouseEvent) => {

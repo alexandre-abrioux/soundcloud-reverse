@@ -51,6 +51,8 @@ export const PlayerProvider: React.FC<PropsWithChildren> = ({ children }) => {
           );
           updateEngine();
           setPaused(false);
+          // @ts-expect-error Custom property to reset the wave seek ASAP to zero on track change
+          player.audio.__id = currentPlayingTrack?.id;
           break;
         case "seeking":
           setPaused(false);
