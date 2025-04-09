@@ -55,7 +55,7 @@
   },
   "engines": {
     "node": "^22",
-    "pnpm": "^9"
+    "pnpm": "^10"
   },
   "lint-staged": {
     "*.{js,ts,tsx}": [
@@ -67,5 +67,5 @@
     ],
     "package.json": "prettier-package-json --write"
   },
-  "packageManager": "pnpm@9.10.0"
+  "packageManager": "pnpm@10.8.0"
 }
