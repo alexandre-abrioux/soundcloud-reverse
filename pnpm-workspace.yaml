@@ -1,0 +1,25 @@
+packages: []
+
+blockExoticSubdeps: true
+trustPolicy: no-downgrade
+minimumReleaseAge: 2880
+
+overrides:
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/37
+  "@eslint/plugin-kit@>=0.0.0 <0.3.4": "^0.3.4"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/38
+  "brace-expansion@>=1.0.0 <1.1.12": "^1.1.12"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/43
+  "js-yaml@>=4.0.0 <4.1.1": "^4.1.1"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/51
+  "ajv@>=6.0.0 <6.14.0": "^6.14.0"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/53
+  "minimatch@>=9.0.0 <9.0.6": "^9.0.6"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/56
+  "rollup@>=4.0.0 <4.59.0": "^4.59.0"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/59
+  "flatted@>=3.0.0 <3.4.0": "^3.4.0"
+
+allowBuilds:
+  # already handled by optional dependencies
+  esbuild: false
