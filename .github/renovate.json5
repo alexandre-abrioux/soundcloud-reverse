@@ -1,0 +1,22 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+  ],
+  "packageRules": [
+    {
+      "matchDatasources": ["*"],
+      "minimumReleaseAge": "3 days"
+    },
+    {
+      // disable version updates for NPM packages
+      "matchDatasources": ["npm"],
+      "enabled": false,
+    },
+  ],
+  // enable security updates, even for NPM
+  "osvVulnerabilityAlerts": true,
+  "vulnerabilityAlerts": {
+    "enabled": true,
+  },
+}
