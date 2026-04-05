@@ -19,8 +19,14 @@ overrides:
   "minimatch@>=3.0.0 <3.1.4": "^3.1.4"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/56
   "rollup@>=4.0.0 <4.59.0": "^4.59.0"
-  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/59
-  "flatted@>=3.0.0 <3.4.0": "^3.4.0"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/60
+  "flatted@>=3.0.0 <3.4.2": "^3.4.2"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/61
+  yaml@>=1.0.0 <1.10.3: ">=1.10.3"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/63
+  picomatch@>=2.0.0 <2.3.2: ">=2.3.2"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/65
+  picomatch@>=4.0.0 <4.0.4: ">=4.0.4"
 
 allowBuilds:
   # already handled by optional dependencies
