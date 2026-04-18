@@ -1,22 +1,20 @@
 {
-  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": [
-    "config:recommended",
-  ],
-  "packageRules": [
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+  extends: ["config:recommended"],
+  packageRules: [
     {
-      "matchCategories": ["*"],
-      "minimumReleaseAge": "3 days"
+      matchCategories: ["*"],
+      minimumReleaseAge: "7 days",
     },
     {
       // disable version updates for JavaScript packages
-      "matchCategories": ["js"],
-      "enabled": false,
+      matchCategories: ["js"],
+      enabled: false,
     },
   ],
   // enable security updates, also for JavaScript packages
-  "osvVulnerabilityAlerts": true,
-  "vulnerabilityAlerts": {
-    "enabled": true,
+  osvVulnerabilityAlerts: true,
+  vulnerabilityAlerts: {
+    enabled: true,
   },
 }
