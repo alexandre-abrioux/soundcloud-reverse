@@ -5,16 +5,16 @@
   ],
   "packageRules": [
     {
-      "matchDatasources": ["*"],
+      "matchCategories": ["*"],
       "minimumReleaseAge": "3 days"
     },
     {
-      // disable version updates for NPM packages
-      "matchDatasources": ["npm"],
+      // disable version updates for JavaScript packages
+      "matchCategories": ["js"],
       "enabled": false,
     },
   ],
-  // enable security updates, even for NPM
+  // enable security updates, also for JavaScript packages
   "osvVulnerabilityAlerts": true,
   "vulnerabilityAlerts": {
     "enabled": true,
