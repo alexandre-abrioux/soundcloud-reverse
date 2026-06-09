@@ -9,9 +9,43 @@ import React, {
 import SoundCloudAudio from "soundcloud-audio";
 import { useSettingsStore } from "../hooks/stores/settings-store.js";
 import { normalize } from "../utils.js";
+import Hls from "hls.js";
 
 export const player = new SoundCloudAudio();
 player.audio.crossOrigin = "anonymous";
+const canPlayHlsNatively =
+  player.audio.canPlayType("application/vnd.apple.mpegURL") === "probably";
+// override _canPlayHls to retrieve HLS stream source whenever possible
+// as other types of streams will be deprecated soon,
+// see https://github.com/soundcloud/api/issues/441
+player._canPlayHls = canPlayHlsNatively || Hls.isSupported();
+const originalPlayFn = player._play;
+player._play = (src: string) => {
+  if (canPlayHlsNatively) originalPlayFn(src);
+  // when the browser does not natively support HLS (e.g. Firefox)
+  // we use HLS.js to transmux the HLS stream thanks to MediaSource Extensions
+  if (src === player.playing) return;
+  player.playing = src;
+  fetch(src, {
+    headers: {
+      Authorization: `OAuth ${player._oauthToken}`,
+    },
+  })
+    .then((response) => response.blob())
+    .then(async (blob) => {
+      const objectUrl = URL.createObjectURL(blob);
+      const hls = new Hls();
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        console.error("HLS error", event, data);
+      });
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        player.audio.play();
+      });
+      hls.loadSource(objectUrl);
+      hls.attachMedia(player.audio);
+    });
+};
+
 export const audioCtx = new (window.AudioContext ||
   window.webkitAudioContext)();
 export const audioSrc = audioCtx.createMediaElementSource(player.audio);

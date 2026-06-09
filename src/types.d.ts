@@ -5,7 +5,10 @@ declare module "soundcloud-audio" {
     _oauthToken: string;
     _playlist: SoundCloudPlaylist;
     _playlistIndex: number;
+    _canPlayHls: boolean;
     play(opts?: { playlistIndex?: number }): void;
+    _play(src: string): void;
+    playing: string;
     pause(): void;
     previous(): void;
     next(opts: { loop: boolean }): void;
