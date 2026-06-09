@@ -36,16 +36,9 @@ player._play = (src: string) => {
   // we use HLS.js to transmux the HLS stream thanks to MediaSource Extensions
   if (src === player.playing) return;
   player.playing = src;
-  fetch(src, {
-    headers: {
-      Authorization: `OAuth ${player._oauthToken}`,
-    },
-  })
-    .then((response) => response.blob())
-    .then(async (blob) => {
-      const objectUrl = URL.createObjectURL(blob);
-      hls.loadSource(objectUrl);
-    });
+  player._loadStream(src).then((objectUrl: string) => {
+    hls.loadSource(objectUrl);
+  });
 };
 
 export const audioCtx = new (window.AudioContext ||

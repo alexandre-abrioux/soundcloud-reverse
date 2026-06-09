@@ -8,6 +8,7 @@ declare module "soundcloud-audio" {
     _canPlayHls: boolean;
     play(opts?: { playlistIndex?: number }): void;
     _play(src: string): void;
+    _loadStream(src: string): Promise<string>;
     playing: string;
     pause(): void;
     previous(): void;
