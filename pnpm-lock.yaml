@@ -57,7 +57,7 @@ importers:
         version: 19.1.0(react@19.1.0)
       react-router:
         specifier: ^7.12.0
-        version: 7.12.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+        version: 7.15.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       soundcloud-audio:
         specifier: https://github.com/alexandre-abrioux/soundcloud-audio.js.git#oauth
         version: https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/af0d44dfe50d24d8ed48a660d7d7a981ba4c265c
@@ -1253,7 +1253,7 @@ packages:
 
   glob@7.2.3:
     resolution: {integrity: sha512-nFR0zLpU2YCaRxwoCJvL6UvCH2JFyFVIvwTLsIf21AuHlMskA1hhTdk+LlYJtOlYt9v6dvszD2BGRqBL+iQK9Q==}
-    deprecated: Glob versions prior to v9 are no longer supported
+    deprecated: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me
 
   globals@11.12.0:
     resolution: {integrity: sha512-WOBp/EEGUiIsJSp7wcv/y6MO+lV9UoncWqxuFfm8eBwzWNgyfBd6Gz+IeKQ9jCmyhoH99g15M3T+QaVHFjizVA==}
@@ -1528,8 +1528,8 @@ packages:
     resolution: {integrity: sha512-jCvmsr+1IUSMUyzOkRcvnVbX3ZYC6g9TDrDbFuFmRDq7PD4yaGbLKNQL6k2jnArV8hjYxh7hVhAZB6s9HDGpZA==}
     engines: {node: '>=0.10.0'}
 
-  react-router@7.12.0:
-    resolution: {integrity: sha512-kTPDYPFzDVGIIGNLS5VJykK0HfHLY5MF3b+xj0/tTyNYL1gF1qs7u67Z9jEhQk2sQ98SUaHxlG31g1JtF7IfVw==}
+  react-router@7.15.0:
+    resolution: {integrity: sha512-HW9vYwuM8f4yx66Izy8xfrzCM+SBJluoZcCbww9A1TySax11S5Vgw6fi3ZjMONw9J4gQwngL7PzkyIpJJpJ7RQ==}
     engines: {node: '>=20.0.0'}
     peerDependencies:
       react: '>=18'
@@ -3132,7 +3132,7 @@ snapshots:
 
   react-refresh@0.14.2: {}
 
-  react-router@7.12.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
+  react-router@7.15.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0):
     dependencies:
       cookie: 1.1.1
       react: 19.1.0
