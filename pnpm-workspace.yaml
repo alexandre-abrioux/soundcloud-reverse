@@ -2,6 +2,9 @@ packages: []
 
 blockExoticSubdeps: true
 trustPolicy: no-downgrade
+trustPolicyIgnoreAfter: 262800 # ignore for old packages (6 months)
+trustPolicyExclude:
+  - "semver@6.3.1" # See https://github.com/npm/node-semver/issues/838
 minimumReleaseAge: 2880
 minimumReleaseAgeExclude:
   - vite@6.4.2
