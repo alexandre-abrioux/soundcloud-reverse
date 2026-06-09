@@ -36,6 +36,8 @@ overrides:
   picomatch@>=4.0.0 <4.0.4: ">=4.0.4"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/66
   yaml@>=2.0.0 <2.8.3: ">=2.8.3"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/70
+  postcss@>=8.0.0 <8.5.10: ">=8.5.10"
 
 allowBuilds:
   # already handled by optional dependencies
