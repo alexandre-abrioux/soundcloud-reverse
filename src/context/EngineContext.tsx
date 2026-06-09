@@ -19,9 +19,19 @@ const canPlayHlsNatively =
 // as other types of streams will be deprecated soon,
 // see https://github.com/soundcloud/api/issues/441
 player._canPlayHls = canPlayHlsNatively || Hls.isSupported();
+const hls = !canPlayHlsNatively && Hls.isSupported() ? new Hls() : undefined;
+if (hls) {
+  hls.attachMedia(player.audio);
+  hls.on(Hls.Events.ERROR, (event, data) => {
+    console.error("HLS error", event, data);
+  });
+  hls.on(Hls.Events.MANIFEST_PARSED, () => {
+    player.audio.play();
+  });
+}
 const originalPlayFn = player._play;
 player._play = (src: string) => {
-  if (canPlayHlsNatively) originalPlayFn(src);
+  if (!hls) return originalPlayFn(src);
   // when the browser does not natively support HLS (e.g. Firefox)
   // we use HLS.js to transmux the HLS stream thanks to MediaSource Extensions
   if (src === player.playing) return;
@@ -34,15 +44,7 @@ player._play = (src: string) => {
     .then((response) => response.blob())
     .then(async (blob) => {
       const objectUrl = URL.createObjectURL(blob);
-      const hls = new Hls();
-      hls.on(Hls.Events.ERROR, (event, data) => {
-        console.error("HLS error", event, data);
-      });
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
-        player.audio.play();
-      });
       hls.loadSource(objectUrl);
-      hls.attachMedia(player.audio);
     });
 };
 
