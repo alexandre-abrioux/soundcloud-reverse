@@ -60,7 +60,7 @@ importers:
         version: 7.15.0(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       soundcloud-audio:
         specifier: github:alexandre-abrioux/soundcloud-audio.js#oauth
-        version: https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/b12c31db1ecf16cccd39f9bc7e75eff57f9dc240
+        version: https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/ba52dbeb2d08d792f42650a4787a2964fb327dea
       zustand:
         specifier: ^5.0.3
         version: 5.0.3(@types/react@19.0.12)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
@@ -1612,8 +1612,8 @@ packages:
   sort-order@1.1.2:
     resolution: {integrity: sha512-Q8tOrwB1TSv9fNUXym9st3TZJODtmcOIi2JWCkVNQPrRg17KPwlpwweTEb7pMwUIFMTAgx2/JsQQXEPFzYQj3A==}
 
-  soundcloud-audio@https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/b12c31db1ecf16cccd39f9bc7e75eff57f9dc240:
-    resolution: {tarball: https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/b12c31db1ecf16cccd39f9bc7e75eff57f9dc240}
+  soundcloud-audio@https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/ba52dbeb2d08d792f42650a4787a2964fb327dea:
+    resolution: {tarball: https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/ba52dbeb2d08d792f42650a4787a2964fb327dea}
     version: 1.4.0
 
   source-map-js@1.2.1:
@@ -3229,7 +3229,7 @@ snapshots:
 
   sort-order@1.1.2: {}
 
-  soundcloud-audio@https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/b12c31db1ecf16cccd39f9bc7e75eff57f9dc240: {}
+  soundcloud-audio@https://codeload.github.com/alexandre-abrioux/soundcloud-audio.js/tar.gz/ba52dbeb2d08d792f42650a4787a2964fb327dea: {}
 
   source-map-js@1.2.1: {}
 
