@@ -10,6 +10,8 @@ minimumReleaseAgeExclude:
   - vite@6.4.2
   # Renovate security update: react-router@7.15.0
   - react-router@7.15.0
+  # Renovate security update: pnpm@11.5.3
+  - pnpm@11.5.3
 
 overrides:
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/37
