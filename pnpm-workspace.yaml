@@ -17,7 +17,8 @@ overrides:
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/38
   "brace-expansion@>=1.0.0 <1.1.12": "^1.1.12"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/43
-  "js-yaml@>=4.0.0 <4.1.1": "^4.1.1"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/82
+  "js-yaml@>=4.0.0 <4.2.0": "^4.2.0"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/51
   "ajv@>=6.0.0 <6.14.0": "^6.14.0"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/53
@@ -38,6 +39,8 @@ overrides:
   yaml@>=2.0.0 <2.8.3: ">=2.8.3"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/70
   postcss@>=8.0.0 <8.5.10: ">=8.5.10"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/80
+  "@babel/core@>=7.0.0 <7.29.0": ">=7.29.0"
 
 allowBuilds:
   # already handled by optional dependencies
