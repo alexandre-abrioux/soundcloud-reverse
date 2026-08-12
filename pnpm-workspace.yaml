@@ -17,6 +17,8 @@ overrides:
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/38
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/86
   "brace-expansion@>=1.0.0 <1.1.16": "^1.1.16"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/83
+  "brace-expansion@>=5.0.0 <5.0.7": "^5.0.7"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/43
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/82
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/96
