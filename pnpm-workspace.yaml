@@ -15,10 +15,12 @@ overrides:
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/37
   "@eslint/plugin-kit@>=0.0.0 <0.3.4": "^0.3.4"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/38
-  "brace-expansion@>=1.0.0 <1.1.12": "^1.1.12"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/86
+  "brace-expansion@>=1.0.0 <1.1.16": "^1.1.16"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/43
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/82
-  "js-yaml@>=4.0.0 <4.2.0": "^4.2.0"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/96
+  "js-yaml@>=4.0.0 <4.3.1": "^4.3.1"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/51
   "ajv@>=6.0.0 <6.14.0": "^6.14.0"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/53
@@ -30,17 +32,18 @@ overrides:
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/60
   "flatted@>=3.0.0 <3.4.2": "^3.4.2"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/61
-  yaml@>=1.0.0 <1.10.3: ">=1.10.3"
+  yaml@>=1.0.0 <1.10.3: "^1.10.3"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/63
-  picomatch@>=2.0.0 <2.3.2: ">=2.3.2"
+  picomatch@>=2.0.0 <2.3.2: "^2.3.2"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/65
-  picomatch@>=4.0.0 <4.0.4: ">=4.0.4"
+  picomatch@>=4.0.0 <4.0.4: "^4.0.4"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/66
-  yaml@>=2.0.0 <2.8.3: ">=2.8.3"
+  yaml@>=2.0.0 <2.8.3: "^2.8.3"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/70
-  postcss@>=8.0.0 <8.5.10: ">=8.5.10"
+  # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/90
+  postcss@>=8.0.0 <8.5.18: "^8.5.18"
   # https://github.com/alexandre-abrioux/soundcloud-reverse/security/dependabot/80
-  "@babel/core@>=7.0.0 <7.29.0": ">=7.29.0"
+  "@babel/core@>=7.0.0 <7.29.0": "^7.29.0"
 
 allowBuilds:
   # already handled by optional dependencies
